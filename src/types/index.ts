@@ -1,0 +1,75 @@
+export type ProductCategory = 
+  | 'all'
+  | 'phone'
+  | 'laptop'
+  | 'accessory'
+  | 'audio'
+  | 'smarthome';
+
+export interface Product {
+  id: string;
+  name: string;
+  category: ProductCategory;
+  categoryName: string;
+  price: number;
+  originalPrice: number;
+  discount: number; // percentage e.g. 15 for 15%
+  rating: number; // e.g. 4.8
+  reviewsCount: number;
+  image: string;
+  inStock: boolean;
+  stockCount: number;
+  isFeatured?: boolean;
+  description: string;
+  highlights: string[];
+  specs: Record<string, string>;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  avatar?: string;
+}
+
+export interface OrderItem {
+  productId: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+export interface Order {
+  id: string;
+  orderCode: string;
+  createdAt: string;
+  customer: {
+    fullName: string;
+    phone: string;
+    address: string;
+    note?: string;
+  };
+  items: OrderItem[];
+  subtotal: number;
+  discountAmount: number;
+  shippingFee: number;
+  total: number;
+  paymentMethod: 'cod' | 'vietqr';
+  status: 'pending' | 'confirmed' | 'shipping' | 'delivered';
+}
+
+export type ToastType = 'success' | 'error' | 'info' | 'warning';
+
+export interface ToastMessage {
+  id: string;
+  message: string;
+  type: ToastType;
+}
