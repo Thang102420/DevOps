@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  vietthang-store:
+  vietthang-fashion:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: vietthang_store_app
+    container_name: vietthang-fashion-app
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-    restart: unless-stopped
+    restart: always
