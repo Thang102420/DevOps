@@ -20,7 +20,7 @@ export const OrderHistoryModal: React.FC = () => {
             <div>
               <h2 className="text-base font-bold text-slate-900">Lịch Sử Đơn Hàng Của Bạn</h2>
               <p className="text-xs text-slate-500">
-                {currentUser?.email || 'Tài khoản khách hàng'}
+                {currentUser?.email || 'Tài khoản thành viên'}
               </p>
             </div>
           </div>
@@ -54,7 +54,7 @@ export const OrderHistoryModal: React.FC = () => {
 
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
                     <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    Đang xử lý
+                    Đang đóng gói
                   </span>
                 </div>
 
@@ -65,11 +65,14 @@ export const OrderHistoryModal: React.FC = () => {
                       <img
                         src={item.image}
                         alt={item.productName}
-                        className="w-12 h-12 rounded-xl object-cover bg-slate-100 border border-slate-200 shrink-0"
+                        className="w-12 h-14 rounded-xl object-cover object-top bg-slate-100 border border-slate-200 shrink-0"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-bold text-slate-900 truncate">{item.productName}</p>
                         <p className="text-slate-500 text-[11px]">
+                          {item.selectedSize ? `Size: ${item.selectedSize}` : ''} {item.selectedColor ? `| Màu: ${item.selectedColor}` : ''}
+                        </p>
+                        <p className="text-slate-400 text-[10px]">
                           Số lượng: {item.quantity} x {item.price.toLocaleString('vi-VN')}₫
                         </p>
                       </div>
@@ -103,13 +106,13 @@ export const OrderHistoryModal: React.FC = () => {
               </div>
               <h3 className="text-sm font-bold text-slate-800 mb-1">Chưa có đơn hàng nào</h3>
               <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
-                Khi bạn đặt mua sản phẩm tại VietThang Store, toàn bộ lịch sử đơn hàng sẽ hiển thị tại đây.
+                Khi bạn đặt mua trang phục tại VietThang Fashion, toàn bộ đơn hàng và kích thước size sẽ hiển thị tại đây.
               </p>
               <button
                 onClick={closeHistoryModal}
                 className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
               >
-                Khám phá sản phẩm
+                Khám phá bộ sưu tập
               </button>
             </div>
           )}

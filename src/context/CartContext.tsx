@@ -5,9 +5,9 @@ import { useToast } from './ToastContext';
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, quantity?: number) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addToCart: (product: Product, quantity?: number, selectedSize?: string, selectedColor?: string) => void;
+  removeFromCart: (productId: string, size?: string, color?: string) => void;
+  updateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
   clearCart: () => void;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
@@ -27,7 +27,7 @@ interface CartContextType {
   setSelectedProductForDetail: (product: Product | null) => void;
 }
 
-const STORAGE_KEY_CART = 'vietthang_cart_items';
+const STORAGE_KEY_CART = 'vietthang_fashion_cart';
 const STORAGE_KEY_COUPON = 'vietthang_applied_coupon';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -68,35 +68,57 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [appliedCoupon]);
 
-  const addToCart = (product: Product, quantity = 1) => {
+  const addToCart = (product: Product, quantity = 1, selectedSize?: string, selectedColor?: string) => {
+    const chosenSize = selectedSize || product.sizes[0] || 'M';
+    const chosenColor = selectedColor || product.colors[0] || 'Tiêu chuẩn';
+
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+      const existingIndex = prev.findIndex(
+        (item) =>
+          item.product.id === product.id &&
+          item.selectedSize === chosenSize &&
+          item.selectedColor === chosenColor
+      );
+
+      if (existingIndex > -1) {
+        const next = [...prev];
+        next[existingIndex].quantity += quantity;
+        return next;
       }
-      return [...prev, { product, quantity }];
+
+      return [...prev, { product, quantity, selectedSize: chosenSize, selectedColor: chosenColor }];
     });
-    showToast(`Đã thêm "${product.name.slice(0, 30)}..." vào giỏ hàng`, 'success');
+
+    showToast(`Đã thêm "${product.name.slice(0, 25)}..." (Size ${chosenSize}) vào giỏ`, 'success');
   };
 
-  const removeFromCart = (productId: string) => {
-    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  const removeFromCart = (productId: string, size?: string, color?: string) => {
+    setCartItems((prev) =>
+      prev.filter((item) => {
+        if (item.product.id !== productId) return true;
+        if (size && item.selectedSize !== size) return true;
+        if (color && item.selectedColor !== color) return true;
+        return false;
+      })
+    );
     showToast('Đã xóa sản phẩm khỏi giỏ hàng', 'info');
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: string, quantity: number, size?: string, color?: string) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, size, color);
       return;
     }
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
+      prev.map((item) => {
+        const matchProduct = item.product.id === productId;
+        const matchSize = !size || item.selectedSize === size;
+        const matchColor = !color || item.selectedColor === color;
+        if (matchProduct && matchSize && matchColor) {
+          return { ...item, quantity };
+        }
+        return item;
+      })
     );
   };
 
@@ -119,8 +141,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (upperCode === 'VIETTHANG10') {
       return Math.round(subtotal * 0.1);
     }
-    if (upperCode === 'TECH500' && subtotal >= 10000000) {
-      return 500000;
+    if (upperCode === 'FASHION50' && subtotal >= 600000) {
+      return 50000;
     }
     return 0;
   }, [appliedCoupon, subtotal]);
@@ -128,11 +150,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const shippingFee = useMemo(() => {
     if (subtotal === 0) return 0;
     const upperCode = appliedCoupon ? appliedCoupon.toUpperCase().trim() : '';
-    if (upperCode === 'FREESHIP' && subtotal >= 1000000) {
+    if (upperCode === 'FREESHIP' && subtotal >= 500000) {
       return 0;
     }
-    // Miễn phí vận chuyển cho đơn hàng từ 5 triệu trở lên
-    if (subtotal >= 5000000) {
+    // Miễn phí vận chuyển từ 500.000đ trở lên
+    if (subtotal >= 500000) {
       return 0;
     }
     return 30000; // 30k VNĐ standard shipping

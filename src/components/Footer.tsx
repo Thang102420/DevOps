@@ -15,37 +15,41 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-base">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-rose-500 text-white font-black flex items-center justify-center text-base">
                 VT
               </div>
               <span className="font-extrabold text-xl text-white tracking-tight">
-                VietThang<span className="text-blue-500">.Store</span>
+                VietThang<span className="text-blue-500">.Fashion</span>
               </span>
             </div>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Hệ thống bán lẻ thiết bị công nghệ cao cấp chính hãng hàng đầu Việt Nam. Tận tâm phục vụ, cam kết 100% chính hãng, bảo hành chuẩn quốc tế.
+              Thương hiệu thời trang thiết kế nam nữ & phong cách giới trẻ hàng đầu Việt Nam. Tinh tế trong từng đường may mũi chỉ, chất vải sợi tự nhiên thoáng mát, đổi size miễn phí tận nhà.
             </p>
 
             <div className="space-y-1.5 text-slate-400">
               <p className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span>Showroom: Landmark 81, TP. HCM & Keangnam 72, Hà Nội</span>
+                <span>Hà Nội: Vincom Center Bà Triệu & Cầu Giấy</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                <span>TP. HCM: Saigon Centre Q.1 & Landmark 81</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span>Hotline: 1900 8888 (08:00 - 22:00)</span>
+                <span>Hotline: 1900 8888 (Tư vấn chọn size 08:00 - 22:00)</span>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <span>Email: contact@vietthangstore.vn</span>
+                <span>Email: fashion@vietthangstore.vn</span>
               </p>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-3">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Menu Điều Hướng</h4>
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Menu Mua Sắm</h4>
             <ul className="space-y-2">
               <li>
                 <button
@@ -55,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
                   }}
                   className="hover:text-white transition-colors"
                 >
-                  Tất cả sản phẩm
+                  Tất cả bộ sưu tập
                 </button>
               </li>
               <li>
@@ -66,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
                   }}
                   className="hover:text-white transition-colors"
                 >
-                  Về VietThang Store
+                  Về VietThang Fashion
                 </button>
               </li>
               <li>
@@ -77,30 +81,30 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
                   }}
                   className="hover:text-white transition-colors"
                 >
-                  Liên hệ hỗ trợ
+                  Hỗ trợ đổi trả size
                 </button>
               </li>
               <li>
-                <span className="text-slate-500">Tuyển dụng nhân tài</span>
+                <span className="text-slate-500">Chính sách nhượng quyền</span>
               </li>
             </ul>
           </div>
 
           {/* Policies */}
           <div className="space-y-3">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Chính Sách Bán Hàng</h4>
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Chính Sách Khách Hàng</h4>
             <ul className="space-y-2">
-              <li>Chính sách bảo hành 24 tháng</li>
-              <li>Chính sách 1 đổi 1 trong 30 ngày</li>
-              <li>Chính sách giao hàng hỏa tốc 2h</li>
+              <li>Chính sách đổi size 30 ngày</li>
+              <li>Bảo hành đường may 12 tháng</li>
+              <li>Bảng hướng dẫn chọn size chuẩn</li>
+              <li>Miễn phí vận chuyển từ 500k</li>
               <li>Chính sách bảo mật thông tin</li>
-              <li>Hướng dẫn thanh toán & trả góp</li>
             </ul>
           </div>
 
           {/* Payment Badges & Certifications */}
           <div className="space-y-3">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Phương Thức Thanh Toán</h4>
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Hình Thức Thanh Toán</h4>
             <div className="grid grid-cols-3 gap-2">
               <span className="bg-slate-800 text-center py-1.5 rounded-lg font-bold text-[10px] text-white">VietQR</span>
               <span className="bg-slate-800 text-center py-1.5 rounded-lg font-bold text-[10px] text-white">COD</span>
@@ -122,11 +126,11 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
 
         {/* Bottom Copyright */}
         <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-          <p>© 2026 VietThang Store. Bản quyền thuộc về Công ty TNHH Công Nghệ VietThang.</p>
+          <p>© 2026 VietThang Fashion. Bản quyền thuộc về Công ty TNHH Thời Trang & May Mặc VietThang.</p>
           <p className="flex items-center gap-1">
-            <span>Thiết kế & Vận hành với</span>
+            <span>Thiết kế thời trang & Vận hành với</span>
             <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
-            <span>chuẩn DevOps CI/CD hiện đại</span>
+            <span>DevOps CI/CD hiện đại</span>
           </p>
         </div>
 

@@ -53,10 +53,10 @@ export const CartDrawer: React.FC = () => {
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-blue-600" />
               <h2 className="text-base font-bold text-slate-900">
-                Giỏ Hàng Của Bạn
+                Túi Đồ Của Bạn
               </h2>
-              <span className="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full">
-                {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+              <span className="bg-rose-100 text-rose-800 text-xs font-bold px-2 py-0.5 rounded-full">
+                {cartItems.reduce((sum, item) => sum + item.quantity, 0)} món
               </span>
             </div>
             <button
@@ -73,15 +73,15 @@ export const CartDrawer: React.FC = () => {
             <>
               {/* Items List */}
               <div className="flex-1 overflow-y-auto p-5 space-y-4 divide-y divide-slate-100">
-                {cartItems.map((item) => {
+                {cartItems.map((item, idx) => {
                   const product = item.product;
                   return (
-                    <div key={product.id} className="pt-4 first:pt-0 flex gap-4">
+                    <div key={`${product.id}-${item.selectedSize}-${item.selectedColor}-${idx}`} className="pt-4 first:pt-0 flex gap-4">
                       {/* Product Thumbnail */}
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-20 h-20 rounded-2xl object-cover bg-slate-100 border border-slate-200 shrink-0"
+                        className="w-20 h-24 rounded-2xl object-cover object-top bg-slate-100 border border-slate-200 shrink-0"
                       />
 
                       {/* Product Details */}
@@ -92,16 +92,23 @@ export const CartDrawer: React.FC = () => {
                               {product.name}
                             </h4>
                             <button
-                              onClick={() => removeFromCart(product.id)}
+                              onClick={() => removeFromCart(product.id, item.selectedSize, item.selectedColor)}
                               className="text-slate-400 hover:text-rose-500 p-1 rounded-md transition-colors shrink-0"
                               title="Xóa món này"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            {product.categoryName}
-                          </p>
+                          
+                          {/* Size & Color chip */}
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <span className="inline-block bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded">
+                              Size: {item.selectedSize || 'M'}
+                            </span>
+                            <span className="inline-block bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded">
+                              {item.selectedColor || 'Tiêu chuẩn'}
+                            </span>
+                          </div>
                         </div>
 
                         <div className="flex items-center justify-between mt-2">
@@ -112,7 +119,7 @@ export const CartDrawer: React.FC = () => {
                           {/* Quantity Controller */}
                           <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
                             <button
-                              onClick={() => updateQuantity(product.id, item.quantity - 1)}
+                              onClick={() => updateQuantity(product.id, item.quantity - 1, item.selectedSize, item.selectedColor)}
                               className="p-1.5 text-slate-600 hover:bg-slate-200 transition-colors"
                             >
                               <Minus className="w-3 h-3" />
@@ -121,7 +128,7 @@ export const CartDrawer: React.FC = () => {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(product.id, item.quantity + 1)}
+                              onClick={() => updateQuantity(product.id, item.quantity + 1, item.selectedSize, item.selectedColor)}
                               className="p-1.5 text-slate-600 hover:bg-slate-200 transition-colors"
                             >
                               <Plus className="w-3 h-3" />
@@ -179,7 +186,7 @@ export const CartDrawer: React.FC = () => {
                 {/* Price Breakdown */}
                 <div className="space-y-2 text-xs text-slate-600">
                   <div className="flex justify-between">
-                    <span>Tạm tính:</span>
+                    <span>Tạm tính tiền đồ:</span>
                     <span className="font-semibold text-slate-800">
                       {subtotal.toLocaleString('vi-VN')}₫
                     </span>
@@ -196,7 +203,7 @@ export const CartDrawer: React.FC = () => {
                     <span>Phí giao hàng:</span>
                     <span className="font-semibold text-slate-800">
                       {shippingFee === 0 ? (
-                        <span className="text-emerald-600 font-bold">Miễn phí</span>
+                        <span className="text-emerald-600 font-bold">Miễn phí (đơn từ 500k)</span>
                       ) : (
                         `${shippingFee.toLocaleString('vi-VN')}₫`
                       )}
@@ -216,7 +223,7 @@ export const CartDrawer: React.FC = () => {
                   onClick={handleProceedToCheckout}
                   className="w-full py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  <span>Tiến hành thanh toán</span>
+                  <span>Đặt mua ngay</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -225,20 +232,20 @@ export const CartDrawer: React.FC = () => {
           ) : (
             /* Empty Cart */
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-blue-500">
+              <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mb-4 text-rose-500">
                 <ShoppingBag className="w-10 h-10 stroke-[1.5]" />
               </div>
               <h3 className="text-base font-bold text-slate-800 mb-1">
-                Giỏ hàng của bạn đang trống
+                Túi đồ của bạn đang trống
               </h3>
               <p className="text-xs text-slate-500 max-w-xs mb-6">
-                Chưa có thiết bị nào trong giỏ hàng. Hãy dạo quanh cửa hàng để tìm sản phẩm ưng ý nhé!
+                Chưa có trang phục nào trong túi. Hãy chọn cho mình những bộ đồ ưng ý nhất nhé!
               </p>
               <button
                 onClick={() => setIsCartOpen(false)}
                 className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors shadow-md shadow-blue-500/20"
               >
-                Khám phá ngay
+                Khám phá bộ sưu tập
               </button>
             </div>
           )}

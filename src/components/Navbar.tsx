@@ -32,7 +32,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -51,11 +50,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all">
-      {/* Top micro bar for announcements */}
-      <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2">
+      {/* Top announcement bar */}
+      <div className="bg-gradient-to-r from-blue-700 via-indigo-600 to-rose-600 text-white text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2">
         <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-        <span>Khuyến mãi tháng này: Nhập mã <strong className="bg-white/20 px-1.5 py-0.5 rounded font-mono font-bold text-amber-200">VIETTHANG10</strong> giảm ngay 10% cho mọi đơn hàng!</span>
-        <span className="hidden md:inline">| Miễn phí ship đơn từ 5tr</span>
+        <span>Bộ sưu tập mới 2026: Nhập mã <strong className="bg-white/20 px-1.5 py-0.5 rounded font-mono font-bold text-amber-200">VIETTHANG10</strong> giảm 10%!</span>
+        <span className="hidden md:inline">| Miễn phí giao hàng đơn từ 500k | Đổi size 30 ngày</span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,25 +65,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick('products')}
             className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-blue-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
-              <span className="font-extrabold text-xl tracking-tighter">VT</span>
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
+              <span className="font-black text-xl tracking-tighter">VT</span>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                  VietThang<span className="text-blue-600 font-extrabold">.Store</span>
+                <span className="font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
+                  VietThang<span className="text-blue-600">.Fashion</span>
                 </span>
-                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 uppercase">
-                  Official
+                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700 uppercase">
+                  Designer
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
-                Công Nghệ Đỉnh Cao & Chính Hãng
+                Thời Trang Nam Nữ & Xu Hướng Giới Trẻ
               </p>
             </div>
           </div>
 
-          {/* Navigation Links - Desktop */}
+          {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <button
               onClick={() => handleNavClick('products')}
@@ -94,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Sản phẩm
+              Bộ sưu tập
             </button>
             <button
               onClick={() => handleNavClick('about')}
@@ -104,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Giới thiệu shop
+              Về thương hiệu
             </button>
             <button
               onClick={() => handleNavClick('contact')}
@@ -118,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Search Bar - Real time */}
+          {/* Real-time search */}
           <div className="flex-1 max-w-xs lg:max-w-md relative hidden sm:block">
             <div className="relative">
               <input
@@ -130,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setActiveTab('products');
                   }
                 }}
-                placeholder="Tìm iPhone, MacBook, Sony,..."
+                placeholder="Tìm áo thun, sơ mi, blazer, đầm dự tiệc..."
                 className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -145,10 +144,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Action Buttons: Cart & User Auth */}
+          {/* Cart & User buttons */}
           <div className="flex items-center gap-2 sm:gap-3">
-            
-            {/* Cart Drawer Trigger */}
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative p-2.5 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all group flex items-center gap-2"
@@ -156,16 +153,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <ShoppingBag className="w-6 h-6 text-slate-700 group-hover:text-blue-600 transition-colors" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-red-600 text-white text-xs font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
                   {totalItems > 99 ? '99+' : totalItems}
                 </span>
               )}
               <span className="hidden lg:inline text-xs font-semibold text-slate-700 group-hover:text-blue-600">
-                Giỏ hàng
+                Túi đồ
               </span>
             </button>
 
-            {/* User Auth Section */}
+            {/* Auth Dropdown */}
             <div className="relative" ref={dropdownRef}>
               {isAuthenticated && currentUser ? (
                 <div>
@@ -190,11 +187,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
                   </button>
 
-                  {/* Dropdown Menu */}
                   {userDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 z-50 animate-fade-in">
                       <div className="p-3 border-b border-slate-100">
-                        <p className="text-xs text-slate-500">Tài khoản của bạn</p>
+                        <p className="text-xs text-slate-500">Tài khoản thành viên</p>
                         <p className="text-sm font-bold text-slate-900 truncate">{currentUser.name}</p>
                         <p className="text-xs text-slate-400 truncate">{currentUser.email}</p>
                       </div>
@@ -208,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors"
                         >
                           <PackageCheck className="w-4 h-4 text-blue-500" />
-                          <span>Lịch sử đơn hàng</span>
+                          <span>Đơn hàng thời trang của tôi</span>
                         </button>
                       </div>
 
@@ -238,19 +234,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Mobile Hamburger Toggle */}
+            {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-              aria-label="Mở menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
-
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
+        {/* Mobile Search */}
         <div className="sm:hidden pb-3">
           <div className="relative">
             <input
@@ -262,7 +256,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setActiveTab('products');
                 }
               }}
-              placeholder="Tìm điện thoại, laptop, phụ kiện..."
+              placeholder="Tìm áo, quần, váy đầm..."
               className="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -278,7 +272,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-2 pb-4 space-y-1 animate-fade-in">
           <button
@@ -287,7 +281,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               activeTab === 'products' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Sản phẩm
+            Bộ sưu tập
           </button>
           <button
             onClick={() => handleNavClick('about')}
@@ -295,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               activeTab === 'about' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Giới thiệu shop
+            Về thương hiệu
           </button>
           <button
             onClick={() => handleNavClick('contact')}
@@ -314,7 +308,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
             >
               <PackageCheck className="w-4 h-4 text-blue-600" />
-              <span>Lịch sử đơn hàng của tôi</span>
+              <span>Đơn hàng của tôi</span>
             </button>
           )}
         </div>

@@ -1,10 +1,10 @@
 export type ProductCategory = 
   | 'all'
-  | 'phone'
-  | 'laptop'
-  | 'accessory'
-  | 'audio'
-  | 'smarthome';
+  | 'men'
+  | 'women'
+  | 'pants'
+  | 'sport'
+  | 'accessories';
 
 export interface Product {
   id: string;
@@ -22,12 +22,17 @@ export interface Product {
   isFeatured?: boolean;
   description: string;
   highlights: string[];
+  sizes: string[];
+  colors: string[];
+  material: string;
   specs: Record<string, string>;
 }
 
 export interface CartItem {
   product: Product;
   quantity: number;
+  selectedSize?: string;
+  selectedColor?: string;
 }
 
 export interface User {
@@ -45,6 +50,8 @@ export interface OrderItem {
   price: number;
   quantity: number;
   image: string;
+  selectedSize?: string;
+  selectedColor?: string;
 }
 
 export interface Order {

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 import { ProductCategory } from '../types';
 import { ProductCard } from './ProductCard';
-import { SlidersHorizontal, ArrowUpDown, SearchX, CheckCircle, Smartphone, Laptop, Headphones, Home, Sparkles } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, SearchX, CheckCircle, Shirt, Sparkles, Activity, Scissors } from 'lucide-react';
 
 interface ProductListProps {
   searchQuery: string;
@@ -31,7 +31,8 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         const matchName = product.name.toLowerCase().includes(q);
         const matchDesc = product.description.toLowerCase().includes(q);
         const matchCat = product.categoryName.toLowerCase().includes(q);
-        if (!matchName && !matchDesc && !matchCat) {
+        const matchMat = product.material.toLowerCase().includes(q);
+        if (!matchName && !matchDesc && !matchCat && !matchMat) {
           return false;
         }
       }
@@ -46,11 +47,11 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
 
   const getCategoryIcon = (catId: string) => {
     switch (catId) {
-      case 'phone': return <Smartphone className="w-4 h-4" />;
-      case 'laptop': return <Laptop className="w-4 h-4" />;
-      case 'accessory': return <Sparkles className="w-4 h-4" />;
-      case 'audio': return <Headphones className="w-4 h-4" />;
-      case 'smarthome': return <Home className="w-4 h-4" />;
+      case 'men': return <Shirt className="w-4 h-4" />;
+      case 'women': return <Sparkles className="w-4 h-4" />;
+      case 'pants': return <Scissors className="w-4 h-4" />;
+      case 'sport': return <Activity className="w-4 h-4" />;
+      case 'accessories': return <SlidersHorizontal className="w-4 h-4" />;
       default: return <SlidersHorizontal className="w-4 h-4" />;
     }
   };
@@ -62,14 +63,14 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider mb-2">
-              <span>Kho Sản Phẩm Chính Hãng</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-rose-50 text-rose-700 text-xs font-bold uppercase tracking-wider mb-2">
+              <span>Thời Trang Xu Hướng 2026</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Danh Mục Thiết Bị Công Nghệ
+              Bộ Sưu Tập Thiết Kế Mới Nhất
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              Khám phá các sản phẩm công nghệ tiên tiến nhất với giá ưu đãi độc quyền
+              Trang phục nam nữ phong cách hiện đại, tôn vóc dáng và thoải mái vận động
             </p>
           </div>
 
@@ -97,7 +98,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="text-xs font-semibold text-slate-700 bg-transparent focus:outline-none cursor-pointer"
               >
-                <option value="default">Nổi bật nhất</option>
+                <option value="default">Phổ biến nhất</option>
                 <option value="price-asc">Giá: Thấp đến Cao</option>
                 <option value="price-desc">Giá: Cao đến Thấp</option>
                 <option value="rating">Đánh giá cao nhất</option>
@@ -132,7 +133,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         {searchQuery && (
           <div className="mb-6 flex items-center justify-between bg-blue-50/60 border border-blue-100 px-4 py-2.5 rounded-2xl text-xs text-blue-900">
             <span>
-              Kết quả tìm kiếm cho từ khóa: <strong>"{searchQuery}"</strong> ({filteredProducts.length} sản phẩm)
+              Kết quả tìm kiếm cho từ khóa: <strong>"{searchQuery}"</strong> ({filteredProducts.length} mẫu trang phục)
             </span>
             <button
               onClick={() => setSearchQuery('')}
@@ -156,9 +157,9 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
               <SearchX className="w-8 h-8" />
             </div>
-            <h3 className="text-lg font-bold text-slate-800 mb-1">Không tìm thấy sản phẩm nào</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-1">Không tìm thấy mẫu đồ nào</h3>
             <p className="text-xs text-slate-500 max-w-md mx-auto mb-6">
-              Rất tiếc chúng tôi không tìm thấy sản phẩm nào khớp với bộ lọc hoặc từ khóa tìm kiếm của bạn.
+              Rất tiếc không có mẫu quần áo nào khớp với từ khóa tìm kiếm của bạn. Hãy thử tìm từ khóa khác nhé!
             </p>
             <button
               onClick={() => {
@@ -169,7 +170,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               }}
               className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors"
             >
-              Đặt lại tất cả bộ lọc
+              Xem tất cả bộ sưu tập
             </button>
           </div>
         )}

@@ -28,7 +28,6 @@ export const CheckoutModal: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'vietqr'>('cod');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Pre-fill user data if logged in
   useEffect(() => {
     if (currentUser) {
       setFullName(currentUser.name || '');
@@ -39,7 +38,6 @@ export const CheckoutModal: React.FC = () => {
 
   if (!isCheckoutOpen) return null;
 
-  // Generate random order code for QR reference
   const generatedOrderCode = 'VT-' + Math.floor(100000 + Math.random() * 900000);
 
   const handleSubmitOrder = (e: React.FormEvent) => {
@@ -51,7 +49,7 @@ export const CheckoutModal: React.FC = () => {
     }
 
     if (cartItems.length === 0) {
-      showToast('Giỏ hàng của bạn đang trống!', 'error');
+      showToast('Túi đồ của bạn đang trống!', 'error');
       return;
     }
 
@@ -74,6 +72,8 @@ export const CheckoutModal: React.FC = () => {
           price: item.product.price,
           quantity: item.quantity,
           image: item.product.image,
+          selectedSize: item.selectedSize,
+          selectedColor: item.selectedColor,
         })),
         subtotal,
         discountAmount,
@@ -101,8 +101,8 @@ export const CheckoutModal: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Xác Nhận Đặt Hàng & Thanh Toán</h2>
-            <p className="text-xs text-slate-500">VietThang Store - Cam kết chính hãng 100%</p>
+            <h2 className="text-lg font-bold text-slate-900">Xác Nhận Đặt Hàng Thời Trang</h2>
+            <p className="text-xs text-slate-500">VietThang Fashion - Cam kết chất vải cao cấp, đổi size 30 ngày</p>
           </div>
           <button
             onClick={() => setIsCheckoutOpen(false)}
@@ -122,7 +122,7 @@ export const CheckoutModal: React.FC = () => {
               <div className="md:col-span-7 space-y-4">
                 <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                   <Truck className="w-4 h-4 text-blue-600" />
-                  <span>1. Thông tin giao hàng</span>
+                  <span>1. Thông tin giao đồ</span>
                 </h3>
 
                 <div className="space-y-3">
@@ -156,7 +156,7 @@ export const CheckoutModal: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Địa chỉ nhận hàng chi tiết <span className="text-rose-500">*</span>
+                      Địa chỉ giao hàng chi tiết <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -170,13 +170,13 @@ export const CheckoutModal: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Ghi chú đơn hàng (không bắt buộc)
+                      Ghi chú thêm (chiều cao, cân nặng để shop check size)
                     </label>
                     <textarea
                       rows={2}
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      placeholder="Giao giờ hành chính, gọi trước khi đến..."
+                      placeholder="Ví dụ: Cao 1m72 nặng 65kg lấy size L..."
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     />
                   </div>
@@ -199,11 +199,11 @@ export const CheckoutModal: React.FC = () => {
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-bold text-xs text-slate-900">COD - Tiền mặt</span>
+                        <span className="font-bold text-xs text-slate-900">COD (Kiểm tra đồ rồi thanh toán)</span>
                         {paymentMethod === 'cod' && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
                       </div>
                       <p className="text-[11px] text-slate-500">
-                        Thanh toán bằng tiền mặt khi nhận hàng và kiểm tra máy
+                        Được kiểm tra chất vải, thử đồ trước khi thanh toán tiền mặt
                       </p>
                     </div>
 
@@ -245,7 +245,7 @@ export const CheckoutModal: React.FC = () => {
                         </div>
                         <div>
                           <p className="text-slate-400 text-[10px]">Chủ tài khoản:</p>
-                          <p className="font-bold text-white uppercase">VIETTHANG STORE</p>
+                          <p className="font-bold text-white uppercase">VIETTHANG FASHION</p>
                         </div>
                         <div>
                           <p className="text-slate-400 text-[10px]">Số tiền:</p>
@@ -258,10 +258,9 @@ export const CheckoutModal: React.FC = () => {
                       </div>
 
                       <div className="pt-2 text-center bg-white p-3 rounded-xl">
-                        {/* Realistic VietQR API Image */}
                         <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                            `2|99|0988123456|VIETTHANG STORE|info@vietthangstore.vn|0|0|${totalAmount}|${generatedOrderCode}|transfer_myqr`
+                            `2|99|0988123456|VIETTHANG FASHION|info@vietthangstore.vn|0|0|${totalAmount}|${generatedOrderCode}|transfer_myqr`
                           )}`}
                           alt="VietQR Code"
                           className="w-36 h-36 mx-auto rounded-lg"
@@ -280,21 +279,24 @@ export const CheckoutModal: React.FC = () => {
               <div className="md:col-span-5 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-4">
                 <div>
                   <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">
-                    Đơn hàng ({cartItems.length} sản phẩm)
+                    Túi đồ ({cartItems.length} mẫu)
                   </h3>
 
                   {/* Items mini list */}
                   <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1">
-                    {cartItems.map((item) => (
-                      <div key={item.product.id} className="flex items-center gap-2.5 text-xs">
+                    {cartItems.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-2.5 text-xs">
                         <img
                           src={item.product.image}
                           alt={item.product.name}
-                          className="w-10 h-10 rounded-lg object-cover bg-white border border-slate-200 shrink-0"
+                          className="w-10 h-12 rounded-lg object-cover object-top bg-white border border-slate-200 shrink-0"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="font-bold text-slate-800 truncate">{item.product.name}</p>
-                          <p className="text-slate-500 text-[11px]">SL: x{item.quantity}</p>
+                          <p className="text-slate-500 text-[10px]">
+                            Size: <span className="font-semibold text-slate-700">{item.selectedSize}</span> | Màu: <span className="font-semibold text-slate-700">{item.selectedColor}</span>
+                          </p>
+                          <p className="text-slate-400 text-[10px]">SL: x{item.quantity}</p>
                         </div>
                         <span className="font-bold text-slate-700 shrink-0">
                           {(item.product.price * item.quantity).toLocaleString('vi-VN')}₫
@@ -306,7 +308,7 @@ export const CheckoutModal: React.FC = () => {
                   {/* Pricing Breakdown */}
                   <div className="pt-4 border-t border-slate-200 space-y-2 text-xs text-slate-600 mt-4">
                     <div className="flex justify-between">
-                      <span>Tạm tính:</span>
+                      <span>Tạm tính tiền đồ:</span>
                       <span className="font-semibold text-slate-800">
                         {subtotal.toLocaleString('vi-VN')}₫
                       </span>
@@ -343,7 +345,7 @@ export const CheckoutModal: React.FC = () => {
                     className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span>Đang xử lý đơn hàng...</span>
+                      <span>Đang đóng gói đơn hàng...</span>
                     ) : (
                       <>
                         <ShieldCheck className="w-4 h-4" />
@@ -352,7 +354,7 @@ export const CheckoutModal: React.FC = () => {
                     )}
                   </button>
                   <p className="text-[10px] text-center text-slate-400">
-                    Bằng việc bấm Đặt hàng, bạn đồng ý với Điều khoản của VietThang Store
+                    Đổi size miễn phí trong 30 ngày nếu mặc không vừa vặn
                   </p>
                 </div>
 

@@ -2,437 +2,388 @@ import { Product } from '../types';
 
 export const CATEGORIES = [
   { id: 'all', name: 'Tất cả sản phẩm' },
-  { id: 'phone', name: 'Điện thoại' },
-  { id: 'laptop', name: 'Laptop' },
-  { id: 'accessory', name: 'Phụ kiện' },
-  { id: 'audio', name: 'Âm thanh' },
-  { id: 'smarthome', name: 'Smart Home' },
+  { id: 'men', name: 'Thời trang Nam' },
+  { id: 'women', name: 'Thời trang Nữ' },
+  { id: 'pants', name: 'Quần & Chân Váy' },
+  { id: 'sport', name: 'Đồ Thể Thao' },
+  { id: 'accessories', name: 'Phụ kiện' },
 ] as const;
 
 export const PRODUCTS: Product[] = [
-  // 1. Điện thoại
+  // 1. Thời trang Nam
   {
-    id: 'phone-1',
-    name: 'iPhone 16 Pro Max 256GB - Titan Tự Nhiên',
-    category: 'phone',
-    categoryName: 'Điện thoại',
-    price: 33490000,
-    originalPrice: 34990000,
-    discount: 4,
+    id: 'men-1',
+    name: 'Áo Thun Nam Cotton Compact 250GSM Chống Nhăn Cao Cấp',
+    category: 'men',
+    categoryName: 'Thời trang Nam',
+    price: 249000,
+    originalPrice: 350000,
+    discount: 28,
     rating: 4.9,
-    reviewsCount: 156,
-    image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=800&auto=format&fit=crop',
+    reviewsCount: 320,
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop',
     inStock: true,
-    stockCount: 18,
+    stockCount: 85,
     isFeatured: true,
-    description: 'iPhone 16 Pro Max trang bị vi xử lý Apple A18 Pro mạnh mẽ, nút Điều Khiển Camera hoàn toàn mới, khung viền titan siêu nhẹ và màn hình Super Retina XDR 6.9 inch viền mỏng nhất lịch sử Apple.',
+    material: '100% Cotton Compact sợi dài',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Đen', 'Trắng', 'Xám Tiêu', 'Xanh Navy'],
+    description: 'Áo thun trơn basic chất liệu Cotton Compact 100% định lượng 250GSM dày dặn, thấm hút mồ hôi vượt trội, xử lý chống xù lông và giữ form áo hoàn hảo sau hàng trăm lần giặt.',
     highlights: [
-      'Chip Apple A18 Pro tiến trình 3nm thế hệ mới',
-      'Camera chính 48MP Fusion & ống kính telephoto 5x zoom quang',
-      'Nút Điều Khiển Camera (Camera Control) cảm ứng lực',
-      'Thời lượng pin xem video lên đến 33 giờ liên tục'
+      'Chất vải 100% Cotton Compact cao cấp bề mặt mịn màng',
+      'Định lượng 250GSM dày dặn, không lộ cơ thể',
+      'Bo cổ dệt rib co giãn 4 chiều chống nhão',
+      'Đường may móc xích đôi tiêu chuẩn xuất khẩu Nhật Bản'
     ],
     specs: {
-      'Màn hình': '6.9 inch OLED Super Retina XDR, 120Hz ProMotion',
-      'Vi xử lý (CPU)': 'Apple A18 Pro (6 nhân CPU, 6 nhân GPU, 16 nhân NPU)',
-      'RAM': '8 GB',
-      'Bộ nhớ trong': '256 GB',
-      'Camera sau': '48MP chính + 48MP góc siêu rộng + 12MP Tele 5x',
-      'Camera trước': '12MP TrueDepth AutoFocus',
-      'Pin & Sạc': 'Hỗ trợ sạc nhanh 25W MagSafe, USB-C 3.0',
-      'Kháng nước': 'IP68 (sâu 6m trong 30 phút)'
+      'Chất liệu': '100% Cotton Compact 2-way stretch',
+      'Form dáng': 'Regular fit tôn dáng, thoải mái vận động',
+      'Độ co giãn': 'Co giãn 4 chiều nhẹ nhàng',
+      'Xuất xứ': 'Sản xuất thủ công tại Việt Nam (VietThang Factory)',
+      'Bảo quản': 'Giặt máy ở nhiệt độ thường, không dùng thuốc tẩy mạnh'
     }
   },
   {
-    id: 'phone-2',
-    name: 'Samsung Galaxy S25 Ultra 5G 12GB/256GB',
-    category: 'phone',
-    categoryName: 'Điện thoại',
-    price: 29990000,
-    originalPrice: 33990000,
-    discount: 12,
-    rating: 4.8,
-    reviewsCount: 112,
-    image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 14,
-    isFeatured: true,
-    description: 'Galaxy S25 Ultra đỉnh cao công nghệ AI Galaxy thế hệ mới với thiết kế cạnh vát titan hiện đại, bút S-Pen tích hợp và cảm biến camera 200MP siêu sắc nét vượt trội.',
-    highlights: [
-      'Chip Snapdragon 8 Elite for Galaxy đỉnh cao hiệu năng',
-      'Camera chính 200MP bắt trọn chi tiết dù trong điều kiện thiếu sáng',
-      'Màn hình Dynamic AMOLED 2X phẳng phủ kính chống chói Gorilla Armor',
-      'Hệ thống Galaxy AI hỗ trợ dịch trực tiếp cuộc gọi và tóm tắt văn bản'
-    ],
-    specs: {
-      'Màn hình': '6.8 inch Dynamic AMOLED 2X, 120Hz, 2600 nits',
-      'Vi xử lý (CPU)': 'Snapdragon 8 Elite for Galaxy (3nm)',
-      'RAM': '12 GB',
-      'Bộ nhớ trong': '256 GB',
-      'Camera sau': '200MP + 50MP Ultra-wide + 50MP Tele 5x + 10MP Tele 3x',
-      'Pin & Sạc': '5.000 mAh, Sạc nhanh 45W có dây',
-      'Bút cảm ứng': 'S-Pen tích hợp độ trễ 2.8ms',
-      'Hệ điều hành': 'One UI 7 (Android 15)'
-    }
-  },
-  {
-    id: 'phone-3',
-    name: 'Xiaomi 15 Pro Leica Optical 16GB/512GB',
-    category: 'phone',
-    categoryName: 'Điện thoại',
-    price: 21490000,
-    originalPrice: 24990000,
-    discount: 14,
-    rating: 4.7,
-    reviewsCount: 89,
-    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 22,
-    isFeatured: false,
-    description: 'Xiaomi 15 Pro là kiệt tác nhiếp ảnh hợp tác cùng Leica với ống kính Summilux quang học, viên pin khủng 6100mAh cực mỏng và hệ điều hành Xiaomi HyperOS 2.0 mượt mà.',
-    highlights: [
-      'Hệ thống 3 camera 50MP cảm biến lớn Leica Optics',
-      'Viên pin dung lượng lớn 6100mAh Silicon-Carbon',
-      'Sạc nhanh có dây 90W HyperCharge, sạc không dây 50W',
-      'Màn hình 2K LTPO OLED 3200 nits sắc nét'
-    ],
-    specs: {
-      'Màn hình': '6.73 inch 2K AMOLED LTPO 120Hz, 3200 nits',
-      'Vi xử lý (CPU)': 'Snapdragon 8 Elite (3nm)',
-      'RAM': '16 GB LPDDR5X',
-      'Bộ nhớ trong': '512 GB UFS 4.0',
-      'Camera': '3 x 50MP Leica Summilux lens',
-      'Pin': '6100 mAh, sạc nhanh 90W',
-      'Vật liệu': 'Khung nhôm hàng không, kính Dragon Crystal'
-    }
-  },
-
-  // 2. Laptop
-  {
-    id: 'laptop-1',
-    name: 'MacBook Pro 14 M4 Pro (24GB RAM / 512GB SSD)',
-    category: 'laptop',
-    categoryName: 'Laptop',
-    price: 48990000,
-    originalPrice: 52990000,
-    discount: 8,
-    rating: 5.0,
-    reviewsCount: 74,
-    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 9,
-    isFeatured: true,
-    description: 'MacBook Pro 14 M4 Pro đem lại sức mạnh vô song cho dân thiết kế đồ họa, lập trình viên và dựng phim chuyên nghiệp với kiến trúc GPU tiên tiến, màn hình Liquid Retina XDR độ sáng 1600 nits.',
-    highlights: [
-      'Chip Apple M4 Pro 12-core CPU, 16-core GPU thế hệ mới nhất',
-      'Màn hình Liquid Retina XDR màu sắc chuẩn xác P3, ProMotion 120Hz',
-      '3 cổng Thunderbolt 5 băng thông lên tới 120Gbps',
-      'Thời lượng pin sử dụng lên đến 22 tiếng bền bỉ'
-    ],
-    specs: {
-      'Màn hình': '14.2 inch Liquid Retina XDR (3024 x 1964), 120Hz',
-      'Vi xử lý': 'Apple M4 Pro (12 CPU, 16 GPU)',
-      'RAM': '24 GB Unified Memory',
-      'Ổ cứng': '512 GB SSD PCIe tốc độ cao',
-      'Cổng kết nối': '3 x Thunderbolt 5, HDMI, SDXC, MagSafe 3',
-      'Trọng lượng': '1.6 kg',
-      'Hệ điều hành': 'macOS Sequoia'
-    }
-  },
-  {
-    id: 'laptop-2',
-    name: 'Laptop ASUS ROG Zephyrus G16 OLED (RTX 4070)',
-    category: 'laptop',
-    categoryName: 'Laptop',
-    price: 46990000,
-    originalPrice: 51990000,
-    discount: 10,
-    rating: 4.8,
-    reviewsCount: 65,
-    image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 6,
-    isFeatured: true,
-    description: 'ASUS ROG Zephyrus G16 mỏng nhẹ đỉnh cao với thân máy nhôm CNC nguyên khối, màn hình ROG Nebula OLED 2.5K 240Hz và đồ họa NVIDIA RTX 4070 mạnh mẽ cho mọi tựa game AAA.',
-    highlights: [
-      'Card đồ họa NVIDIA GeForce RTX 4070 8GB GDDR6',
-      'Màn hình ROG Nebula Display OLED 2.5K 240Hz / 0.2ms',
-      'Đèn Slash Lighting LED mặt lưng độc đáo ấn tượng',
-      'Hệ thống tản nhiệt buồng hơi ROG Intelligent Cooling'
-    ],
-    specs: {
-      'Màn hình': '16 inch 2.5K (2560 x 1600) OLED 240Hz, DCI-P3 100%',
-      'CPU': 'Intel Core Ultra 9 185H (16 nhân, 22 luồng, NPU AI)',
-      'Card đồ họa': 'NVIDIA GeForce RTX 4070 8GB GDDR6',
-      'RAM': '32 GB LPDDR5X 7467MHz',
-      'Ổ cứng': '1 TB SSD M.2 NVMe PCIe 4.0',
-      'Trọng lượng': '1.85 kg, độ dày chỉ 1.49 cm'
-    }
-  },
-  {
-    id: 'laptop-3',
-    name: 'Laptop Dell XPS 13 9340 Intel Core Ultra 7',
-    category: 'laptop',
-    categoryName: 'Laptop',
-    price: 35990000,
-    originalPrice: 38990000,
-    discount: 7,
-    rating: 4.6,
-    reviewsCount: 43,
-    image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 11,
-    isFeatured: false,
-    description: 'Dell XPS 13 tái định nghĩa chuẩn mực ultrabook doanh nhân với bàn di chuột vô hình kính liền mạch, hàng phím chức năng cảm ứng điện dung và thời lượng pin xuất sắc.',
-    highlights: [
-      'Thiết kế tương lai với Touchpad vô cực tàng hình',
-      'Màn hình viền siêu mỏng InfinityEdge FHD+ 120Hz',
-      'Trọng lượng siêu nhẹ chỉ 1.19kg dễ dàng mang theo di chuyển',
-      'Bộ vi xử lý tích hợp Intel AI Boost'
-    ],
-    specs: {
-      'Màn hình': '13.4 inch FHD+ (1920x1200) IPS 120Hz, 500 nits',
-      'CPU': 'Intel Core Ultra 7 155H',
-      'RAM': '16 GB LPDDR5x',
-      'SSD': '512 GB PCIe 4.0 NVMe',
-      'Pin': '55Wh sạc nhanh 60W Type-C',
-      'Trọng lượng': '1.19 kg'
-    }
-  },
-
-  // 3. Phụ kiện
-  {
-    id: 'acc-1',
-    name: 'Củ sạc nhanh Anker Prime GaN 100W (3 Cổng USB-C/A)',
-    category: 'accessory',
-    categoryName: 'Phụ kiện',
-    price: 1390000,
-    originalPrice: 1790000,
+    id: 'men-2',
+    name: 'Áo Sơ Mi Nam Dài Tay Oxford Chống Nhăn Kháng Khuẩn',
+    category: 'men',
+    categoryName: 'Thời trang Nam',
+    price: 429000,
+    originalPrice: 550000,
     discount: 22,
-    rating: 4.9,
-    reviewsCount: 340,
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 45,
-    isFeatured: false,
-    description: 'Củ sạc công nghệ GaN thế hệ mới từ Anker nhỏ hơn 43% so với sạc thông thường, trang bị PowerIQ 4.0 tự động điều phối công suất tối ưu cho Laptop, iPad và iPhone cùng lúc.',
-    highlights: [
-      'Tổng công suất 100W, sạc nhanh MacBook Pro 14 đạt 50% trong 30 phút',
-      '2 cổng USB-C + 1 cổng USB-A tiện lợi',
-      'Công nghệ tản nhiệt ActiveShield 2.0 kiểm soát nhiệt độ an toàn',
-      'Kích thước nhỏ gọn bỏ túi du lịch thuận tiện'
-    ],
-    specs: {
-      'Công suất tối đa': '100W Max',
-      'Cổng đầu ra': '2x USB-C, 1x USB-A',
-      'Công nghệ': 'GaN III, PowerIQ 4.0, ActiveShield 2.0',
-      'Trọng lượng': '183 g',
-      'Bảo hành': '24 tháng 1 đổi 1'
-    }
-  },
-  {
-    id: 'acc-2',
-    name: 'Chuột không dây công thái học Logitech MX Master 3S',
-    category: 'accessory',
-    categoryName: 'Phụ kiện',
-    price: 2190000,
-    originalPrice: 2690000,
-    discount: 18,
-    rating: 4.9,
-    reviewsCount: 280,
-    image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 30,
-    isFeatured: true,
-    description: 'Chuột văn phòng đỉnh cao thế giới với click siêu êm Quiet Clicks giảm 90% tiếng ồn, con lăn điện từ MagSpeed cuộn 1.000 dòng mỗi giây và cảm biến quang học 8.000 DPI dùng trên mọi bề mặt.',
-    highlights: [
-      'Công nghệ click tĩnh âm Quiet Clicks êm ái',
-      'Con lăn điện từ siêu nhanh MagSpeed SmartShift',
-      'Cảm biến quang học 8000 DPI chạy tốt trên cả mặt kính',
-      'Kết nối cùng lúc 3 thiết bị qua Bluetooth & Logi Bolt'
-    ],
-    specs: {
-      'Cảm biến': 'Darkfield high precision 8000 DPI',
-      'Pin': 'Sạc lại 500mAh, dùng đến 70 ngày cho 1 lần sạc',
-      'Kết nối': 'Bluetooth Low Energy & Đầu thu Logi Bolt USB',
-      'Số nút bấm': '7 nút tùy biến theo từng ứng dụng'
-    }
-  },
-  {
-    id: 'acc-3',
-    name: 'Bàn phím cơ không dây Keychron Q1 Pro QMK/VIA (Gateron Red)',
-    category: 'accessory',
-    categoryName: 'Phụ kiện',
-    price: 4390000,
-    originalPrice: 4890000,
-    discount: 10,
     rating: 4.8,
-    reviewsCount: 95,
-    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=800&auto=format&fit=crop',
+    reviewsCount: 195,
+    image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=800&auto=format&fit=crop',
     inStock: true,
-    stockCount: 8,
-    isFeatured: false,
-    description: 'Bàn phím cơ kim loại nguyên khối CNC Custom chuẩn layout 75%, kết nối Bluetooth 5.1 và có dây Type-C, cấu trúc đệm Double-Gasket êm tai tuyệt hảo cho dân gõ phím chuyên sâu.',
+    stockCount: 42,
+    isFeatured: true,
+    material: '70% Cotton Oxford + 30% Nano Poly chống nhăn',
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    colors: ['Trắng', 'Xanh Nhạt', 'Kẻ Sọc Xanh'],
+    description: 'Áo sơ mi Oxford phom dáng hiện đại dành cho quý ông công sở hiện đại. Chất vải dệt đan rọ thoáng khí, dễ ủi và hạn chế tối đa nếp gấp trong suốt ngày dài làm việc.',
     highlights: [
-      'Vỏ nhôm Anodized 6063 CNC đầm chắc tinh tế',
-      'Cấu trúc Double Gasket Mount tiêu âm cao cấp',
-      'Hỗ trợ custom map phím toàn diện qua QMK/VIA',
-      'Hotswap 5-pin thay switch nhanh không cần hàn chì'
+      'Vải dệt Oxford cao cấp tạo vân vải sang trọng',
+      'Công nghệ hoàn tất Easy-Care ít nhăn, dễ ủi',
+      'Khuy áo xà cừ khắc laser sắc nét bền bỉ',
+      'Cổ áo đệm lót giữ đứng phom chuẩn thanh lịch'
     ],
     specs: {
-      'Layout': '75% (81 phím + Núm xoay Knob)',
-      'Switch': 'Keychron K Pro Red (Linear) lube sẵn',
-      'Pin': '4000 mAh dùng đến 300 giờ tắt led',
-      'Keycap': 'KSA Profile Double-Shot PBT cao cấp',
-      'Trọng lượng': '1.73 kg'
+      'Chất liệu': 'Cotton Oxford dệt hạt tổ ong thoáng mát',
+      'Form dáng': 'Slim fit ôm vừa vặn thanh lịch',
+      'Đặc tính': 'Kháng khuẩn khử mùi, chống tĩnh điện',
+      'Xuất xứ': 'Việt Nam',
+      'Bảo quản': 'Ủi ở nhiệt độ trung bình dưới 150°C'
+    }
+  },
+  {
+    id: 'men-3',
+    name: 'Áo Khoác Bomber Kaki Nam 2 Lớp Chống Gió Hàn Quốc',
+    category: 'men',
+    categoryName: 'Thời trang Nam',
+    price: 589000,
+    originalPrice: 750000,
+    discount: 21,
+    rating: 4.9,
+    reviewsCount: 140,
+    image: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 28,
+    isFeatured: false,
+    material: 'Kaki Cotton Twill + Lớp lót dù lụa bên trong',
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    colors: ['Đen', 'Xanh Rêu', 'Be Sữa'],
+    description: 'Chiếc áo khoác bomber mang đậm phong cách đường phố Hàn Quốc. Thiết kế 2 lớp dày dặn vừa cản gió giữ ấm mùa lạnh vừa cực kỳ thời thượng khi phối cùng áo thun hay hoodie.',
+    highlights: [
+      'Chất vải Kaki cotton bề mặt đanh mịn, không bám bụi',
+      'Khóa kéo kim loại YKK trơn tru chuẩn độ bền',
+      'Túi áo có khóa kéo bảo vệ đồ đạc cá nhân',
+      'Bo chun cổ tay và gấu áo dệt dày dặn ôm nhẹ nhàng'
+    ],
+    specs: {
+      'Lớp ngoài': 'Kaki Twill mật độ sợi dệt cao',
+      'Lớp trong': 'Vải dù lụa Polyester mềm mịn chống dính',
+      'Khóa kéo': 'Hợp kim phủ nano chống rỉ',
+      'Xuất xứ': 'Việt Nam',
+      'Phong cách': 'Streetwear / Casual năng động'
     }
   },
 
-  // 4. Âm thanh
+  // 2. Thời trang Nữ
   {
-    id: 'audio-1',
-    name: 'Tai nghe Bluetooth chống ồn Sony WH-1000XM5 (Bạc/Đen)',
-    category: 'audio',
-    categoryName: 'Âm thanh',
-    price: 6890000,
-    originalPrice: 7990000,
-    discount: 14,
+    id: 'women-1',
+    name: 'Đầm Dự Tiệc Cổ Chữ V Dáng Xòe Lụa Mango Cao Cấp',
+    category: 'women',
+    categoryName: 'Thời trang Nữ',
+    price: 499000,
+    originalPrice: 680000,
+    discount: 26,
     rating: 4.9,
-    reviewsCount: 215,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 16,
-    isFeatured: true,
-    description: 'Tai nghe chụp tai hàng đầu với 2 bộ xử lý và 8 micro chuyên dụng khử ồn tối ưu Auto NC Optimizer, hỗ trợ âm thanh độ phân giải cao Hi-Res Audio Wireless và LDAC.',
-    highlights: [
-      'Chống ồn đỉnh cao Auto NC Optimizer tự điều chỉnh theo môi trường',
-      'Chất âm Hi-Res Audio qua củ loa carbon 30mm tinh chỉnh',
-      'Đàm thoại rõ nét với 4 micro beamforming AI khử tạp âm',
-      'Thời lượng pin lên đến 30 giờ, sạc 3 phút dùng 3 giờ'
-    ],
-    specs: {
-      'Driver': '30 mm màng loa sợi carbon tổng hợp',
-      'Bluetooth': 'v5.2 codec LDAC, AAC, SBC',
-      'Pin': '30 giờ (bật ANC), 40 giờ (tắt ANC)',
-      'Trọng lượng': '250 g siêu nhẹ êm tai',
-      'Tính năng': 'Speak-to-Chat, chạm cảm ứng tai phải'
-    }
-  },
-  {
-    id: 'audio-2',
-    name: 'Tai nghe Apple AirPods Pro 2 (USB-C & MagSafe Case)',
-    category: 'audio',
-    categoryName: 'Âm thanh',
-    price: 5290000,
-    originalPrice: 6190000,
-    discount: 15,
-    rating: 4.9,
-    reviewsCount: 420,
-    image: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?q=80&w=800&auto=format&fit=crop',
+    reviewsCount: 260,
+    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop',
     inStock: true,
     stockCount: 35,
     isFeatured: true,
-    description: 'AirPods Pro 2 trang bị chip Apple H2 mang đến khả năng Chủ Động Khử Tiếng Ồn tốt hơn gấp đôi, Âm Thanh Thích Ứng tự động điều chỉnh âm lượng theo tiếng ồn môi trường và hộp sạc USB-C chống bụi IP54.',
+    material: 'Lụa Mango mềm mại rủ sóng tự nhiên',
+    sizes: ['S', 'M', 'L'],
+    colors: ['Đỏ Ruby', 'Đen Quyến Rũ', 'Trắng Kem'],
+    description: 'Mẫu đầm liền thân thiết kế tôn dáng với đường chiết eo tinh tế, tùng váy xòe bồng bềnh nữ tính cùng chất liệu lụa Mango cao cấp óng ả sang trọng.',
     highlights: [
-      'Chip H2 xử lý âm thanh không gian cá nhân hóa Spatial Audio',
-      'Chống ồn ANC nâng cấp gấp 2 lần thế hệ trước',
-      'Tính năng Âm Thanh Thích Ứng (Adaptive Audio) thông minh',
-      'Hộp sạc tích hợp loa tìm kiếm Find My Precision'
+      'Chất liệu lụa Mango rủ nhẹ bay bổng, không nhăn xù',
+      'Thiết kế cổ chữ V khoe khéo xương quai xanh quyến rũ',
+      'Đường chiết eo tạo hiệu ứng thon gọn vòng 2',
+      'Phù hợp diện đi tiệc, đám cưới, hẹn hò lãng mạn'
     ],
     specs: {
-      'Vi xử lý': 'Apple H2 trong tai nghe, Apple U1 trong case',
-      'Cổng sạc': 'USB-C, hỗ trợ sạc MagSafe & sạc Apple Watch',
-      'Pin': '6 giờ trên tai nghe, 30 giờ kèm hộp sạc',
-      'Kháng nước': 'IP54 cho cả tai nghe và hộp sạc'
+      'Chất liệu': 'Lụa Mango loại 1 mềm mịn mát tay',
+      'Chiều dài': 'Dáng midi ngang bắp chân',
+      'Lót trong': 'Có lớp lót lụa habutai kín đáo',
+      'Xuất xứ': 'Thiết kế & sản xuất độc quyền VietThang'
     }
   },
   {
-    id: 'audio-3',
-    name: 'Loa Bluetooth Cổ Điển Marshall Stanmore III (80W)',
-    category: 'audio',
-    categoryName: 'Âm thanh',
-    price: 8990000,
-    originalPrice: 9990000,
-    discount: 10,
+    id: 'women-2',
+    name: 'Áo Blazer Nữ Tay Dài Phom Rộng 2 Hàng Khuy Chuẩn Hàn',
+    category: 'women',
+    categoryName: 'Thời trang Nữ',
+    price: 549000,
+    originalPrice: 720000,
+    discount: 23,
     rating: 4.8,
-    reviewsCount: 130,
-    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=800&auto=format&fit=crop',
+    reviewsCount: 178,
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
     inStock: true,
-    stockCount: 7,
-    isFeatured: false,
-    description: 'Loa để bàn huyền thoại mang phong cách Rock & Roll cổ điển với âm trường stereo rộng mở bao trùm khắp căn phòng, hỗ trợ kết nối Bluetooth 5.2 và jack AUX 3.5mm/RCA.',
+    stockCount: 24,
+    isFeatured: true,
+    material: 'Tuyết mưa Hàn Quốc đanh sợi chống nhăn',
+    sizes: ['S', 'M', 'L'],
+    colors: ['Be Nude', 'Đen Tuyền', 'Xám Khói'],
+    description: 'Áo khoác blazer nữ dáng suông phóng khoáng mang lại vẻ đẹp thanh lịch hiện đại cho quý cô văn phòng. Dễ dàng mix-match từ quần âu, chân váy đến quần jeans trẻ trung.',
     highlights: [
-      'Công suất 80W uy lực với âm trầm sâu chắc đặc trưng Marshall',
-      'Thiết kế vintage da bọc sang trọng, núm xoay kim loại đồng',
-      'Tính năng Dynamic Loudness cân bằng dải âm ở mọi mức volume',
-      'Kết nối đa dạng Bluetooth 5.2, AUX 3.5mm, cổng RCA'
+      'Vải tuyết mưa loại 1 đứng form áo sang xịn',
+      'Độn vai mỏng nhẹ tạo dáng vai thẳng quyền lực',
+      '2 hàng khuy giả sừng phong cách châu Âu',
+      'Túi mổ 2 bên tiện lợi đính nắp gập thời trang'
     ],
     specs: {
-      'Công suất': '80W Class D (1 loa trầm 50W + 2 loa tweeter 15W)',
-      'Dải tần': '45 - 20,000 Hz',
-      'Kết nối': 'Bluetooth 5.2 LE Audio, RCA, 3.5mm',
-      'Nguồn điện': 'Cắm điện trực tiếp 100-240V',
-      'Trọng lượng': '4.25 kg'
+      'Chất liệu': 'Vải tuyết mưa cao cấp 2 lớp',
+      'Kiểu dáng': 'Oversized dáng suông hiện đại',
+      'Cầu vai': 'Đệm mút sinh học êm nhẹ',
+      'Xuất xứ': 'Việt Nam'
+    }
+  },
+  {
+    id: 'women-3',
+    name: 'Áo Croptop Nữ Tay Ngắn Dệt Kim Gân Cổ Tròn Năng Động',
+    category: 'women',
+    categoryName: 'Thời trang Nữ',
+    price: 189000,
+    originalPrice: 260000,
+    discount: 27,
+    rating: 4.7,
+    reviewsCount: 145,
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 60,
+    isFeatured: false,
+    material: 'Len dệt kim Cotton mềm mát co giãn tốt',
+    sizes: ['Freesize (40-58kg)', 'S', 'M'],
+    colors: ['Trắng', 'Hồng Pastel', 'Đen', 'Xanh Bơ'],
+    description: 'Áo croptop dệt kim trẻ trung khoe eo thon, chất vải mềm mịn co giãn ôm nhẹ tôn đường cong cơ thể, thích hợp diện mùa hè cùng chân váy hoặc quần cạp cao.',
+    highlights: [
+      'Dệt kim sọc tăm co giãn đàn hồi cực tốt',
+      'Độ dài vừa phải ngang rốn dễ phối đồ',
+      'Thấm hút mồ hôi, thoáng khí không gây bí bách'
+    ],
+    specs: {
+      'Chất liệu': 'Cotton Viscose dệt kim gân',
+      'Độ co giãn': 'Co giãn 4 chiều đa hướng',
+      'Chiều dài': '40 cm',
+      'Xuất xứ': 'Việt Nam'
     }
   },
 
-  // 5. Smart Home
+  // 3. Quần & Chân Váy
   {
-    id: 'smarthome-1',
-    name: 'Robot hút bụi lau nhà thông minh Roborock S8 Pro Ultra',
-    category: 'smarthome',
-    categoryName: 'Smart Home',
-    price: 23990000,
-    originalPrice: 28990000,
-    discount: 17,
-    rating: 4.9,
-    reviewsCount: 78,
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
+    id: 'pants-1',
+    name: 'Quần Jeans Nam Dáng Suông Ống Đứng Denim Raw Vintage',
+    category: 'pants',
+    categoryName: 'Quần & Chân Váy',
+    price: 459000,
+    originalPrice: 590000,
+    discount: 22,
+    rating: 4.8,
+    reviewsCount: 210,
+    image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=800&auto=format&fit=crop',
     inStock: true,
-    stockCount: 5,
+    stockCount: 50,
     isFeatured: true,
-    description: 'Trạm sạc đa năng RockDock Ultra tự động giặt giẻ lau bằng nước nóng, sấy khô bằng khí nóng, tự hút rác và bơm nước sạch. Lực hút cực đại 6000Pa cùng công nghệ lau rung kép VibraRise 2.0.',
+    material: 'Denim Cotton 12.5 Oz không phai màu',
+    sizes: ['29', '30', '31', '32', '34'],
+    colors: ['Xanh Đậm Indigo', 'Xanh Nhạt Rách Nhẹ', 'Đen Khói'],
+    description: 'Quần jeans nam ống đứng Regular Straight kinh điển với chất vải denim dệt thoi 12.5 Oz đứng dáng, màu nhuộm wash sinh học bền màu theo năm tháng.',
     highlights: [
-      'Trạm sạc toàn năng tự động: gom rác, giặt giẻ, sấy khô, bơm nước',
-      'Lực hút 6000Pa HyperForce đánh bay mọi vết bẩn cứng đầu',
-      'Hệ thống tránh chướng ngại vật 3D Reactive AI thông minh',
-      'Chổi lăn kép DuoRoller chống rối tóc tuyệt đối'
+      'Vải denim 100% cotton dày dặn giữ form ống đứng',
+      'Kỹ thuật wash enzyme tạo độ sờn vintage tự nhiên',
+      'Đinh tán đồng và khóa kéo kim loại bền bỉ',
+      'Dễ dàng kết hợp cùng sneaker và áo thun'
     ],
     specs: {
-      'Lực hút': '6.000 Pa',
-      'Trạm sạc': 'Tự động giặt giẻ, sấy nhiệt, hút bụi 7 tuần',
-      'Dung lượng pin': '5.200 mAh (hoạt động 180 phút)',
-      'Điều hướng': 'LiDAR PreciSense + 3D Structured Light',
-      'Điều khiển': 'Ứng dụng Roborock / Mi Home tiếng Việt'
+      'Độ dày vải': '12.5 Oz Denim chuẩn quốc tế',
+      'Form dáng': 'Straight Leg (Ống đứng suông 19-21cm)',
+      'Khóa kéo': 'Khóa kéo kim loại chốt tự động',
+      'Xuất xứ': 'Việt Nam'
     }
   },
   {
-    id: 'smarthome-2',
-    name: 'Camera an ninh AI xoay 360 Aqara Hub Camera G3 (Apple HomeKit)',
-    category: 'smarthome',
-    categoryName: 'Smart Home',
-    price: 2490000,
-    originalPrice: 2990000,
-    discount: 16,
-    rating: 4.7,
-    reviewsCount: 110,
-    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=800&auto=format&fit=crop',
+    id: 'pants-2',
+    name: 'Quần Tây Nam Co Giãn 4 Chiều Công Sở Dáng Trẻ Trung',
+    category: 'pants',
+    categoryName: 'Quần & Chân Váy',
+    price: 399000,
+    originalPrice: 520000,
+    discount: 23,
+    rating: 4.9,
+    reviewsCount: 160,
+    image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=800&auto=format&fit=crop',
     inStock: true,
-    stockCount: 19,
+    stockCount: 45,
     isFeatured: false,
-    description: 'Camera nhận diện khuôn mặt và cử chỉ bằng AI đầu tiên trên thế giới tích hợp trung tâm điều khiển nhà thông minh Zigbee 3.0, hỗ trợ Apple HomeKit Secure Video 2K siêu nét.',
+    material: 'Vải Kaki Spandex co giãn đàn hồi',
+    sizes: ['29', '30', '31', '32', '34'],
+    colors: ['Đen', 'Xám Tro', 'Xanh Đen', 'Be'],
+    description: 'Quần âu nam hiện đại với cạp chun ẩn bên trong tăng giảm co giãn thoải mái khi ngồi làm việc hay lái xe, ống suông nhẹ không nhăn không xù.',
     highlights: [
-      'Độ phân giải 2K 2304x1296 sắc nét cả ngày lẫn đêm',
-      'Nhận diện khuôn mặt, thú cưng và cử chỉ tay thông minh AI',
-      'Tích hợp Hub Zigbee 3.0 liên kết hơn 128 thiết bị con',
-      'Chế độ ngủ bảo vệ quyền riêng tư tự động cụp ống kính'
+      'Lưng quần thông minh có dải thun ẩn co giãn đến 4cm',
+      'Chất vải không nhăn gãy nếp dù giặt máy',
+      'Túi xẻ sâu để vừa điện thoại màn hình lớn an toàn'
     ],
     specs: {
-      'Độ phân giải': '2K (2304 x 1296p)',
-      'Góc quay': '360° ngang, 45° dọc',
-      'Hỗ trợ hệ sinh thái': 'Apple HomeKit, Google Home, Alexa, IFTTT',
-      'Lưu trữ': 'Thẻ nhớ MicroSD tối đa 128GB, iCloud Cloud Storage',
-      'Kết nối': 'Wi-Fi 2.4GHz / 5GHz, Zigbee 3.0'
+      'Chất liệu': 'Cotton Poly Spandex cao cấp',
+      'Form dáng': 'Slim-Straight gọn gàng hiện đại',
+      'Đặc tính': 'Chống nhăn, co giãn 4 chiều'
+    }
+  },
+  {
+    id: 'pants-3',
+    name: 'Chân Váy Xếp Ly Dáng Chữ A Cạp Cao Kèm Quần Bảo Hộ',
+    category: 'pants',
+    categoryName: 'Quần & Chân Váy',
+    price: 269000,
+    originalPrice: 350000,
+    discount: 23,
+    rating: 4.8,
+    reviewsCount: 188,
+    image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 38,
+    isFeatured: false,
+    material: 'Vải tuyết mưa ép ly nhiệt công nghệ cao',
+    sizes: ['S', 'M', 'L'],
+    colors: ['Đen', 'Xám', 'Trắng Kem'],
+    description: 'Chân váy ngắn xếp ly tennis năng động dáng chữ A che khuyết điểm đùi to, cạp cao tôn dáng chân dài, bên trong may liền quần bảo hộ an toàn tuyệt đối.',
+    highlights: [
+      'Xếp ly dập nhiệt công nghệ cao không bị mất nếp sau giặt',
+      'Tích hợp quần bảo hộ cùng màu co giãn kín đáo bên trong',
+      'Cạp cao giấu bụng, kéo dài đôi chân thon thả'
+    ],
+    specs: {
+      'Chất liệu': 'Vải tuyết mưa đanh lì',
+      'Chiều dài': '39 - 41 cm',
+      'Bên trong': 'Có quần lót bảo hộ thun cotton co giãn'
+    }
+  },
+
+  // 4. Đồ Thể Thao
+  {
+    id: 'sport-1',
+    name: 'Bộ Đồ Thể Thao Nam Thun Lạnh Pro-Dry Thoáng Khí',
+    category: 'sport',
+    categoryName: 'Đồ Thể Thao',
+    price: 389000,
+    originalPrice: 499000,
+    discount: 22,
+    rating: 4.9,
+    reviewsCount: 220,
+    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 65,
+    isFeatured: true,
+    material: 'Thun lạnh hạt mè dệt công nghệ Pro-Dry',
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    colors: ['Xanh Dương Đậm', 'Xám Ghi', 'Đen Carbon'],
+    description: 'Set đồ tập gym, chạy bộ, đá bóng gồm áo thun thể thao và quần short có túi khóa kéo. Chất vải siêu nhẹ, công nghệ thoát ẩm Pro-Dry giúp cơ thể luôn khô ráo.',
+    highlights: [
+      'Vải thun lạnh siêu nhẹ chỉ 120g/bộ, bay hơi mồ hôi siêu tốc',
+      'Quần short có 2 túi khóa kéo để điện thoại và chìa khóa an toàn',
+      'Logo phản quang nổi bật khi chạy bộ ban đêm',
+      'Kháng khuẩn nano ngăn mùi mồ hôi khó chịu'
+    ],
+    specs: {
+      'Chất liệu': '90% Polyester Pro-Dry + 10% Spandex',
+      'Độ co giãn': 'Co giãn 4 chiều đàn hồi cao',
+      'Bộ sản phẩm': 'Gồm 1 áo cộc tay + 1 quần short có khóa'
+    }
+  },
+  {
+    id: 'sport-2',
+    name: 'Áo Bra Thể Thao Nữ Nâng Đỡ Tối Đa Chống Rung Khi Vận Động',
+    category: 'sport',
+    categoryName: 'Đồ Thể Thao',
+    price: 289000,
+    originalPrice: 380000,
+    discount: 24,
+    rating: 4.9,
+    reviewsCount: 165,
+    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 40,
+    isFeatured: false,
+    material: 'Nylon Spandex đan chéo trợ lực lưng',
+    sizes: ['S', 'M', 'L'],
+    colors: ['Đen', 'Hồng Đỗ', 'Xanh Bơ'],
+    description: 'Áo ngực thể thao chuyên dụng cho yoga, gym, chạy bộ với thiết kế lưng đan dây trợ lực thông minh, đệm mút liền định hình nâng đỡ vòng 1 hoàn hảo.',
+    highlights: [
+      'Thiết kế đan dây sau lưng giảm áp lực lên vai và gáy',
+      'Đệm ngực có lỗ thở thoáng khí, nâng đỡ chống xô lệch',
+      'Vải mềm mại như làn da thứ hai không gây cấn đau'
+    ],
+    specs: {
+      'Chất liệu': '75% Nylon + 25% Spandex cao cấp',
+      'Mức nâng đỡ': 'High Support (Chạy bộ, HIIT, Gym nặng)',
+      'Đệm ngực': 'Đệm mút liền thông hơi thoáng khí'
+    }
+  },
+
+  // 5. Phụ kiện
+  {
+    id: 'acc-1',
+    name: 'Thắt Lưng Nam Da Bò Thật 100% Khóa Tự Động Hợp Kim',
+    category: 'accessories',
+    categoryName: 'Phụ kiện',
+    price: 299000,
+    originalPrice: 450000,
+    discount: 33,
+    rating: 4.9,
+    reviewsCount: 310,
+    image: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=800&auto=format&fit=crop',
+    inStock: true,
+    stockCount: 75,
+    isFeatured: false,
+    material: 'Da bò nguyên tấm lớp 1 (Top Grain Leather)',
+    sizes: ['Bản rộng 3.5cm - Dài 120cm'],
+    colors: ['Đen Nam Tính', 'Nâu Cafe'],
+    description: 'Dây nịt nam da bò thật nhập khẩu dẻo dai nguyên tấm, mặt khóa tự động trượt mượt mà không cần đục lỗ, hộp đựng sang trọng thích hợp làm quà tặng.',
+    highlights: [
+      'Da bò nguyên miếng càng dùng càng bóng đẹp mềm mại',
+      'Đầu khóa hợp kim phủ titan chống trầy xước và hoen gỉ',
+      'Cơ chế ray trượt tự động tinh chỉnh kích thước chuẩn xác',
+      'Tặng kèm hộp quà và túi giấy sang trọng'
+    ],
+    specs: {
+      'Chất liệu dây': '100% Da bò thật tự nhiên nhập khẩu',
+      'Chất liệu khóa': 'Hợp kim nguyên khối mạ điện phân',
+      'Bản rộng': '3.5 cm chuẩn công sở',
+      'Bảo hành': '12 tháng lỗi nổ da 1 đổi 1'
     }
   }
 ];
@@ -446,14 +397,14 @@ export const VOUCHERS = [
   },
   {
     code: 'FREESHIP',
-    description: 'Miễn phí vận chuyển toàn quốc cho đơn từ 1.000.000đ',
+    description: 'Miễn phí vận chuyển toàn quốc cho đơn từ 500.000đ',
     freeShip: true,
-    minSpend: 1000000,
+    minSpend: 500000,
   },
   {
-    code: 'TECH500',
-    description: 'Giảm ngay 500.000đ cho đơn hàng trên 10 triệu',
-    fixedDiscount: 500000,
-    minSpend: 10000000,
+    code: 'FASHION50',
+    description: 'Giảm 50.000đ cho đơn hàng thời trang từ 600.000đ',
+    fixedDiscount: 50000,
+    minSpend: 600000,
   }
 ];
