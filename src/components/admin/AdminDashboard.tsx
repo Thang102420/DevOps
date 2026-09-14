@@ -58,9 +58,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
                     <span className="font-bold text-sm sm:text-base tracking-tight text-white">
                       VietThang Admin
                     </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/30 text-blue-300 border border-blue-400/30">
-                      Offline
-                    </span>
                   </div>
                 </div>
               </div>

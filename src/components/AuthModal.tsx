@@ -167,12 +167,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onAdminLogin }) => {
               >
                 Đăng nhập ngay
               </button>
-
-              <div className="pt-1 text-center">
-                <p className="text-[11px] text-slate-400">
-                  Tài khoản Quản trị viên: <span className="font-mono font-semibold text-slate-600">admin</span> • Mật khẩu: <span className="font-mono font-semibold text-slate-600">admin123</span>
-                </p>
-              </div>
             </form>
           ) : (
             /* Register Form */
