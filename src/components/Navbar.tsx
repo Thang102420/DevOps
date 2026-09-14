@@ -116,21 +116,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Liên hệ
             </button>
-            <button
-              onClick={() => handleNavClick('admin')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === 'admin'
-                  ? 'bg-slate-900 text-white shadow-md'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-              }`}
-              title="Mở bảng điều khiển quản trị"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5 text-blue-600" />
-              <span>Quản trị</span>
-              <span className="px-1 py-0.2 rounded text-[10px] font-bold bg-blue-600 text-white leading-none">
-                CRUD
-              </span>
-            </button>
           </nav>
 
           {/* Real-time search */}
@@ -212,16 +197,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </div>
 
                       <div className="py-1">
-                        <button
-                          onClick={() => {
-                            setUserDropdownOpen(false);
-                            handleNavClick('admin');
-                          }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors"
-                        >
-                          <LayoutDashboard className="w-4 h-4 text-blue-600" />
-                          <span>Trang Quản trị (Admin)</span>
-                        </button>
+                        {currentUser.role === 'admin' && (
+                          <button
+                            onClick={() => {
+                              setUserDropdownOpen(false);
+                              handleNavClick('admin');
+                            }}
+                            className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-blue-600 bg-blue-50/60 hover:bg-blue-100/60 rounded-xl transition-colors"
+                          >
+                            <LayoutDashboard className="w-4 h-4 text-blue-600" />
+                            <span>Trang Quản trị (Admin)</span>
+                          </button>
+                        )}
                         <button
                           onClick={() => {
                             setUserDropdownOpen(false);
@@ -325,20 +312,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Liên hệ
           </button>
-          <button
-            onClick={() => handleNavClick('admin')}
-            className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
-              activeTab === 'admin' ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-50'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <LayoutDashboard className="w-4 h-4 text-blue-600" />
-              <span>Trang Quản trị (Admin)</span>
-            </span>
-            <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-100 text-blue-700">
-              CRUD
-            </span>
-          </button>
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => handleNavClick('admin')}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                activeTab === 'admin' ? 'bg-slate-900 text-white' : 'text-blue-600 bg-blue-50/60 hover:bg-blue-100/60'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <LayoutDashboard className="w-4 h-4 text-blue-600" />
+                <span>Trang Quản trị (Admin)</span>
+              </span>
+              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-600 text-white">
+                Admin
+              </span>
+            </button>
+          )}
           {isAuthenticated && (
             <button
               onClick={() => {

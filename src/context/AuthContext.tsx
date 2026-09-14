@@ -6,7 +6,7 @@ interface AuthContextType {
   currentUser: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (email: string, pass: string) => boolean;
+  login: (usernameOrEmail: string, pass: string) => boolean;
   loginDemo: () => void;
   loginAdmin: (usernameOrEmail: string, pass: string) => boolean;
   loginAdminDemo: () => void;
@@ -75,25 +75,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isAdmin = !!currentUser && currentUser.role === 'admin';
 
-  const login = (email: string, pass: string): boolean => {
-    if (!email) {
-      showToast('Vui lòng nhập đầy đủ thông tin', 'error');
+  const login = (usernameOrEmail: string, pass: string): boolean => {
+    if (!usernameOrEmail || !pass) {
+      showToast('Vui lòng nhập đầy đủ thông tin đăng nhập', 'error');
       return false;
     }
 
-    const trimmed = email.trim().toLowerCase();
-    const isAttemptAdmin = trimmed === 'admin' || trimmed === 'admin@vietthangstore.vn' || trimmed === 'admin@vietthang.vn';
-    if (isAttemptAdmin && (pass === 'admin' || pass === 'admin123' || pass === '123456')) {
-      return loginAdmin(email, pass);
+    const trimmed = usernameOrEmail.trim().toLowerCase();
+    const isAttemptAdmin =
+      trimmed === 'admin' ||
+      trimmed === 'admin@vietthangstore.vn' ||
+      trimmed === 'admin@vietthang.vn' ||
+      trimmed === 'quantri';
+
+    if (isAttemptAdmin) {
+      const validAdminPasswords = ['admin', 'admin123', '123456'];
+      if (validAdminPasswords.includes(pass)) {
+        return loginAdmin(usernameOrEmail, pass);
+      } else {
+        showToast('Mật khẩu quản trị không chính xác!', 'error');
+        return false;
+      }
     }
+
+    // Khách hàng đăng nhập bằng tên hoặc email
+    const displayName = usernameOrEmail.includes('@')
+      ? usernameOrEmail.split('@')[0]
+      : usernameOrEmail.trim();
+
+    const emailValue = usernameOrEmail.includes('@')
+      ? usernameOrEmail.trim()
+      : `${usernameOrEmail.trim().toLowerCase()}@vietthangstore.vn`;
 
     const user: User = {
       id: 'usr_' + Date.now(),
-      name: email.split('@')[0],
-      email: email,
+      name: displayName,
+      email: emailValue,
       phone: '0988 123 456',
       address: 'Số 88 Cầu Giấy, Hà Nội',
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(email)}`,
+      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(usernameOrEmail)}`,
       role: 'customer',
     };
     setCurrentUser(user);

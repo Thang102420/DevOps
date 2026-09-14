@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { X, Eye, EyeOff, Lock, Mail, User, Phone, Sparkles, LogIn, UserPlus } from 'lucide-react';
 
-export const AuthModal: React.FC = () => {
+interface AuthModalProps {
+  onAdminLogin?: () => void;
+}
+
+export const AuthModal: React.FC<AuthModalProps> = ({ onAdminLogin }) => {
   const { isAuthModalOpen, closeAuthModal, authModalTab, openAuthModal, login, register, loginDemo } = useAuth();
 
-  const [email, setEmail] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -15,12 +20,24 @@ export const AuthModal: React.FC = () => {
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    login(email, password);
+    const trimmed = usernameOrEmail.trim().toLowerCase();
+    const isAttemptAdmin =
+      trimmed === 'admin' ||
+      trimmed === 'admin@vietthangstore.vn' ||
+      trimmed === 'admin@vietthang.vn' ||
+      trimmed === 'quantri';
+
+    const success = login(usernameOrEmail, password);
+    if (success && isAttemptAdmin) {
+      if (onAdminLogin) {
+        onAdminLogin();
+      }
+    }
   };
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    register(name, email, password, phone);
+    register(name, registerEmail, password, phone);
   };
 
   return (
@@ -106,15 +123,17 @@ export const AuthModal: React.FC = () => {
             /* Login Form */
             <form onSubmit={handleLoginSubmit} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Email</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Tên đăng nhập hoặc Email
+                </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
-                    type="email"
+                    type="text"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="tenban@gmail.com"
+                    value={usernameOrEmail}
+                    onChange={(e) => setUsernameOrEmail(e.target.value)}
+                    placeholder="Nhập tên tài khoản (VD: admin) hoặc email..."
                     className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -148,6 +167,12 @@ export const AuthModal: React.FC = () => {
               >
                 Đăng nhập ngay
               </button>
+
+              <div className="pt-1 text-center">
+                <p className="text-[11px] text-slate-400">
+                  Tài khoản Quản trị viên: <span className="font-mono font-semibold text-slate-600">admin</span> • Mật khẩu: <span className="font-mono font-semibold text-slate-600">admin123</span>
+                </p>
+              </div>
             </form>
           ) : (
             /* Register Form */
@@ -174,8 +199,8 @@ export const AuthModal: React.FC = () => {
                   <input
                     type="email"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
                     placeholder="email@cuaban.com"
                     className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />

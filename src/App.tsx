@@ -106,7 +106,7 @@ const AppContent: React.FC = () => {
       <CartDrawer />
       <CheckoutModal />
       <OrderSuccessModal />
-      <AuthModal />
+      <AuthModal onAdminLogin={() => setActiveTab('admin')} />
       <OrderHistoryModal />
       <ToastContainer />
     </div>
