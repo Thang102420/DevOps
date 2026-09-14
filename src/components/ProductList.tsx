@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { PRODUCTS, CATEGORIES } from '../data/products';
+import { CATEGORIES } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 import { ProductCategory } from '../types';
 import { ProductCard } from './ProductCard';
 import { SlidersHorizontal, ArrowUpDown, SearchX, CheckCircle, Shirt, Sparkles, Activity, Scissors } from 'lucide-react';
@@ -10,13 +11,14 @@ interface ProductListProps {
 }
 
 export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearchQuery }) => {
+  const { products } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('all');
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'rating'>('default');
   const [inStockOnly, setInStockOnly] = useState(false);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return products.filter((product) => {
       // Category filter
       if (selectedCategory !== 'all' && product.category !== selectedCategory) {
         return false;
@@ -43,7 +45,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
       if (sortBy === 'rating') return b.rating - a.rating;
       return 0; // default order
     });
-  }, [selectedCategory, inStockOnly, searchQuery, sortBy]);
+  }, [products, selectedCategory, inStockOnly, searchQuery, sortBy]);
 
   const getCategoryIcon = (catId: string) => {
     switch (catId) {

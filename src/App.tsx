@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
+import { ProductProvider } from './context/ProductContext';
 import { CartProvider } from './context/CartContext';
 import { ToastContainer } from './components/Toast';
 import { Navbar } from './components/Navbar';
@@ -15,10 +16,25 @@ import { CheckoutModal } from './components/CheckoutModal';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { AuthModal } from './components/AuthModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
+import { AdminDashboard } from './components/admin/AdminDashboard';
 
 const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'products' | 'about' | 'contact'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'about' | 'contact' | 'admin'>(() => {
+    if (typeof window !== 'undefined' && (window.location.hash === '#admin' || window.location.search.includes('admin'))) {
+      return 'admin';
+    }
+    return 'products';
+  });
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Sync hash with admin tab
+  useEffect(() => {
+    if (activeTab === 'admin') {
+      window.location.hash = 'admin';
+    } else if (window.location.hash === '#admin') {
+      history.replaceState(null, '', window.location.pathname);
+    }
+  }, [activeTab]);
 
   const scrollToProducts = () => {
     setActiveTab('products');
@@ -27,6 +43,17 @@ const AppContent: React.FC = () => {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Dedicated Admin Screen
+  if (activeTab === 'admin') {
+    return (
+      <div className="min-h-screen bg-slate-100 text-slate-900">
+        <AdminDashboard onExit={() => setActiveTab('products')} />
+        <ProductDetailModal />
+        <ToastContainer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
@@ -78,12 +105,15 @@ export const App: React.FC = () => {
   return (
     <ToastProvider>
       <AuthProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
+        <ProductProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </ProductProvider>
       </AuthProvider>
     </ToastProvider>
   );
 };
 
 export default App;
+

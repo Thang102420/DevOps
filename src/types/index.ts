@@ -70,7 +70,7 @@ export interface Order {
   shippingFee: number;
   total: number;
   paymentMethod: 'cod' | 'vietqr';
-  status: 'pending' | 'confirmed' | 'shipping' | 'delivered';
+  status: 'pending' | 'confirmed' | 'shipping' | 'delivered' | 'cancelled';
 }
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -80,3 +80,25 @@ export interface ToastMessage {
   message: string;
   type: ToastType;
 }
+
+export interface ProductFormData {
+  name: string;
+  category: ProductCategory;
+  categoryName: string;
+  price: number;
+  originalPrice: number;
+  discount: number;
+  rating: number;
+  reviewsCount: number;
+  image: string;
+  inStock: boolean;
+  stockCount: number;
+  isFeatured: boolean;
+  description: string;
+  highlights: string[];
+  sizes: string[];
+  colors: string[];
+  material: string;
+  specs: Record<string, string>;
+}
+

@@ -2,7 +2,7 @@ import React from 'react';
 import { ShieldCheck, Phone, Mail, MapPin, Heart } from 'lucide-react';
 
 interface FooterProps {
-  setActiveTab: (tab: 'products' | 'about' | 'contact') => void;
+  setActiveTab: (tab: 'products' | 'about' | 'contact' | 'admin') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
@@ -82,6 +82,17 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
                   className="hover:text-white transition-colors"
                 >
                   Hỗ trợ đổi trả size
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setActiveTab('admin');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-blue-400 hover:text-blue-300 transition-colors font-semibold flex items-center gap-1.5"
+                >
+                  <span>Trang quản trị (Admin CRUD)</span>
                 </button>
               </li>
               <li>

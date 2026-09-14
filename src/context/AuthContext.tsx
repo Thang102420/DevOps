@@ -11,6 +11,9 @@ interface AuthContextType {
   logout: () => void;
   orders: Order[];
   addOrder: (order: Order) => void;
+  updateOrderStatus: (orderId: string, status: Order['status']) => void;
+  deleteOrder: (orderId: string) => void;
+  generateDemoOrder: () => void;
   isAuthModalOpen: boolean;
   openAuthModal: (defaultTab?: 'login' | 'register') => void;
   closeAuthModal: () => void;
@@ -128,6 +131,67 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setOrders((prev) => [order, ...prev]);
   };
 
+  const updateOrderStatus = (orderId: string, status: Order['status']) => {
+    setOrders((prev) =>
+      prev.map((order) => {
+        if (order.id === orderId) {
+          return { ...order, status };
+        }
+        return order;
+      })
+    );
+    showToast(`Đã cập nhật trạng thái đơn hàng #${orderId.slice(-6)}`, 'success');
+  };
+
+  const deleteOrder = (orderId: string) => {
+    setOrders((prev) => prev.filter((order) => order.id !== orderId));
+    showToast(`Đã xóa đơn hàng #${orderId.slice(-6)}`, 'info');
+  };
+
+  const generateDemoOrder = () => {
+    const demoId = 'ord_' + Date.now();
+    const demoCode = 'DH' + Math.floor(100000 + Math.random() * 900000);
+    const demoOrder: Order = {
+      id: demoId,
+      orderCode: demoCode,
+      createdAt: new Date().toISOString(),
+      customer: {
+        fullName: 'Trần Thị Thu Thảo',
+        phone: '0987 654 321',
+        address: '123 Nguyễn Trãi, Phường 2, Quận 5, TP. Hồ Chí Minh',
+        note: 'Giao giờ hành chính, gọi trước khi giao',
+      },
+      items: [
+        {
+          productId: 'women-1',
+          productName: 'Đầm Dự Tiệc Dáng Xòe Lụa Satin Cao Cấp',
+          price: 589000,
+          quantity: 1,
+          image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800&auto=format&fit=crop',
+          selectedSize: 'M',
+          selectedColor: 'Đỏ Ruby',
+        },
+        {
+          productId: 'men-1',
+          productName: 'Áo Thun Nam Cotton Compact 250GSM',
+          price: 249000,
+          quantity: 2,
+          image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop',
+          selectedSize: 'L',
+          selectedColor: 'Đen',
+        },
+      ],
+      subtotal: 1087000,
+      discountAmount: 108700,
+      shippingFee: 0,
+      total: 978300,
+      paymentMethod: 'cod',
+      status: 'pending',
+    };
+    setOrders((prev) => [demoOrder, ...prev]);
+    showToast(`Đã tạo đơn hàng thử nghiệm ${demoCode}!`, 'success');
+  };
+
   const openAuthModal = (defaultTab: 'login' | 'register' = 'login') => {
     setAuthModalTab(defaultTab);
     setIsAuthModalOpen(true);
@@ -156,6 +220,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         orders,
         addOrder,
+        updateOrderStatus,
+        deleteOrder,
+        generateDemoOrder,
         isAuthModalOpen,
         openAuthModal,
         closeAuthModal,
