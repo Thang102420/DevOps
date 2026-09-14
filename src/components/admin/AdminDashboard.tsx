@@ -5,13 +5,15 @@ import { AdminOrderList } from './AdminOrderList';
 import { AdminSettings } from './AdminSettings';
 import { AdminProductModal } from './AdminProductModal';
 import { useProducts } from '../../context/ProductContext';
+import { useAuth } from '../../context/AuthContext';
 import { 
   LayoutDashboard, 
   Package, 
   ShoppingBag, 
   Settings, 
   ArrowLeft, 
-  Store
+  Store,
+  LogOut
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -22,6 +24,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
   const [activeAdminTab, setActiveAdminTab] = useState<'overview' | 'products' | 'orders' | 'settings'>('overview');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { addProduct } = useProducts();
+  const { currentUser, logout } = useAuth();
 
   const handleAddProduct = (data: any) => {
     addProduct(data);
@@ -114,14 +117,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
               </button>
             </nav>
 
-            {/* Quick exit to store */}
-            <button
-              onClick={onExit}
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-orange-500 hover:from-rose-500 hover:to-orange-400 text-white text-xs font-semibold shadow-sm transition-all"
-            >
-              <Store className="w-3.5 h-3.5" />
-              <span>Xem Cửa Hàng</span>
-            </button>
+            {/* Right actions: Store link & Admin user */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={onExit}
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-orange-500 hover:from-rose-500 hover:to-orange-400 text-white text-xs font-semibold shadow-sm transition-all"
+              >
+                <Store className="w-3.5 h-3.5" />
+                <span>Xem Cửa Hàng</span>
+              </button>
+
+              {/* Admin profile & logout */}
+              <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+                {currentUser?.avatar ? (
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-7 h-7 rounded-full object-cover ring-2 ring-blue-500"
+                  />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                    A
+                  </div>
+                )}
+                <div className="hidden sm:block text-left">
+                  <p className="text-xs font-bold text-slate-200 leading-tight max-w-[100px] truncate">
+                    {currentUser?.name || 'Admin'}
+                  </p>
+                  <span className="text-[10px] text-blue-400 font-semibold block leading-none">
+                    Quản trị viên
+                  </span>
+                </div>
+                <button
+                  onClick={logout}
+                  className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors ml-1"
+                  title="Đăng xuất khỏi tài khoản Quản trị"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </header>

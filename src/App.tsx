@@ -17,8 +17,11 @@ import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { AuthModal } from './components/AuthModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { useAuth } from './context/AuthContext';
 
 const AppContent: React.FC = () => {
+  const { isAuthenticated, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'about' | 'contact' | 'admin'>(() => {
     if (typeof window !== 'undefined' && (window.location.hash === '#admin' || window.location.search.includes('admin'))) {
       return 'admin';
@@ -44,8 +47,17 @@ const AppContent: React.FC = () => {
     }
   };
 
-  // Dedicated Admin Screen
+  // Dedicated Admin Screen (Requires Admin authentication)
   if (activeTab === 'admin') {
+    if (!isAuthenticated || !isAdmin) {
+      return (
+        <div className="min-h-screen bg-slate-950 text-slate-100">
+          <AdminLogin onExit={() => setActiveTab('products')} />
+          <ToastContainer />
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-slate-100 text-slate-900">
         <AdminDashboard onExit={() => setActiveTab('products')} />

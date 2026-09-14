@@ -5,8 +5,11 @@ import { useToast } from './ToastContext';
 interface AuthContextType {
   currentUser: User | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   login: (email: string, pass: string) => boolean;
   loginDemo: () => void;
+  loginAdmin: (usernameOrEmail: string, pass: string) => boolean;
+  loginAdminDemo: () => void;
   register: (name: string, email: string, pass: string, phone?: string, address?: string) => boolean;
   logout: () => void;
   orders: Order[];
@@ -70,11 +73,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders));
   }, [orders]);
 
-  const login = (email: string, _pass: string): boolean => {
+  const isAdmin = !!currentUser && currentUser.role === 'admin';
+
+  const login = (email: string, pass: string): boolean => {
     if (!email) {
       showToast('Vui lòng nhập đầy đủ thông tin', 'error');
       return false;
     }
+
+    const trimmed = email.trim().toLowerCase();
+    const isAttemptAdmin = trimmed === 'admin' || trimmed === 'admin@vietthangstore.vn' || trimmed === 'admin@vietthang.vn';
+    if (isAttemptAdmin && (pass === 'admin' || pass === 'admin123' || pass === '123456')) {
+      return loginAdmin(email, pass);
+    }
+
     const user: User = {
       id: 'usr_' + Date.now(),
       name: email.split('@')[0],
@@ -82,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       phone: '0988 123 456',
       address: 'Số 88 Cầu Giấy, Hà Nội',
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(email)}`,
+      role: 'customer',
     };
     setCurrentUser(user);
     setIsAuthModalOpen(false);
@@ -89,18 +102,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
+  const loginAdmin = (usernameOrEmail: string, pass: string): boolean => {
+    if (!usernameOrEmail || !pass) {
+      showToast('Vui lòng nhập tài khoản và mật khẩu quản trị', 'error');
+      return false;
+    }
+
+    const u = usernameOrEmail.trim().toLowerCase();
+    const validUsernames = ['admin', 'admin@vietthangstore.vn', 'admin@vietthang.vn', 'quantri'];
+    const validPasswords = ['admin', 'admin123', '123456'];
+
+    if (!validUsernames.includes(u) || !validPasswords.includes(pass)) {
+      showToast('Tài khoản hoặc mật khẩu quản trị không chính xác!', 'error');
+      return false;
+    }
+
+    const adminUser: User = {
+      id: 'usr_admin_vietthang',
+      name: 'Quản Trị Viên (Admin)',
+      email: 'admin@vietthangstore.vn',
+      phone: '0988 888 999',
+      address: 'Trụ sở VietThang Fashion, Hà Nội',
+      role: 'admin',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    };
+    setCurrentUser(adminUser);
+    setIsAuthModalOpen(false);
+    showToast('Xác thực quyền Quản trị viên thành công!', 'success');
+    return true;
+  };
+
+  const loginAdminDemo = () => {
+    loginAdmin('admin', 'admin123');
+  };
+
   const loginDemo = () => {
     const demoUser: User = {
       id: 'usr_demo_vietthang',
-      name: 'Nguyễn Văn Thắng (Demo)',
+      name: 'Nguyễn Văn Thắng (Khách hàng)',
       email: 'demo@vietthangstore.vn',
       phone: '0912 345 678',
       address: 'Tòa nhà Landmark 81, 720A Điện Biên Phủ, TP. Hồ Chí Minh',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+      role: 'customer',
     };
     setCurrentUser(demoUser);
     setIsAuthModalOpen(false);
-    showToast('Đã đăng nhập nhanh với tài khoản Demo thành công!', 'success');
+    showToast('Đã đăng nhập tài khoản Khách hàng (Demo)!', 'success');
   };
 
   const register = (name: string, email: string, _pass: string, phone?: string, address?: string): boolean => {
@@ -115,6 +163,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       phone: phone || '0988 666 888',
       address: address || 'Việt Nam',
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`,
+      role: 'customer',
     };
     setCurrentUser(newUser);
     setIsAuthModalOpen(false);
@@ -214,8 +263,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         currentUser,
         isAuthenticated: !!currentUser,
+        isAdmin,
         login,
         loginDemo,
+        loginAdmin,
+        loginAdminDemo,
         register,
         logout,
         orders,
