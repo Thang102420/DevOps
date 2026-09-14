@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { X, Eye, EyeOff, Lock, Mail, User, Phone, Sparkles, LogIn, UserPlus } from 'lucide-react';
+import { X, Eye, EyeOff, Lock, Mail, User, Phone, LogIn, UserPlus } from 'lucide-react';
 
 interface AuthModalProps {
   onAdminLogin?: () => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ onAdminLogin }) => {
-  const { isAuthModalOpen, closeAuthModal, authModalTab, openAuthModal, login, register, loginDemo } = useAuth();
+  const { isAuthModalOpen, closeAuthModal, authModalTab, openAuthModal, login, register } = useAuth();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -96,29 +96,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onAdminLogin }) => {
         </div>
 
         {/* Body Form */}
-        <div className="p-6 space-y-4">
-          
-          {/* Quick Demo Login 1-Click Button */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl p-3.5 text-center">
-            <p className="text-[11px] text-blue-900 font-medium mb-2">
-              Trải nghiệm nhanh mà không cần nhập thông tin:
-            </p>
-            <button
-              type="button"
-              onClick={loginDemo}
-              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all"
-            >
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              <span>Đăng nhập nhanh với tài khoản Demo</span>
-            </button>
-          </div>
-
-          <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-slate-200"></div>
-            <span className="flex-shrink mx-3 text-[11px] text-slate-400 uppercase font-semibold">hoặc</span>
-            <div className="flex-grow border-t border-slate-200"></div>
-          </div>
-
+        <div className="p-6">
           {authModalTab === 'login' ? (
             /* Login Form */
             <form onSubmit={handleLoginSubmit} className="space-y-3.5">
