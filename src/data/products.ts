@@ -11,38 +11,7 @@ export const CATEGORIES = [
 
 export const PRODUCTS: Product[] = [
   // 1. Thời trang Nam
-  {
-    id: 'men-1',
-    name: 'Áo Thun Nam Cotton Compact 250GSM Chống Nhăn Cao Cấp',
-    category: 'men',
-    categoryName: 'Thời trang Nam',
-    price: 249000,
-    originalPrice: 350000,
-    discount: 28,
-    rating: 4.9,
-    reviewsCount: 320,
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop',
-    inStock: true,
-    stockCount: 85,
-    isFeatured: true,
-    material: '100% Cotton Compact sợi dài',
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    colors: ['Đen', 'Trắng', 'Xám Tiêu', 'Xanh Navy'],
-    description: 'Áo thun trơn basic chất liệu Cotton Compact 100% định lượng 250GSM dày dặn, thấm hút mồ hôi vượt trội, xử lý chống xù lông và giữ form áo hoàn hảo sau hàng trăm lần giặt.',
-    highlights: [
-      'Chất vải 100% Cotton Compact cao cấp bề mặt mịn màng',
-      'Định lượng 250GSM dày dặn, không lộ cơ thể',
-      'Bo cổ dệt rib co giãn 4 chiều chống nhão',
-      'Đường may móc xích đôi tiêu chuẩn xuất khẩu Nhật Bản'
-    ],
-    specs: {
-      'Chất liệu': '100% Cotton Compact 2-way stretch',
-      'Form dáng': 'Regular fit tôn dáng, thoải mái vận động',
-      'Độ co giãn': 'Co giãn 4 chiều nhẹ nhàng',
-      'Xuất xứ': 'Sản xuất thủ công tại Việt Nam (VietThang Factory)',
-      'Bảo quản': 'Giặt máy ở nhiệt độ thường, không dùng thuốc tẩy mạnh'
-    }
-  },
+  
   {
     id: 'men-2',
     name: 'Áo Sơ Mi Nam Dài Tay Oxford Chống Nhăn Kháng Khuẩn',
