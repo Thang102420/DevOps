@@ -195,6 +195,34 @@ export const apiService = {
     }
   },
 
+  // Get all registered users from MongoDB
+  async getUsers(): Promise<any[]> {
+    try {
+      const res = await fetch(`${API_BASE}/auth/users`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          return json.data;
+        }
+      }
+    } catch {
+      // fallback
+    }
+    return [];
+  },
+
+  // Delete user from MongoDB
+  async deleteUser(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`${API_BASE}/auth/users/${id}`, {
+        method: 'DELETE',
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  },
+
   // Get admin statistics
   async getStats(): Promise<any> {
     try {

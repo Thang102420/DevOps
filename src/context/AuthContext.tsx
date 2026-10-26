@@ -127,6 +127,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders));
   }, [orders]);
 
+  // Đồng bộ danh sách tài khoản từ cơ sở dữ liệu MongoDB khi khởi chạy
+  useEffect(() => {
+    const syncUsersFromMongoDB = async () => {
+      try {
+        const mongoUsers = await apiService.getUsers();
+        if (Array.isArray(mongoUsers) && mongoUsers.length > 0) {
+          setRegisteredAccounts((prev) => {
+            const map = new Map<string, RegisteredAccount>();
+            prev.forEach((acc) => map.set(acc.email.toLowerCase().trim(), acc));
+            mongoUsers.forEach((u: any) => {
+              const emailKey = u.email.toLowerCase().trim();
+              if (!map.has(emailKey)) {
+                map.set(emailKey, {
+                  id: u.id || u._id,
+                  name: u.name,
+                  email: u.email,
+                  phone: u.phone || '0988 123 456',
+                  address: u.address || 'Việt Nam',
+                  role: u.role || 'customer',
+                  avatar: u.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(u.name)}`,
+                  password: '******',
+                });
+              }
+            });
+            return Array.from(map.values());
+          });
+        }
+      } catch (err) {
+        console.warn('Chưa thể đồng bộ người dùng từ MongoDB:', err);
+      }
+    };
+
+    syncUsersFromMongoDB();
+  }, []);
+
   const isAdmin = !!currentUser && currentUser.role === 'admin';
 
   /**
@@ -192,10 +227,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { password: _, ...userSafe } = newAccount;
     setCurrentUser(userSafe);
     setIsAuthModalOpen(false);
-    showToast(
-      `Đăng ký tài khoản thành công! Xin chào ${newAccount.name}`,
-      'success'
-    );
+    
+    if (apiRes.success) {
+      showToast(
+        `🎉 Đăng ký thành công! Tài khoản "${newAccount.name}" đã được lưu trên Database MongoDB!`,
+        'success'
+      );
+    } else {
+      showToast(
+        `Đăng ký thành công! Hãy chạy "npm run server" để đồng bộ lên MongoDB.`,
+        'success'
+      );
+    }
     return true;
   };
 

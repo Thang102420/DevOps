@@ -84,10 +84,19 @@ router.post('/register', async (req, res) => {
     });
 
     await newUser.save();
+    console.log(`\n======================================================`);
+    console.log(`👤 [MongoDB LIVE] ĐÃ LƯU TÀI KHOẢN MỚI VÀO DATABASE MONGODB!`);
+    console.log(`   - ID: ${newUser._id}`);
+    console.log(`   - Tên: ${newUser.name}`);
+    console.log(`   - Email: ${newUser.email}`);
+    console.log(`   - Điện thoại: ${newUser.phone || 'Chưa cung cấp'}`);
+    console.log(`   - Địa chỉ: ${newUser.address || 'Chưa cung cấp'}`);
+    console.log(`   - Thời gian: ${new Date().toLocaleString('vi-VN')}`);
+    console.log(`======================================================\n`);
 
     res.status(201).json({
       success: true,
-      message: 'Đăng ký tài khoản thành công! Bạn có thể đăng nhập ngay bây giờ.',
+      message: 'Đăng ký tài khoản thành công! Tài khoản đã được lưu vào MongoDB database.',
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -99,7 +108,42 @@ router.post('/register', async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Lỗi đăng ký tài khoản', error: error.message });
+    console.error('❌ [MongoDB Error] Lỗi khi lưu tài khoản vào database:', error.message);
+    res.status(400).json({ success: false, message: 'Lỗi đăng ký tài khoản trên database', error: error.message });
+  }
+});
+
+// GET all registered users from MongoDB (for Admin and verifying database records)
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      total: users.length,
+      data: users.map((u) => ({
+        id: u._id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+        address: u.address,
+        role: u.role,
+        avatar: u.avatar,
+        createdAt: u.createdAt,
+      })),
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Lỗi khi đọc danh sách tài khoản từ MongoDB', error: error.message });
+  }
+});
+
+// DELETE a user
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.json({ success: true, message: 'Đã xóa tài khoản khỏi database' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Lỗi khi xóa tài khoản', error: error.message });
   }
 });
 
