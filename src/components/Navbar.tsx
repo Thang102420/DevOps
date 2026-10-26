@@ -11,12 +11,10 @@ import {
   ChevronDown,
   LayoutDashboard,
   Heart,
-  Database,
-  RefreshCw
+  ShieldCheck
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { useProducts } from '../context/ProductContext';
 
 interface NavbarProps {
   activeTab: 'products' | 'about' | 'contact' | 'admin';
@@ -33,10 +31,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { totalItems, setIsCartOpen, wishlistIds, setIsWishlistOpen } = useCart();
   const { currentUser, isAuthenticated, logout, openAuthModal, openHistoryModal } = useAuth();
-  const { dbStatus, checkDbStatus } = useProducts();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [isRefreshingDb, setIsRefreshingDb] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,15 +51,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleRefreshDb = async () => {
-    setIsRefreshingDb(true);
-    await checkDbStatus();
-    setTimeout(() => setIsRefreshingDb(false), 500);
-  };
-
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm transition-all">
-      {/* Top announcement bar with MongoDB status */}
+      {/* Top announcement bar */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white text-xs py-1.5 px-4 font-medium flex items-center justify-between gap-2 border-b border-slate-800">
         <div className="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
           <div className="flex items-center gap-2 text-[11px] sm:text-xs">
@@ -75,24 +65,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>giảm 10% | Freeship từ 500k</span>
           </div>
 
-          {/* Database Live Indicator */}
-          <div className="flex items-center gap-2">
-            <div 
-              onClick={handleRefreshDb}
-              title={`MongoDB Status: ${dbStatus.connected ? 'Kết nối trực tiếp MongoDB' : 'Chế độ CSDL Nội bộ (Sẵn sàng 36 sản phẩm)'} - Click để làm mới`}
-              className={`cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-all ${
-                dbStatus.connected
-                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80'
-                  : 'bg-blue-950/80 text-blue-300 border-blue-500/40 hover:bg-blue-900/80'
-              }`}
-            >
-              <Database className="w-3 h-3 text-emerald-400" />
-              <span>
-                {dbStatus.connected ? 'MongoDB Live' : 'Database Ready'}
-              </span>
-              <span className={`w-1.5 h-1.5 rounded-full ${dbStatus.connected ? 'bg-emerald-400 animate-ping' : 'bg-blue-400'}`} />
-              <RefreshCw className={`w-2.5 h-2.5 ml-0.5 text-slate-400 ${isRefreshingDb ? 'animate-spin' : ''}`} />
-            </div>
+          {/* Customer Service / Guarantee Badge */}
+          <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-300">
+            <span className="flex items-center gap-1 text-emerald-400">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Đổi size miễn phí 30 ngày</span>
+            </span>
+            <span className="text-slate-600">•</span>
+            <span>Hotline: <strong className="text-white font-semibold">1900 8888</strong></span>
           </div>
         </div>
       </div>
@@ -262,7 +242,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-blue-600 bg-blue-50/60 hover:bg-blue-100/60 rounded-xl transition-colors"
                           >
                             <LayoutDashboard className="w-4 h-4 text-blue-600" />
-                            <span>Trang Quản trị & MongoDB</span>
+                            <span>Trang Quản trị Shop</span>
                           </button>
                         )}
                         <button
