@@ -37,7 +37,7 @@ const runSeed = async () => {
     console.log('\n=============================================================');
     console.log(`🎉 NẠP DỮ LIỆU MONGODB THÀNH CÔNG!`);
     console.log(`- Tổng sản phẩm: ${PRODUCTS.length} mẫu thiết kế`);
-    console.log(`- Tài khoản Admin: admin@vietthangstore.vn / admin`);
+    console.log(`- Tài khoản Admin: admin@vietthangstore.vn / admin123`);
     console.log(`- Tài khoản Demo: demo@vietthangstore.vn / demo`);
     console.log(`- Vouchers: VIETTHANG10, FREESHIP, FASHION50, WELCOME50`);
     console.log('=============================================================\n');

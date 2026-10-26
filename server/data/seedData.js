@@ -1292,7 +1292,7 @@ export const USERS = [
   {
     name: 'Quản Trị Viên (Admin)',
     email: 'admin@vietthangstore.vn',
-    password: 'admin',
+    password: 'admin123',
     role: 'admin',
     phone: '0988888888',
     address: 'Trụ sở VietThang Fashion, Hà Nội'

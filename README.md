@@ -137,7 +137,7 @@ Toàn bộ mã nguồn cơ sở dữ liệu MongoDB nằm trong thư mục [`ser
 
 - **Tài khoản Quản trị (Admin)**:
   - Email: `admin@vietthangstore.vn`
-  - Mật khẩu: `admin` (hoặc `admin123`)
+  - Mật khẩu: `admin123`
   - Đường dẫn nhanh: Truy cập hash `#admin` hoặc bấm nút *Trang quản trị* tại menu.
 - **Tài khoản Khách hàng (Demo)**:
   - Email: `demo@vietthangstore.vn`

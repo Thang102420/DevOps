@@ -3,19 +3,24 @@ import { User, Order } from '../types';
 import { useToast } from './ToastContext';
 import { apiService } from '../services/api';
 
-interface RegisteredAccount extends User {
+export interface RegisteredAccount extends User {
   password?: string;
+  createdAt?: string;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   currentUser: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  registeredAccounts: RegisteredAccount[];
   login: (usernameOrEmail: string, pass: string) => Promise<boolean>;
   loginDemo: () => void;
   loginAdmin: (usernameOrEmail: string, pass: string) => Promise<boolean>;
   loginAdminDemo: () => void;
-  register: (name: string, email: string, pass: string, phone?: string, address?: string) => Promise<boolean>;
+  register: (name: string, email: string, pass: string, phone?: string, address?: string, role?: 'customer' | 'admin') => Promise<boolean>;
+  addNewAccount: (userData: { name: string; email: string; password: string; phone?: string; address?: string; role?: 'customer' | 'admin' }) => Promise<{ success: boolean; message: string }>;
+  deleteAccount: (idOrEmail: string) => Promise<boolean>;
+  refreshAccounts: () => Promise<void>;
   logout: () => void;
   orders: Order[];
   addOrder: (order: Order) => void;
@@ -41,11 +46,12 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_admin',
     name: 'Quản Trị Viên (Admin)',
     email: 'admin@vietthangstore.vn',
-    password: 'admin',
+    password: 'admin123',
     phone: '0988 888 999',
     address: 'Trụ sở VietThang Fashion, Hà Nội',
     role: 'admin',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-01-01T00:00:00.000Z',
   },
   {
     id: 'usr_demo',
@@ -56,6 +62,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     address: 'Tòa nhà Landmark 81, TP. Hồ Chí Minh',
     role: 'customer',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-01-01T00:00:00.000Z',
   },
 ];
 
@@ -71,7 +78,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          return parsed.map((acc: RegisteredAccount) => {
+            if (acc.role === 'admin' || acc.email === 'admin@vietthangstore.vn') {
+              return { ...acc, password: 'admin123' };
+            }
+            return acc;
+          });
         }
       } catch (err) {
         console.error('Lỗi khi đọc tài khoản đăng ký:', err);
@@ -184,7 +196,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: string,
     pass: string,
     phone?: string,
-    address?: string
+    address?: string,
+    role?: 'customer' | 'admin'
   ): Promise<boolean> => {
     if (!name.trim() || !email.trim() || !pass.trim()) {
       showToast('Vui lòng điền đầy đủ Họ tên, Email và Mật khẩu!', 'error');
@@ -213,7 +226,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     // 2. Gửi lưu lên MongoDB Backend qua REST API
-    const apiRes = await apiService.register(name.trim(), trimmedEmail, pass, phone, address);
+    const assignedRole = role || 'customer';
+    const apiRes = await apiService.register(name.trim(), trimmedEmail, pass, phone, address, assignedRole);
     if (!apiRes.success && apiRes.message.includes('đã được sử dụng')) {
       showToast(apiRes.message, 'warning');
       setAuthModalTab('login');
@@ -229,7 +243,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       phone: phone?.trim() || '0988 123 456',
       address: address?.trim() || 'Hà Nội, Việt Nam',
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name.trim())}`,
-      role: 'customer',
+      role: assignedRole,
+      createdAt: new Date().toISOString(),
     };
 
     setRegisteredAccounts((prev) => [newAccount, ...prev]);
@@ -352,7 +367,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const loginAdminDemo = () => {
-    loginAdmin('admin', 'admin');
+    loginAdmin('admin', 'admin123');
   };
 
   const loginDemo = () => {
@@ -362,6 +377,115 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setCurrentUser(null);
     showToast('Đã đăng xuất khỏi tài khoản', 'info');
+  };
+
+  // Làm mới danh sách tài khoản từ MongoDB / Cục bộ
+  const refreshAccounts = async () => {
+    try {
+      const mongoUsers = await apiService.getUsers();
+      if (Array.isArray(mongoUsers) && mongoUsers.length > 0) {
+        setRegisteredAccounts((prev) => {
+          const map = new Map<string, RegisteredAccount>();
+          prev.forEach((acc) => map.set(acc.email.toLowerCase().trim(), acc));
+          mongoUsers.forEach((u: any) => {
+            const emailKey = u.email.toLowerCase().trim();
+            const existing = map.get(emailKey);
+            map.set(emailKey, {
+              id: u.id || u._id || existing?.id || 'usr_' + Date.now(),
+              name: u.name,
+              email: u.email,
+              phone: u.phone || existing?.phone || '',
+              address: u.address || existing?.address || '',
+              role: u.role || existing?.role || 'customer',
+              avatar: u.avatar || existing?.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(u.name)}`,
+              password: existing?.password || (u.role === 'admin' ? 'admin123' : '******'),
+              createdAt: u.createdAt || existing?.createdAt || new Date().toISOString(),
+            });
+          });
+          return Array.from(map.values());
+        });
+        showToast('Đã đồng bộ danh sách người dùng từ MongoDB!', 'success');
+      } else {
+        showToast('Đã tải lại danh sách tài khoản!', 'info');
+      }
+    } catch {
+      showToast('Không thể kết nối máy chủ MongoDB', 'warning');
+    }
+  };
+
+  // Thêm tài khoản mới từ Admin Dashboard
+  const addNewAccount = async (userData: {
+    name: string;
+    email: string;
+    password: string;
+    phone?: string;
+    address?: string;
+    role?: 'customer' | 'admin';
+  }): Promise<{ success: boolean; message: string }> => {
+    const trimmedEmail = userData.email.toLowerCase().trim();
+    if (!userData.name.trim() || !trimmedEmail || !userData.password.trim()) {
+      return { success: false, message: 'Vui lòng nhập đầy đủ họ tên, email và mật khẩu!' };
+    }
+
+    const existing = registeredAccounts.find(
+      (acc) => acc.email.toLowerCase().trim() === trimmedEmail
+    );
+    if (existing) {
+      return { success: false, message: `Email "${trimmedEmail}" đã tồn tại trong hệ thống!` };
+    }
+
+    const assignedRole = userData.role || 'customer';
+    const apiRes = await apiService.register(
+      userData.name.trim(),
+      trimmedEmail,
+      userData.password,
+      userData.phone,
+      userData.address,
+      assignedRole
+    );
+
+    const newAcc: RegisteredAccount = {
+      id: apiRes.user?.id || 'usr_' + Date.now(),
+      name: userData.name.trim(),
+      email: trimmedEmail,
+      password: userData.password,
+      phone: userData.phone?.trim() || '',
+      address: userData.address?.trim() || '',
+      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(userData.name.trim())}`,
+      role: assignedRole,
+      createdAt: new Date().toISOString(),
+    };
+
+    setRegisteredAccounts((prev) => [newAcc, ...prev]);
+    showToast(`Đã thêm thành công tài khoản "${newAcc.name}" (${assignedRole === 'admin' ? 'Quản trị viên' : 'Khách hàng'})!`, 'success');
+    return { success: true, message: 'Thêm tài khoản thành công!' };
+  };
+
+  // Xóa tài khoản
+  const deleteAccount = async (idOrEmail: string): Promise<boolean> => {
+    const target = registeredAccounts.find(
+      (acc) => acc.id === idOrEmail || acc.email.toLowerCase().trim() === idOrEmail.toLowerCase().trim()
+    );
+
+    if (target && currentUser && target.email.toLowerCase().trim() === currentUser.email.toLowerCase().trim()) {
+      showToast('Không thể xóa tài khoản Quản trị viên đang đăng nhập!', 'error');
+      return false;
+    }
+
+    try {
+      await apiService.deleteUser(target?.id || idOrEmail);
+    } catch (err) {
+      console.warn('Lỗi khi xóa qua API:', err);
+    }
+
+    setRegisteredAccounts((prev) =>
+      prev.filter(
+        (acc) => acc.id !== idOrEmail && acc.email.toLowerCase().trim() !== idOrEmail.toLowerCase().trim()
+      )
+    );
+
+    showToast(`Đã xóa tài khoản "${target?.name || idOrEmail}" khỏi hệ thống!`, 'info');
+    return true;
   };
 
   const addOrder = (order: Order) => {
@@ -443,11 +567,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentUser,
         isAuthenticated: !!currentUser,
         isAdmin,
+        registeredAccounts,
         login,
         loginDemo,
         loginAdmin,
         loginAdminDemo,
         register,
+        addNewAccount,
+        deleteAccount,
+        refreshAccounts,
         logout,
         orders,
         addOrder,

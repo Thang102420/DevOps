@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AdminOverview } from './AdminOverview';
 import { AdminProductList } from './AdminProductList';
 import { AdminOrderList } from './AdminOrderList';
+import { AdminUserList } from './AdminUserList';
 import { AdminSettings } from './AdminSettings';
 import { AdminProductModal } from './AdminProductModal';
 import { useProducts } from '../../context/ProductContext';
@@ -10,6 +11,7 @@ import {
   LayoutDashboard, 
   Package, 
   ShoppingBag, 
+  Users,
   Settings, 
   ArrowLeft, 
   Store,
@@ -21,7 +23,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
-  const [activeAdminTab, setActiveAdminTab] = useState<'overview' | 'products' | 'orders' | 'settings'>('overview');
+  const [activeAdminTab, setActiveAdminTab] = useState<'overview' | 'products' | 'orders' | 'users' | 'settings'>('overview');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { addProduct } = useProducts();
   const { currentUser, logout } = useAuth();
@@ -102,6 +104,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
               </button>
 
               <button
+                onClick={() => setActiveAdminTab('users')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 ${
+                  activeAdminTab === 'users'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                }`}
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Người dùng</span>
+              </button>
+
+              <button
                 onClick={() => setActiveAdminTab('settings')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 ${
                   activeAdminTab === 'settings'
@@ -170,6 +184,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit }) => {
         {activeAdminTab === 'products' && <AdminProductList />}
 
         {activeAdminTab === 'orders' && <AdminOrderList />}
+
+        {activeAdminTab === 'users' && <AdminUserList />}
 
         {activeAdminTab === 'settings' && <AdminSettings />}
       </main>

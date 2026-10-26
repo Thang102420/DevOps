@@ -10,11 +10,12 @@ import {
   Sparkles, 
   ArrowUpRight,
   TrendingUp,
-  Plus
+  Plus,
+  Users
 } from 'lucide-react';
 
 interface AdminOverviewProps {
-  onNavigateTab: (tab: 'products' | 'orders' | 'settings') => void;
+  onNavigateTab: (tab: 'products' | 'orders' | 'users' | 'settings') => void;
   onOpenCreateProduct: () => void;
 }
 
@@ -23,7 +24,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   onOpenCreateProduct,
 }) => {
   const { products } = useProducts();
-  const { orders } = useAuth();
+  const { orders, registeredAccounts } = useAuth();
 
   // Thống kê
   const totalRevenue = orders.reduce((sum, ord) => {
@@ -80,6 +81,13 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
             >
               <ShoppingBag className="w-4 h-4" />
               <span>Xem danh sách đơn ({orders.length})</span>
+            </button>
+            <button
+              onClick={() => onNavigateTab('users')}
+              className="px-4 py-2.5 bg-white/15 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm rounded-xl backdrop-blur-md transition-all flex items-center gap-2"
+            >
+              <Users className="w-4 h-4 text-sky-300" />
+              <span>Quản lý người dùng ({registeredAccounts.length})</span>
             </button>
           </div>
         </div>

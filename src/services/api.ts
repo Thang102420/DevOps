@@ -193,12 +193,19 @@ export const apiService = {
   },
 
   // User register via API
-  async register(name: string, email: string, password: string, phone?: string, address?: string): Promise<{ success: boolean; user?: any; message: string }> {
+  async register(
+    name: string,
+    email: string,
+    password: string,
+    phone?: string,
+    address?: string,
+    role?: 'customer' | 'admin'
+  ): Promise<{ success: boolean; user?: any; message: string }> {
     try {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone, address }),
+        body: JSON.stringify({ name, email, password, phone, address, role }),
       });
       const data = await res.json();
       return { success: res.ok && data.success, user: data.user, message: data.message || '' };
