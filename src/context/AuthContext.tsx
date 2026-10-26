@@ -19,6 +19,7 @@ export interface AuthContextType {
   loginAdminDemo: () => void;
   register: (name: string, email: string, pass: string, phone?: string, address?: string, role?: 'customer' | 'admin') => Promise<boolean>;
   addNewAccount: (userData: { name: string; email: string; password: string; phone?: string; address?: string; role?: 'customer' | 'admin' }) => Promise<{ success: boolean; message: string }>;
+  updateAccount: (idOrEmail: string, updates: { name: string; email: string; password?: string; phone?: string; address?: string; role?: 'customer' | 'admin' }) => Promise<{ success: boolean; message: string }>;
   deleteAccount: (idOrEmail: string) => Promise<boolean>;
   refreshAccounts: () => Promise<void>;
   logout: () => void;
@@ -461,6 +462,84 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: true, message: 'Thêm tài khoản thành công!' };
   };
 
+  // Cập nhật thông tin tài khoản (đồng bộ MongoDB + LocalStorage)
+  const updateAccount = async (
+    idOrEmail: string,
+    updates: {
+      name: string;
+      email: string;
+      password?: string;
+      phone?: string;
+      address?: string;
+      role?: 'customer' | 'admin';
+    }
+  ): Promise<{ success: boolean; message: string }> => {
+    const trimmedEmail = updates.email.toLowerCase().trim();
+    if (!updates.name.trim() || !trimmedEmail) {
+      return { success: false, message: 'Vui lòng nhập đầy đủ họ tên và email!' };
+    }
+
+    // Kiểm tra trùng email với tài khoản khác
+    const duplicate = registeredAccounts.find(
+      (acc) =>
+        acc.email.toLowerCase().trim() === trimmedEmail &&
+        acc.id !== idOrEmail &&
+        acc.email.toLowerCase().trim() !== idOrEmail.toLowerCase().trim()
+    );
+    if (duplicate) {
+      return { success: false, message: `Email "${trimmedEmail}" đã được sử dụng bởi người dùng khác!` };
+    }
+
+    // 1. Gửi cập nhật lên backend API MongoDB
+    try {
+      await apiService.updateUser(idOrEmail, updates);
+    } catch (err) {
+      console.warn('Lỗi khi gọi API cập nhật người dùng:', err);
+    }
+
+    // 2. Cập nhật state registeredAccounts cục bộ
+    setRegisteredAccounts((prev) =>
+      prev.map((acc) => {
+        if (acc.id === idOrEmail || acc.email.toLowerCase().trim() === idOrEmail.toLowerCase().trim()) {
+          return {
+            ...acc,
+            name: updates.name.trim(),
+            email: trimmedEmail,
+            phone: updates.phone !== undefined ? updates.phone.trim() : acc.phone,
+            address: updates.address !== undefined ? updates.address.trim() : acc.address,
+            role: updates.role || acc.role,
+            ...(updates.password && updates.password.trim() ? { password: updates.password.trim() } : {}),
+            avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(updates.name.trim())}`,
+          };
+        }
+        return acc;
+      })
+    );
+
+    // 3. Nếu là người dùng đang đăng nhập, cập nhật lại currentUser
+    if (
+      currentUser &&
+      (currentUser.id === idOrEmail || currentUser.email.toLowerCase().trim() === idOrEmail.toLowerCase().trim())
+    ) {
+      setCurrentUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              name: updates.name.trim(),
+              email: trimmedEmail,
+              phone: updates.phone !== undefined ? updates.phone.trim() : prev.phone,
+              address: updates.address !== undefined ? updates.address.trim() : prev.address,
+              role: updates.role || prev.role,
+              avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(updates.name.trim())}`,
+            }
+          : null
+      );
+    }
+
+    showToast(`Đã lưu thay đổi cho người dùng "${updates.name}" thành công!`, 'success');
+    return { success: true, message: 'Cập nhật thông tin thành công!' };
+  };
+
   // Xóa tài khoản
   const deleteAccount = async (idOrEmail: string): Promise<boolean> => {
     const target = registeredAccounts.find(
@@ -574,6 +653,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginAdminDemo,
         register,
         addNewAccount,
+        updateAccount,
         deleteAccount,
         refreshAccounts,
         logout,

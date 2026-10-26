@@ -93,22 +93,22 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-rose-50 text-rose-700 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-rose-500" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#F5EFE6] text-[#71553E] border border-[#E0D2C0] text-xs font-bold uppercase tracking-wider mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#A3704C]" />
               <span>Thời Trang Xu Hướng 2026 • 36 Mẫu Thiết Kế</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2D2117] tracking-tight">
               Bộ Sưu Tập Thời Trang Thiết Kế
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-[#71553E] mt-1">
               Trang phục nam nữ phong cách hiện đại, form dáng chuẩn đẹp và êm ái suốt ngày dài
             </p>
           </div>
 
           {/* Quick Counter */}
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-white border border-slate-200 px-3.5 py-2 rounded-2xl shadow-sm">
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#71553E] bg-[#FDFCF9] border border-[#EBE3D5] px-3.5 py-2 rounded-2xl shadow-sm">
             <span>Hiển thị:</span>
-            <strong className="text-blue-600 font-extrabold text-sm">{filteredProducts.length}</strong>
+            <strong className="text-[#A3704C] font-extrabold text-sm">{filteredProducts.length}</strong>
             <span>trang phục</span>
           </div>
         </div>
@@ -124,14 +124,14 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
                 onClick={() => setSelectedCategory(cat.id as ProductCategory)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 scale-[1.02]'
-                    : 'bg-white text-slate-600 border border-slate-200/90 hover:bg-slate-50 hover:border-slate-300'
+                    ? 'bg-[#A3704C] text-[#FAF8F5] shadow-md shadow-[#A3704C]/25 scale-[1.02]'
+                    : 'bg-[#FDFCF9] text-[#71553E] border border-[#EBE3D5] hover:bg-[#FAF8F5] hover:border-[#DDD1BF] hover:text-[#2D2117]'
                 }`}
               >
                 {getCategoryIcon(cat.id)}
                 <span>{cat.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+                  isActive ? 'bg-white/20 text-white' : 'bg-[#F5EFE6] text-[#71553E]'
                 }`}>
                   {count}
                 </span>
@@ -141,20 +141,20 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         </div>
 
         {/* Filter Controls Row: Price, In-stock, Sorting & View Toggle */}
-        <div className="bg-white border border-slate-200/90 p-3 sm:p-4 rounded-2xl shadow-sm mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="bg-[#FDFCF9] border border-[#EBE3D5] p-3 sm:p-4 rounded-2xl shadow-sm mb-6 flex flex-wrap items-center justify-between gap-3">
           
           {/* Price Range Filters */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="text-xs font-bold text-slate-500 flex items-center gap-1 mr-1">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-xs font-bold text-[#71553E] flex items-center gap-1 mr-1">
+              <Filter className="w-3.5 h-3.5 text-[#A98D71]" />
               Mức giá:
             </span>
             <button
               onClick={() => setPriceRange('all')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
                 priceRange === 'all'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#2D2117] text-[#FAF8F5] shadow-sm'
+                  : 'bg-[#FAF8F5] text-[#71553E] border border-[#EBE3D5] hover:bg-[#F5EFE6]'
               }`}
             >
               Tất cả
@@ -163,8 +163,8 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               onClick={() => setPriceRange('under-300')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
                 priceRange === 'under-300'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#2D2117] text-[#FAF8F5] shadow-sm'
+                  : 'bg-[#FAF8F5] text-[#71553E] border border-[#EBE3D5] hover:bg-[#F5EFE6]'
               }`}
             >
               Dưới 300k
@@ -173,8 +173,8 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               onClick={() => setPriceRange('300-600')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
                 priceRange === '300-600'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#2D2117] text-[#FAF8F5] shadow-sm'
+                  : 'bg-[#FAF8F5] text-[#71553E] border border-[#EBE3D5] hover:bg-[#F5EFE6]'
               }`}
             >
               300k - 600k
@@ -183,8 +183,8 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               onClick={() => setPriceRange('above-600')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
                 priceRange === 'above-600'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#2D2117] text-[#FAF8F5] shadow-sm'
+                  : 'bg-[#FAF8F5] text-[#71553E] border border-[#EBE3D5] hover:bg-[#F5EFE6]'
               }`}
             >
               Trên 600k
@@ -198,21 +198,21 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               onClick={() => setInStockOnly(!inStockOnly)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                 inStockOnly
-                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700 font-bold'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#EFF5EB] border-[#D5E3CC] text-[#587346] font-bold'
+                  : 'bg-[#FAF8F5] border-[#EBE3D5] text-[#71553E] hover:bg-[#F5EFE6]'
               }`}
             >
-              <CheckCircle className={`w-3.5 h-3.5 ${inStockOnly ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <CheckCircle className={`w-3.5 h-3.5 ${inStockOnly ? 'text-[#587346]' : 'text-[#A98D71]'}`} />
               <span>Còn hàng</span>
             </button>
 
             {/* Sort Select */}
-            <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl">
-              <ArrowUpDown className="w-3.5 h-3.5 text-slate-500" />
+            <div className="flex items-center gap-1.5 bg-[#FAF8F5] border border-[#EBE3D5] px-3 py-1.5 rounded-xl">
+              <ArrowUpDown className="w-3.5 h-3.5 text-[#A98D71]" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="text-xs font-semibold text-slate-700 bg-transparent focus:outline-none cursor-pointer"
+                className="text-xs font-semibold text-[#2D2117] bg-transparent focus:outline-none cursor-pointer"
               >
                 <option value="default">Phổ biến nhất</option>
                 <option value="newest">Mới nhất 2026</option>
@@ -223,11 +223,11 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
             </div>
 
             {/* Grid Columns Switcher */}
-            <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <div className="hidden sm:flex items-center gap-1 bg-[#FAF8F5] p-1 rounded-xl border border-[#EBE3D5]">
               <button
                 onClick={() => setColumns(3)}
                 className={`p-1 rounded-lg transition-colors ${
-                  columns === 3 ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-700'
+                  columns === 3 ? 'bg-[#FDFCF9] text-[#A3704C] shadow-sm' : 'text-[#A98D71] hover:text-[#2D2117]'
                 }`}
                 title="Lưới 3 cột"
               >
@@ -236,7 +236,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
               <button
                 onClick={() => setColumns(4)}
                 className={`p-1 rounded-lg transition-colors ${
-                  columns === 4 ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-700'
+                  columns === 4 ? 'bg-[#FDFCF9] text-[#A3704C] shadow-sm' : 'text-[#A98D71] hover:text-[#2D2117]'
                 }`}
                 title="Lưới 4 cột"
               >
@@ -249,13 +249,13 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
 
         {/* Search status banner if active */}
         {searchQuery && (
-          <div className="mb-6 flex items-center justify-between bg-blue-50/80 border border-blue-200 px-4 py-3 rounded-2xl text-xs sm:text-sm text-blue-900 shadow-sm">
+          <div className="mb-6 flex items-center justify-between bg-[#F5EFE6] border border-[#E0D2C0] px-4 py-3 rounded-2xl text-xs sm:text-sm text-[#2D2117] shadow-sm">
             <span>
               Tìm thấy <strong>{filteredProducts.length}</strong> mẫu trang phục khớp với từ khóa: <strong>"{searchQuery}"</strong>
             </span>
             <button
               onClick={() => setSearchQuery('')}
-              className="text-blue-600 font-bold hover:underline ml-4"
+              className="text-[#A3704C] font-bold hover:underline ml-4"
             >
               Xóa tìm kiếm
             </button>
@@ -265,8 +265,8 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
         {/* Loading Spinner */}
         {isLoading && (
           <div className="text-center py-12">
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-xs font-semibold text-slate-500">Đang đồng bộ dữ liệu sản phẩm từ MongoDB...</p>
+            <div className="w-10 h-10 border-4 border-[#A3704C] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-xs font-semibold text-[#71553E]">Đang đồng bộ dữ liệu sản phẩm từ MongoDB...</p>
           </div>
         )}
 
@@ -279,12 +279,12 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
           </div>
         ) : !isLoading ? (
           /* Empty State */
-          <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300 p-8 shadow-sm">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+          <div className="text-center py-16 bg-[#FDFCF9] rounded-3xl border border-dashed border-[#DDD1BF] p-8 shadow-sm">
+            <div className="w-16 h-16 bg-[#F5EFE6] rounded-full flex items-center justify-center mx-auto mb-4 text-[#A98D71]">
               <SearchX className="w-8 h-8" />
             </div>
-            <h3 className="text-lg font-bold text-slate-800 mb-1">Không tìm thấy mẫu trang phục nào</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto mb-6">
+            <h3 className="text-lg font-bold text-[#2D2117] mb-1">Không tìm thấy mẫu trang phục nào</h3>
+            <p className="text-xs text-[#71553E] max-w-md mx-auto mb-6">
               Không có sản phẩm nào thỏa mãn điều kiện lọc của bạn. Hãy thử chọn danh mục khác hoặc xóa bộ lọc nhé!
             </p>
             <button
@@ -295,7 +295,7 @@ export const ProductList: React.FC<ProductListProps> = ({ searchQuery, setSearch
                 setPriceRange('all');
                 setSortBy('default');
               }}
-              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-md shadow-blue-500/20"
+              className="px-6 py-2.5 rounded-xl bg-[#A3704C] hover:bg-[#8E5E36] text-[#FAF8F5] text-xs font-bold transition-all shadow-md shadow-[#A3704C]/20"
             >
               Xem tất cả 36 mẫu trang phục
             </button>

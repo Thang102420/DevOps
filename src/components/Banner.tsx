@@ -87,24 +87,24 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
     <div className="relative overflow-hidden pt-3 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Main Hero Card Carousel */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-white shadow-2xl border border-slate-800">
+        {/* Main Hero Card Carousel - Luxury Warm Espresso & Cognac */}
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#241B14] via-[#382619] to-[#4F3624] text-[#FAF8F5] shadow-2xl border border-[#64452E]/60">
           
           {/* Subtle glowing ambient spots */}
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-rose-500/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#A3704C]/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#E0C09B]/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Carousel Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/10 text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/15 text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100"
             aria-label="Slide trước"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/10 text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/15 text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100"
             aria-label="Slide tiếp theo"
           >
             <ChevronRight className="w-5 h-5" />
@@ -114,40 +114,40 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
             
             {/* Left Texts */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-300 text-xs font-semibold">
-                <Flame className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A3704C]/30 border border-[#A3704C]/50 text-[#F5E2D0] text-xs font-semibold">
+                <Flame className="w-3.5 h-3.5 text-[#C4976E] fill-[#C4976E]" />
                 <span>{slide.badge}</span>
               </div>
 
               <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white min-h-[70px] sm:min-h-[110px]">
                 {slide.titlePrefix}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-300 to-blue-300">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FAF8F5] via-[#EBD5BC] to-[#C4976E]">
                   {slide.titleHighlight}
                 </span>
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl min-h-[50px]">
+              <p className="text-xs sm:text-sm text-[#DDD1BF] leading-relaxed max-w-xl min-h-[50px]">
                 {slide.description}
               </p>
 
               {/* Voucher Tag Buttons */}
               <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-xl text-xs">
-                  <Tag className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="text-slate-200">Mã voucher:</span>
+                <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md border border-[#8C6242]/40 px-3 py-1.5 rounded-xl text-xs">
+                  <Tag className="w-3.5 h-3.5 text-[#C4976E]" />
+                  <span className="text-[#DDD1BF]">Mã voucher:</span>
                   <button
                     onClick={() => applyCoupon(slide.voucher)}
-                    className="font-mono font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded text-xs hover:bg-amber-300 transition-colors uppercase tracking-wider"
+                    className="font-mono font-bold bg-[#C4976E] text-[#241B14] px-2 py-0.5 rounded text-xs hover:bg-[#D4A981] transition-colors uppercase tracking-wider"
                     title="Bấm để nhận ngay"
                   >
                     {slide.voucher}
                   </button>
-                  <span className="text-[11px] text-slate-300 hidden sm:inline">({slide.voucherDesc})</span>
+                  <span className="text-[11px] text-[#C2B29F] hidden sm:inline">({slide.voucherDesc})</span>
                 </div>
 
                 <button
                   onClick={() => applyCoupon('FREESHIP')}
-                  className="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold hover:bg-emerald-500/30 transition-colors"
+                  className="px-2.5 py-1.5 rounded-xl bg-[#587346]/40 border border-[#587346]/50 text-[#D4E8C8] text-xs font-bold hover:bg-[#587346]/60 transition-colors"
                 >
                   FREESHIP
                 </button>
@@ -157,7 +157,7 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
               <div className="flex flex-wrap items-center gap-4 pt-3">
                 <button
                   onClick={onExploreProducts}
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 group active:scale-95"
+                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-[#A3704C] to-[#8E5E36] hover:from-[#B58058] hover:to-[#7A4B29] text-[#FAF8F5] font-bold text-xs sm:text-sm shadow-lg shadow-[#7A4B29]/30 transition-all flex items-center gap-2 group active:scale-95"
                 >
                   <span>{slide.ctaText}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -170,7 +170,7 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
                       key={idx}
                       onClick={() => setCurrentSlide(idx)}
                       className={`h-2 rounded-full transition-all ${
-                        currentSlide === idx ? 'w-6 bg-blue-500' : 'w-2 bg-white/30 hover:bg-white/50'
+                        currentSlide === idx ? 'w-6 bg-[#C4976E]' : 'w-2 bg-white/30 hover:bg-white/50'
                       }`}
                       aria-label={`Slide ${idx + 1}`}
                     />
@@ -181,14 +181,14 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
 
             {/* Right Fashion Model Lookbook Graphic */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-sm rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-white/15 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl">
-                <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-slate-800">
+              <div className="relative mx-auto max-w-sm rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/15 shadow-2xl">
+                <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-[#2D2117]">
                   <img
                     src={slide.image}
                     alt={slide.featuredProduct}
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                  <div className="absolute top-3 left-3 bg-[#A3704C] text-[#FAF8F5] text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
                     {slide.tag}
                   </div>
                 </div>
@@ -196,12 +196,12 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
                 <div className="mt-3 p-1.5 text-white">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-bold text-sm sm:text-base text-white">{slide.featuredProduct}</h4>
-                      <p className="text-[11px] text-slate-300">Bộ sưu tập thời trang thiết kế VietThang</p>
+                      <h4 className="font-bold text-sm sm:text-base text-[#FAF8F5]">{slide.featuredProduct}</h4>
+                      <p className="text-[11px] text-[#DDD1BF]">Bộ sưu tập thời trang thiết kế VietThang</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm sm:text-base font-extrabold text-amber-400">{slide.price}</span>
-                      <p className="text-[10px] text-slate-400 line-through">{slide.originalPrice}</p>
+                      <span className="text-sm sm:text-base font-extrabold text-[#E0C09B]">{slide.price}</span>
+                      <p className="text-[10px] text-[#A9937E] line-through">{slide.originalPrice}</p>
                     </div>
                   </div>
                 </div>
@@ -211,45 +211,45 @@ export const Banner: React.FC<BannerProps> = ({ onExploreProducts }) => {
           </div>
         </div>
 
-        {/* 4 Brand Commitments */}
+        {/* 4 Brand Commitments - Warm Beige Theme */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
-          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:border-blue-300 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#FDFCF9] border border-[#EBE3D5] shadow-sm hover:border-[#C4976E]/60 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#F5EFE6] text-[#A3704C] flex items-center justify-center shrink-0 border border-[#E8DFD1]">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">100% Vải Tuyển Chọn</h4>
-              <p className="text-[11px] text-slate-500">Cotton Pima & Lụa cao cấp</p>
+              <h4 className="text-xs sm:text-sm font-bold text-[#2D2117]">100% Vải Tuyển Chọn</h4>
+              <p className="text-[11px] text-[#71553E]">Cotton Pima & Lụa cao cấp</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:border-rose-300 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#FDFCF9] border border-[#EBE3D5] shadow-sm hover:border-[#C4976E]/60 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#FBF0EE] text-[#9A4638] flex items-center justify-center shrink-0 border border-[#EED4CE]">
               <RotateCcw className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Đổi Size 30 Ngày</h4>
-              <p className="text-[11px] text-slate-500">Hỗ trợ đổi tận nhà miễn phí</p>
+              <h4 className="text-xs sm:text-sm font-bold text-[#2D2117]">Đổi Size 30 Ngày</h4>
+              <p className="text-[11px] text-[#71553E]">Hỗ trợ đổi tận nhà miễn phí</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:border-indigo-300 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#FDFCF9] border border-[#EBE3D5] shadow-sm hover:border-[#C4976E]/60 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#EFF5EB] text-[#587346] flex items-center justify-center shrink-0 border border-[#D5E3CC]">
               <Truck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Freeship Toàn Quốc</h4>
-              <p className="text-[11px] text-slate-500">Cho đơn hàng từ 500.000đ</p>
+              <h4 className="text-xs sm:text-sm font-bold text-[#2D2117]">Freeship Toàn Quốc</h4>
+              <p className="text-[11px] text-[#71553E]">Cho đơn hàng từ 500.000đ</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:border-amber-300 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#FDFCF9] border border-[#EBE3D5] shadow-sm hover:border-[#C4976E]/60 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#FFF8EB] text-[#C4976E] flex items-center justify-center shrink-0 border border-[#EEDCBA]">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Kiểm Tra Khi Nhận</h4>
-              <p className="text-[11px] text-slate-500">Được xem thử trước khi trả</p>
+              <h4 className="text-xs sm:text-sm font-bold text-[#2D2117]">Kiểm Tra Khi Nhận</h4>
+              <p className="text-[11px] text-[#71553E]">Được xem thử trước khi trả</p>
             </div>
           </div>
         </div>

@@ -230,6 +230,31 @@ export const apiService = {
     return [];
   },
 
+  // Update user in MongoDB
+  async updateUser(
+    id: string,
+    updates: {
+      name?: string;
+      email?: string;
+      phone?: string;
+      address?: string;
+      role?: 'customer' | 'admin';
+      password?: string;
+    }
+  ): Promise<{ success: boolean; user?: any; message?: string }> {
+    try {
+      const res = await fetch(`${API_BASE}/auth/users/${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+      const data = await res.json();
+      return { success: res.ok && data.success, user: data.user, message: data.message };
+    } catch {
+      return { success: false, message: 'Không thể kết nối tới máy chủ cập nhật' };
+    }
+  },
+
   // Delete user from MongoDB
   async deleteUser(id: string): Promise<boolean> {
     try {

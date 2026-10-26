@@ -7,6 +7,7 @@ import {
   Search,
   Plus,
   Trash2,
+  Edit3,
   RefreshCw,
   Mail,
   Phone,
@@ -18,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export const AdminUserList: React.FC = () => {
-  const { registeredAccounts, currentUser, deleteAccount, addNewAccount, refreshAccounts } = useAuth();
+  const { registeredAccounts, currentUser, deleteAccount, addNewAccount, updateAccount, refreshAccounts } = useAuth();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'customer' | 'admin'>('all');
@@ -26,7 +27,7 @@ export const AdminUserList: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
-  // Form state
+  // Add Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,6 +38,20 @@ export const AdminUserList: React.FC = () => {
   });
   const [formError, setFormError] = useState('');
   const [formSubmitting, setFormSubmitting] = useState(false);
+
+  // Edit Form state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    address: '',
+    role: 'customer' as 'customer' | 'admin',
+  });
+  const [editFormError, setEditFormError] = useState('');
+  const [editFormSubmitting, setEditFormSubmitting] = useState(false);
 
   // Statistics
   const totalUsers = registeredAccounts.length;
@@ -107,6 +122,55 @@ export const AdminUserList: React.FC = () => {
       setIsAddModalOpen(false);
     } else {
       setFormError(res.message);
+    }
+  };
+
+  const handleOpenEditModal = (user: any) => {
+    setEditingUserId(user.id || user.email);
+    setEditFormData({
+      name: user.name || '',
+      email: user.email || '',
+      password: '',
+      phone: user.phone || '',
+      address: user.address || '',
+      role: user.role === 'admin' ? 'admin' : 'customer',
+    });
+    setEditFormError('');
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditFormError('');
+
+    if (!editFormData.name.trim() || !editFormData.email.trim()) {
+      setEditFormError('Vui lòng điền đầy đủ Họ tên và Email');
+      return;
+    }
+
+    if (editFormData.password && editFormData.password.length < 4) {
+      setEditFormError('Mật khẩu mới nếu đặt lại phải chứa tối thiểu 4 ký tự');
+      return;
+    }
+
+    if (!editingUserId) return;
+
+    setEditFormSubmitting(true);
+    const res = await updateAccount(editingUserId, {
+      name: editFormData.name.trim(),
+      email: editFormData.email.trim(),
+      phone: editFormData.phone.trim(),
+      address: editFormData.address.trim(),
+      role: editFormData.role,
+      ...(editFormData.password.trim() ? { password: editFormData.password.trim() } : {}),
+    });
+    setEditFormSubmitting(false);
+
+    if (res.success) {
+      setIsEditModalOpen(false);
+      setEditingUserId(null);
+    } else {
+      setEditFormError(res.message);
     }
   };
 
@@ -397,19 +461,29 @@ export const AdminUserList: React.FC = () => {
 
                       {/* Action */}
                       <td className="py-3.5 px-4 text-right">
-                        {isCurrentAdmin ? (
-                          <span className="text-[11px] font-semibold text-[#A98D71] italic">
-                            Đang hoạt động
-                          </span>
-                        ) : (
+                        <div className="flex items-center justify-end gap-1">
                           <button
-                            onClick={() => setDeleteConfirmId(user.id || user.email)}
-                            className="p-2 rounded-xl text-[#A98D71] hover:text-[#9A4638] hover:bg-[#FBF0EE] transition-colors"
-                            title="Xóa tài khoản này"
+                            onClick={() => handleOpenEditModal(user)}
+                            className="p-2 rounded-xl text-[#A3704C] hover:text-[#7A4B29] hover:bg-[#F5EFE6] transition-colors"
+                            title="Chỉnh sửa thông tin"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Edit3 className="w-4 h-4" />
                           </button>
-                        )}
+
+                          {isCurrentAdmin ? (
+                            <span className="text-[11px] font-semibold text-[#A98D71] italic px-1">
+                              Đang đăng nhập
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => setDeleteConfirmId(user.id || user.email)}
+                              className="p-2 rounded-xl text-[#A98D71] hover:text-[#9A4638] hover:bg-[#FBF0EE] transition-colors"
+                              title="Xóa tài khoản này"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -590,6 +664,155 @@ export const AdminUserList: React.FC = () => {
                 Xóa ngay
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL: Chỉnh sửa thông tin người dùng */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#241C16]/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-[#FDFCF9] w-full max-w-lg rounded-3xl p-6 sm:p-7 shadow-2xl border border-[#EBE3D5] text-left">
+            <div className="flex items-center justify-between pb-4 border-b border-[#F0EAE0]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-[#F5EFE6] text-[#A3704C] flex items-center justify-center border border-[#E8DFD1]">
+                  <Edit3 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-black text-[#2D2117]">
+                    Chỉnh Sửa Thông Tin Người Dùng
+                  </h3>
+                  <p className="text-xs text-[#71553E]">
+                    Cập nhật hồ sơ tài khoản và đồng bộ trực tiếp lên MongoDB
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="p-2 rounded-xl text-[#A98D71] hover:text-[#2D2117] hover:bg-[#F5F0E6] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateUser} className="mt-5 space-y-4 text-xs sm:text-sm">
+              {editFormError && (
+                <div className="p-3 rounded-2xl bg-[#FBF0EE] border border-[#EED4CE] text-[#9A4638] flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span className="text-xs font-semibold">{editFormError}</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                    Họ và tên <span className="text-[#9A4638]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.name}
+                    onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                    placeholder="Nguyễn Văn A"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                    Email đăng nhập <span className="text-[#9A4638]">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={editFormData.email}
+                    onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                    placeholder="user@example.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                    Số điện thoại
+                  </label>
+                  <input
+                    type="tel"
+                    value={editFormData.phone}
+                    onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                    placeholder="0988 123 456"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                    Phân quyền tài khoản
+                  </label>
+                  <select
+                    value={editFormData.role}
+                    onChange={(e) =>
+                      setEditFormData({ ...editFormData, role: e.target.value as 'customer' | 'admin' })
+                    }
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                  >
+                    <option value="customer">Khách hàng (Customer)</option>
+                    <option value="admin">Quản trị viên (Admin)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                  Địa chỉ giao hàng
+                </label>
+                <input
+                  type="text"
+                  value={editFormData.address}
+                  onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                  placeholder="Số nhà, đường phố, quận/huyện, tỉnh/thành..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#523C2A] mb-1">
+                  Đặt lại mật khẩu mới <span className="text-[#A98D71] font-normal">(Tùy chọn)</span>
+                </label>
+                <input
+                  type="password"
+                  value={editFormData.password}
+                  onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD1BF] focus:border-[#A3704C] bg-white outline-none text-xs sm:text-sm text-[#2D2117]"
+                  placeholder="Để trống nếu muốn giữ nguyên mật khẩu cũ"
+                />
+                <p className="text-[11px] text-[#A98D71] mt-1">
+                  Chỉ nhập vào ô này nếu bạn muốn đổi sang mật khẩu mới cho người dùng.
+                </p>
+              </div>
+
+              <div className="pt-3 flex items-center justify-end gap-3 border-t border-[#F0EAE0]">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl text-[#71553E] hover:bg-[#F5F0E6] text-xs font-bold transition-colors"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  disabled={editFormSubmitting}
+                  className="px-5 py-2.5 rounded-xl bg-[#A3704C] hover:bg-[#8E5E36] text-[#FAF8F5] text-xs font-bold transition-all shadow-md shadow-[#A3704C]/20 flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  {editFormSubmitting ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <CheckCircle2 className="w-4 h-4" />
+                  )}
+                  <span>Lưu thay đổi</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

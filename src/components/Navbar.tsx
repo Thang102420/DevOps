@@ -52,27 +52,27 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm transition-all">
-      {/* Top announcement bar */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white text-xs py-1.5 px-4 font-medium flex items-center justify-between gap-2 border-b border-slate-800">
+    <header className="sticky top-0 z-40 bg-[#FDFCF9]/95 backdrop-blur-md border-b border-[#EBE3D5] shadow-sm transition-all">
+      {/* Top announcement bar - Luxury Espresso & Cognac */}
+      <div className="bg-[#241C16] text-[#E8DFD1] text-xs py-1.5 px-4 font-medium flex items-center justify-between gap-2 border-b border-[#3D2C20]">
         <div className="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
           <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <Sparkles className="w-3.5 h-3.5 text-[#C4976E] animate-pulse" />
             <span className="hidden sm:inline">Bộ sưu tập thời trang 2026: Nhập mã</span>
-            <span className="bg-rose-500/30 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded font-mono font-bold">
+            <span className="bg-[#A3704C]/30 text-[#F5E2D0] border border-[#A3704C]/50 px-2 py-0.5 rounded font-mono font-bold">
               VIETTHANG10
             </span>
             <span>giảm 10% | Freeship từ 500k</span>
           </div>
 
           {/* Customer Service / Guarantee Badge */}
-          <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-300">
-            <span className="flex items-center gap-1 text-emerald-400">
+          <div className="hidden sm:flex items-center gap-3 text-[11px] text-[#DDD1BF]">
+            <span className="flex items-center gap-1 text-[#C4976E]">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Đổi size miễn phí 30 ngày</span>
             </span>
-            <span className="text-slate-600">•</span>
-            <span>Hotline: <strong className="text-white font-semibold">1900 8888</strong></span>
+            <span className="text-[#523C2A]">•</span>
+            <span>Hotline: <strong className="text-[#FAF8F5] font-semibold">1900 8888</strong></span>
           </div>
         </div>
       </div>
@@ -85,19 +85,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick('products')}
             className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#241C16] via-[#71553E] to-[#A3704C] flex items-center justify-center text-[#FAF8F5] shadow-md shadow-[#71553E]/20 group-hover:scale-105 transition-transform">
               <span className="font-black text-xl tracking-tighter">VT</span>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                  VietThang<span className="text-blue-600">.Fashion</span>
+                <span className="font-extrabold text-xl sm:text-2xl text-[#2D2117] tracking-tight">
+                  VietThang<span className="text-[#A3704C]">.Fashion</span>
                 </span>
-                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700 uppercase">
+                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#F5EFE6] text-[#71553E] border border-[#E0D2C0] uppercase">
                   Designer
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
+              <p className="text-[11px] text-[#71553E] font-medium hidden sm:block">
                 Thời Trang Nam Nữ & Xu Hướng Giới Trẻ
               </p>
             </div>
@@ -109,8 +109,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('products')}
               className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all ${
                 activeTab === 'products'
-                  ? 'bg-blue-50 text-blue-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0] shadow-sm'
+                  : 'text-[#71553E] hover:text-[#2D2117] hover:bg-[#FAF8F5]'
               }`}
             >
               Bộ sưu tập
@@ -119,8 +119,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('about')}
               className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all ${
                 activeTab === 'about'
-                  ? 'bg-blue-50 text-blue-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0] shadow-sm'
+                  : 'text-[#71553E] hover:text-[#2D2117] hover:bg-[#FAF8F5]'
               }`}
             >
               Về thương hiệu
@@ -129,8 +129,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('contact')}
               className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all ${
                 activeTab === 'contact'
-                  ? 'bg-blue-50 text-blue-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0] shadow-sm'
+                  : 'text-[#71553E] hover:text-[#2D2117] hover:bg-[#FAF8F5]'
               }`}
             >
               Liên hệ & Showroom
@@ -150,13 +150,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }
                 }}
                 placeholder="Tìm sơ mi, polo, blazer, đầm dự tiệc..."
-                className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-inner"
+                className="w-full pl-10 pr-9 py-2 rounded-xl bg-[#FAF8F5] border border-[#EBE3D5] text-sm text-[#2D2117] placeholder-[#A98D71] focus:outline-none focus:ring-2 focus:ring-[#A3704C]/30 focus:border-[#A3704C] focus:bg-white transition-all shadow-inner"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#A98D71] absolute left-3.5 top-1/2 -translate-y-1/2" />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A98D71] hover:text-[#2D2117] p-0.5"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -170,13 +170,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Wishlist Button */}
             <button
               onClick={() => setIsWishlistOpen(true)}
-              className="relative p-2.5 rounded-xl text-slate-700 hover:text-rose-600 hover:bg-rose-50/80 transition-all group"
+              className="relative p-2.5 rounded-xl text-[#71553E] hover:text-[#9A4638] hover:bg-[#FBF0EE] transition-all group"
               aria-label="Danh sách yêu thích"
               title="Mục yêu thích"
             >
               <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
               {wishlistIds.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center shadow-sm">
+                <span className="absolute -top-1 -right-1 bg-[#9A4638] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center shadow-sm">
                   {wishlistIds.length}
                 </span>
               )}
@@ -185,16 +185,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Cart Drawer Trigger */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all group flex items-center gap-1.5"
+              className="relative p-2.5 rounded-xl text-[#71553E] hover:text-[#A3704C] hover:bg-[#F5EFE6] transition-all group flex items-center gap-1.5"
               aria-label="Xem giỏ hàng"
             >
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-[#A3704C] to-[#8E5E36] text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
                   {totalItems > 99 ? '99+' : totalItems}
                 </span>
               )}
-              <span className="hidden lg:inline text-xs font-semibold text-slate-700 group-hover:text-blue-600">
+              <span className="hidden lg:inline text-xs font-semibold text-[#71553E] group-hover:text-[#A3704C]">
                 Túi đồ
               </span>
             </button>
@@ -205,31 +205,31 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div>
                   <button
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 transition-all border border-slate-200"
+                    className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F5EFE6] transition-all border border-[#EBE3D5]"
                   >
                     {currentUser.avatar ? (
                       <img
                         src={currentUser.avatar}
                         alt={currentUser.name}
-                        className="w-7 h-7 rounded-full object-cover ring-2 ring-blue-500"
+                        className="w-7 h-7 rounded-full object-cover ring-2 ring-[#A3704C]"
                       />
                     ) : (
-                      <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-[#A3704C] text-[#FAF8F5] font-bold text-xs flex items-center justify-center">
                         {currentUser.name.charAt(0).toUpperCase()}
                       </div>
                     )}
-                    <span className="text-xs font-semibold text-slate-800 max-w-[80px] sm:max-w-[110px] truncate">
+                    <span className="text-xs font-semibold text-[#2D2117] max-w-[80px] sm:max-w-[110px] truncate">
                       {currentUser.name}
                     </span>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                    <ChevronDown className="w-3.5 h-3.5 text-[#A98D71]" />
                   </button>
 
                   {userDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 z-50 animate-fade-in">
-                      <div className="p-3 border-b border-slate-100">
-                        <p className="text-xs text-slate-500">Tài khoản thành viên</p>
-                        <p className="text-sm font-bold text-slate-900 truncate">{currentUser.name}</p>
-                        <p className="text-xs text-slate-400 truncate">{currentUser.email}</p>
+                    <div className="absolute right-0 mt-2 w-64 bg-[#FDFCF9] rounded-2xl shadow-xl border border-[#EBE3D5] p-2 z-50 animate-fade-in">
+                      <div className="p-3 border-b border-[#F0EAE0]">
+                        <p className="text-xs text-[#A98D71]">Tài khoản thành viên</p>
+                        <p className="text-sm font-bold text-[#2D2117] truncate">{currentUser.name}</p>
+                        <p className="text-xs text-[#A98D71] truncate">{currentUser.email}</p>
                       </div>
 
                       <div className="py-1">
@@ -239,9 +239,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                               setUserDropdownOpen(false);
                               handleNavClick('admin');
                             }}
-                            className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-blue-600 bg-blue-50/60 hover:bg-blue-100/60 rounded-xl transition-colors"
+                            className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-[#A3704C] bg-[#F5EFE6] hover:bg-[#EBE3D5] rounded-xl transition-colors"
                           >
-                            <LayoutDashboard className="w-4 h-4 text-blue-600" />
+                            <LayoutDashboard className="w-4 h-4 text-[#A3704C]" />
                             <span>Trang Quản trị Shop</span>
                           </button>
                         )}
@@ -250,20 +250,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                             setUserDropdownOpen(false);
                             openHistoryModal();
                           }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors"
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-[#71553E] hover:bg-[#FAF8F5] hover:text-[#A3704C] rounded-xl transition-colors"
                         >
-                          <PackageCheck className="w-4 h-4 text-blue-500" />
+                          <PackageCheck className="w-4 h-4 text-[#A3704C]" />
                           <span>Đơn hàng thời trang của tôi</span>
                         </button>
                       </div>
 
-                      <div className="pt-1 border-t border-slate-100">
+                      <div className="pt-1 border-t border-[#F0EAE0]">
                         <button
                           onClick={() => {
                             setUserDropdownOpen(false);
                             logout();
                           }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-[#9A4638] hover:bg-[#FBF0EE] rounded-xl transition-colors"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Đăng xuất</span>
@@ -275,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <button
                   onClick={() => openAuthModal('login')}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold shadow-sm shadow-blue-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#A3704C] to-[#8E5E36] hover:from-[#B58058] hover:to-[#7A4B29] text-white text-xs sm:text-sm font-semibold shadow-sm shadow-[#A3704C]/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <UserIcon className="w-4 h-4" />
                   <span>Đăng nhập</span>
@@ -286,7 +286,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="md:hidden p-2 rounded-xl text-[#71553E] hover:text-[#2D2117] hover:bg-[#FAF8F5] transition-colors"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -306,13 +306,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }
               }}
               placeholder="Tìm sơ mi, polo, blazer, váy đầm..."
-              className="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+              className="w-full pl-9 pr-8 py-2 rounded-xl bg-[#FAF8F5] border border-[#EBE3D5] text-sm text-[#2D2117] placeholder-[#A98D71] focus:outline-none focus:ring-2 focus:ring-[#A3704C]/30 focus:bg-white transition-all"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#A98D71] absolute left-3 top-1/2 -translate-y-1/2" />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 p-0.5"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A98D71] p-0.5"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -323,11 +323,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-2 pb-4 space-y-1 animate-fade-in shadow-xl">
+        <div className="md:hidden bg-[#FDFCF9] border-t border-[#EBE3D5] px-4 pt-2 pb-4 space-y-1 animate-fade-in shadow-xl">
           <button
             onClick={() => handleNavClick('products')}
             className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-              activeTab === 'products' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
+              activeTab === 'products' ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0]' : 'text-[#71553E] hover:bg-[#FAF8F5]'
             }`}
           >
             Bộ sưu tập
@@ -335,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => handleNavClick('about')}
             className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-              activeTab === 'about' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
+              activeTab === 'about' ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0]' : 'text-[#71553E] hover:bg-[#FAF8F5]'
             }`}
           >
             Về thương hiệu
@@ -343,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => handleNavClick('contact')}
             className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-              activeTab === 'contact' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
+              activeTab === 'contact' ? 'bg-[#F5EFE6] text-[#2D2117] font-bold border border-[#E0D2C0]' : 'text-[#71553E] hover:bg-[#FAF8F5]'
             }`}
           >
             Liên hệ & Showroom
@@ -352,14 +352,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() => handleNavClick('admin')}
               className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
-                activeTab === 'admin' ? 'bg-slate-900 text-white' : 'text-blue-600 bg-blue-50/60 hover:bg-blue-100/60'
+                activeTab === 'admin' ? 'bg-[#241C16] text-[#FAF8F5]' : 'text-[#A3704C] bg-[#F5EFE6] hover:bg-[#EBE3D5]'
               }`}
             >
               <span className="flex items-center gap-2">
-                <LayoutDashboard className="w-4 h-4 text-blue-600" />
+                <LayoutDashboard className="w-4 h-4 text-[#A3704C]" />
                 <span>Trang Quản trị & MongoDB</span>
               </span>
-              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-600 text-white">
+              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#A3704C] text-[#FAF8F5]">
                 Admin
               </span>
             </button>
@@ -370,9 +370,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 setMobileMenuOpen(false);
                 openHistoryModal();
               }}
-              className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+              className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-[#71553E] hover:bg-[#FAF8F5] flex items-center gap-2"
             >
-              <PackageCheck className="w-4 h-4 text-blue-600" />
+              <PackageCheck className="w-4 h-4 text-[#A3704C]" />
               <span>Đơn hàng của tôi</span>
             </button>
           )}

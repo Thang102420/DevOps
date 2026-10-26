@@ -144,6 +144,77 @@ router.get('/users', async (req, res) => {
   }
 });
 
+// UPDATE user information
+router.put('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, phone, address, role, password } = req.body;
+
+    let targetUser = null;
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      targetUser = await User.findById(id);
+    } else {
+      targetUser = await User.findOne({ $or: [{ email: id.toLowerCase().trim() }, { _id: id }] });
+    }
+
+    if (!targetUser) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng để cập nhật' });
+    }
+
+    // Kiểm tra nếu đổi email thì email mới không được trùng với tài khoản khác
+    if (email && email.toLowerCase().trim() !== targetUser.email.toLowerCase().trim()) {
+      const emailExists = await User.findOne({
+        email: email.toLowerCase().trim(),
+        _id: { $ne: targetUser._id },
+      });
+      if (emailExists) {
+        return res.status(400).json({
+          success: false,
+          message: `Email "${email}" đã được sử dụng bởi người dùng khác!`,
+        });
+      }
+      targetUser.email = email.toLowerCase().trim();
+    }
+
+    if (name) targetUser.name = name.trim();
+    if (phone !== undefined) targetUser.phone = phone.trim();
+    if (address !== undefined) targetUser.address = address.trim();
+    if (role && (role === 'customer' || role === 'admin')) targetUser.role = role;
+    if (password && password.trim().length > 0) targetUser.password = password.trim();
+
+    await targetUser.save();
+
+    console.log(`\n======================================================`);
+    console.log(`✏️  [MongoDB LIVE] ĐÃ CẬP NHẬT THÔNG TIN NGƯỜI DÙNG THÀNH CÔNG!`);
+    console.log(`   - ID: ${targetUser._id}`);
+    console.log(`   - Tên: ${targetUser.name}`);
+    console.log(`   - Email: ${targetUser.email}`);
+    console.log(`   - Vai trò: ${targetUser.role}`);
+    console.log(`   - Điện thoại: ${targetUser.phone || 'Chưa cung cấp'}`);
+    console.log(`   - Địa chỉ: ${targetUser.address || 'Chưa cung cấp'}`);
+    console.log(`   - Mật khẩu: ${password ? 'Đã đổi mật khẩu mới' : 'Giữ nguyên'}`);
+    console.log(`   - Thời gian: ${new Date().toLocaleString('vi-VN')}`);
+    console.log(`======================================================\n`);
+
+    res.json({
+      success: true,
+      message: 'Cập nhật thông tin người dùng thành công!',
+      user: {
+        id: targetUser._id,
+        name: targetUser.name,
+        email: targetUser.email,
+        phone: targetUser.phone,
+        address: targetUser.address,
+        role: targetUser.role,
+        avatar: targetUser.avatar,
+      },
+    });
+  } catch (error) {
+    console.error('❌ [MongoDB Error] Lỗi khi cập nhật người dùng:', error.message);
+    res.status(500).json({ success: false, message: 'Lỗi cập nhật người dùng trên database', error: error.message });
+  }
+});
+
 // DELETE a user
 router.delete('/users/:id', async (req, res) => {
   try {
