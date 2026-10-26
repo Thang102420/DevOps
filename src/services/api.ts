@@ -1,7 +1,19 @@
 import { Product, Order, DatabaseStatus } from '../types';
 import { PRODUCTS as FALLBACK_PRODUCTS } from '../data/products';
 
-const API_BASE = '/api';
+const getApiBase = () => {
+  if (typeof window !== 'undefined') {
+    if (window.location.port === '5000' || window.location.port === '80') {
+      return '/api';
+    }
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://localhost:5000/api';
+    }
+  }
+  return '/api';
+};
+
+const API_BASE = getApiBase();
 
 export const apiService = {
   // Check if MongoDB / Express server is online

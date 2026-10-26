@@ -58,9 +58,10 @@ router.post('/login', async (req, res) => {
 // User Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, phone, address } = req.body;
+    const { name, email, password, pass, phone, address } = req.body;
+    const userPassword = password || pass;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !userPassword) {
       return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ họ tên, email và mật khẩu' });
     }
 
@@ -76,7 +77,7 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       name: name.trim(),
       email: trimmedEmail,
-      password,
+      password: userPassword,
       phone: phone || '',
       address: address || '',
       role: 'customer',

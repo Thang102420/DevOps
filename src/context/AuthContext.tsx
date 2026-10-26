@@ -127,12 +127,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders));
   }, [orders]);
 
-  // Đồng bộ danh sách tài khoản từ cơ sở dữ liệu MongoDB khi khởi chạy
+  // Đồng bộ danh sách tài khoản 2 chiều với cơ sở dữ liệu MongoDB khi khởi chạy
   useEffect(() => {
     const syncUsersFromMongoDB = async () => {
       try {
         const mongoUsers = await apiService.getUsers();
         if (Array.isArray(mongoUsers) && mongoUsers.length > 0) {
+          // 1. Đồng bộ từ MongoDB về Local
           setRegisteredAccounts((prev) => {
             const map = new Map<string, RegisteredAccount>();
             prev.forEach((acc) => map.set(acc.email.toLowerCase().trim(), acc));
@@ -153,6 +154,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
             return Array.from(map.values());
           });
+
+          // 2. Nếu trong máy người dùng có tài khoản đã đăng ký trước đó mà MongoDB chưa có, tự động đẩy lên MongoDB
+          const mongoEmails = new Set(mongoUsers.map((u: any) => u.email.toLowerCase().trim()));
+          for (const localAcc of registeredAccounts) {
+            const key = localAcc.email.toLowerCase().trim();
+            if (key && !mongoEmails.has(key) && localAcc.password && localAcc.password !== '******') {
+              console.log('🔄 Đang đồng bộ tài khoản từ trình duyệt lên MongoDB:', localAcc.email);
+              await apiService.register(localAcc.name, localAcc.email, localAcc.password, localAcc.phone, localAcc.address);
+            }
+          }
         }
       } catch (err) {
         console.warn('Chưa thể đồng bộ người dùng từ MongoDB:', err);
