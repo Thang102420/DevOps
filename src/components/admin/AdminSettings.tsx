@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useProducts } from '../../context/ProductContext';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -6,20 +6,34 @@ import {
   RotateCcw, 
   Download, 
   Upload, 
-  Info 
+  Info,
+  Database,
+  RefreshCw,
+  Server,
+  CheckCircle2,
+  Terminal
 } from 'lucide-react';
 
 export const AdminSettings: React.FC = () => {
-  const { products, resetToDefault, importProducts } = useProducts();
+  const { products, resetToDefault, importProducts, dbStatus, checkDbStatus, seedMongoDb, isLoading } = useProducts();
   const { orders } = useAuth();
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSeeding, setIsSeeding] = useState(false);
+
+  const handleSeedMongo = async () => {
+    if (window.confirm('Bạn có chắc chắn muốn nạp 36 sản phẩm mẫu vào cơ sở dữ liệu MongoDB?')) {
+      setIsSeeding(true);
+      await seedMongoDb();
+      setIsSeeding(false);
+    }
+  };
 
   // Xuất file JSON sao lưu
   const handleExportJSON = () => {
     const backupData = {
       store: 'VietThang Fashion',
-      version: '1.0',
+      version: '2.0',
       exportedAt: new Date().toISOString(),
       products,
       orders,
@@ -55,7 +69,7 @@ export const AdminSettings: React.FC = () => {
         } else {
           showToast('Cấu trúc file JSON không hợp lệ!', 'error');
         }
-      } catch (err) {
+      } catch {
         showToast('Lỗi khi đọc file JSON. Vui lòng kiểm tra lại định dạng.', 'error');
       }
     };
@@ -68,27 +82,90 @@ export const AdminSettings: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl">
       {/* Title */}
-      <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm">
-        <h2 className="text-xl font-bold text-slate-900">Quản lý Dữ liệu & Lưu trữ Offline</h2>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Tùy chỉnh kho dữ liệu trình duyệt (Local Storage), sao lưu và khôi phục khi cần thiết.
-        </p>
-      </div>
-
-      {/* Info Card */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-3xl p-5 flex items-start gap-3.5">
-        <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
-          <Info className="w-5 h-5" />
-        </div>
-        <div className="text-xs sm:text-sm text-blue-900">
-          <h4 className="font-bold text-blue-950">Cơ chế lưu trữ Offline (LocalStorage)</h4>
-          <p className="mt-1 leading-relaxed text-blue-800/90">
-            Hệ thống đang hoạt động hoàn toàn ngoại tuyến. Mọi thao tác thêm, sửa, xóa sản phẩm hoặc cập nhật trạng thái đơn hàng đều được lưu trữ trực tiếp trên trình duyệt của bạn (Local Storage). Khi bạn tải lại trang (F5) hoặc mở lại trình duyệt, dữ liệu sẽ được giữ nguyên vẹn.
+      <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-extrabold text-slate-900">Quản Lý Cơ Sở Dữ Liệu & Hệ Thống</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Cấu hình kết nối MongoDB, nạp dữ liệu mẫu ban đầu và xuất nhập file sao lưu.
           </p>
         </div>
+
+        <button
+          onClick={() => checkDbStatus()}
+          className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+        >
+          <RefreshCw className="w-3.5 h-3.5" />
+          <span>Kiểm tra trạng thái CSDL</span>
+        </button>
       </div>
 
-      {/* Action Cards */}
+      {/* MongoDB Database Status Card */}
+      <div className={`p-5 rounded-3xl border transition-all ${
+        dbStatus.connected
+          ? 'bg-emerald-50/70 border-emerald-300'
+          : 'bg-blue-50/70 border-blue-200'
+      }`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${
+              dbStatus.connected ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white'
+            }`}>
+              <Database className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-extrabold text-slate-900 text-base">Cơ sở dữ liệu MongoDB</h4>
+                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                  dbStatus.connected
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-blue-100 text-blue-800'
+                }`}>
+                  {dbStatus.connected ? (
+                    <>
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      <span>Đang kết nối MongoDB trực tiếp</span>
+                    </>
+                  ) : (
+                    <>
+                      <Info className="w-3 h-3 text-blue-600" />
+                      <span>Chế độ CSDL Nội bộ (Sẵn sàng 36 SP)</span>
+                    </>
+                  )}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 mt-1 max-w-xl">
+                {dbStatus.connected
+                  ? `Backend API và MongoDB đang trực tuyến. Đã nạp ${dbStatus.productsCount} sản phẩm từ cơ sở dữ liệu MongoDB.`
+                  : 'Trang web đang chạy trên bộ nhớ đệm (Local Storage) với đầy đủ 36 sản phẩm thiết kế. Bạn có thể bật Backend Server MongoDB bất kỳ lúc nào.'}
+              </p>
+            </div>
+          </div>
+
+          {/* Seed MongoDB Button */}
+          <button
+            onClick={handleSeedMongo}
+            disabled={isSeeding || isLoading}
+            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 disabled:opacity-50"
+          >
+            <Database className="w-4 h-4" />
+            <span>{isSeeding ? 'Đang nạp MongoDB...' : 'Nạp 36 sản phẩm vào MongoDB'}</span>
+          </button>
+        </div>
+
+        {/* Instructions banner */}
+        <div className="mt-4 pt-3 border-t border-slate-200/60 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
+          <div className="flex items-center gap-2 bg-white/70 p-2.5 rounded-xl border border-slate-200/60">
+            <Server className="w-4 h-4 text-blue-600 shrink-0" />
+            <span><strong>Chạy API Server:</strong> <code className="bg-slate-100 px-1 py-0.5 rounded font-mono">npm run server</code></span>
+          </div>
+          <div className="flex items-center gap-2 bg-white/70 p-2.5 rounded-xl border border-slate-200/60">
+            <Terminal className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span><strong>Nạp CSDL nhanh:</strong> <code className="bg-slate-100 px-1 py-0.5 rounded font-mono">npm run seed</code></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Cards: Backup & Restore */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Sao lưu JSON */}
         <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm space-y-3">
@@ -145,9 +222,9 @@ export const AdminSettings: React.FC = () => {
             <RotateCcw className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-900 text-sm">Khôi phục về dữ liệu mẫu ban đầu</h4>
+            <h4 className="font-bold text-slate-900 text-sm">Khôi phục về 36 sản phẩm mẫu ban đầu</h4>
             <p className="text-xs text-slate-500 mt-0.5">
-              Nếu bạn muốn xóa các thay đổi thử nghiệm và đưa kho hàng về danh sách sản phẩm thời trang mẫu ban đầu.
+              Xóa các thay đổi thử nghiệm và đưa kho hàng về danh sách 36 sản phẩm thời trang thiết kế mẫu ban đầu.
             </p>
           </div>
         </div>
@@ -155,14 +232,14 @@ export const AdminSettings: React.FC = () => {
         <div className="pt-2">
           <button
             onClick={() => {
-              if (window.confirm('Bạn có chắc chắn muốn khôi phục toàn bộ danh sách sản phẩm về mẫu gốc? Thao tác này sẽ ghi đè các sản phẩm bạn đã tạo.')) {
+              if (window.confirm('Bạn có chắc chắn muốn khôi phục toàn bộ danh sách sản phẩm về 36 mẫu gốc?')) {
                 resetToDefault();
               }
             }}
             className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold text-xs rounded-xl border border-rose-200 transition-colors flex items-center gap-2"
           >
             <RotateCcw className="w-4 h-4" />
-            <span>Khôi phục dữ liệu mẫu gốc</span>
+            <span>Khôi phục 36 sản phẩm mẫu gốc</span>
           </button>
         </div>
       </div>

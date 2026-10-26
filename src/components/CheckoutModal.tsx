@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Order } from '../types';
 import { X, CreditCard, Truck, ShieldCheck, Building, CheckCircle2 } from 'lucide-react';
+import { apiService } from '../services/api';
 
 export const CheckoutModal: React.FC = () => {
   const {
@@ -55,41 +56,44 @@ export const CheckoutModal: React.FC = () => {
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      const newOrder: Order = {
-        id: 'ord_' + Date.now(),
-        orderCode: generatedOrderCode,
-        createdAt: new Date().toLocaleString('vi-VN'),
-        customer: {
-          fullName: fullName.trim(),
-          phone: phone.trim(),
-          address: address.trim(),
-          note: note.trim(),
-        },
-        items: cartItems.map((item) => ({
-          productId: item.product.id,
-          productName: item.product.name,
-          price: item.product.price,
-          quantity: item.quantity,
-          image: item.product.image,
-          selectedSize: item.selectedSize,
-          selectedColor: item.selectedColor,
-        })),
-        subtotal,
-        discountAmount,
-        shippingFee,
-        total: totalAmount,
-        paymentMethod,
-        status: 'pending',
-      };
+    const newOrder: Order = {
+      id: 'ord_' + Date.now(),
+      orderCode: generatedOrderCode,
+      createdAt: new Date().toLocaleString('vi-VN'),
+      customer: {
+        fullName: fullName.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
+        note: note.trim(),
+      },
+      items: cartItems.map((item) => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+        image: item.product.image,
+        selectedSize: item.selectedSize,
+        selectedColor: item.selectedColor,
+      })),
+      subtotal,
+      discountAmount,
+      shippingFee,
+      total: totalAmount,
+      paymentMethod,
+      status: 'pending',
+    };
 
-      addOrder(newOrder);
-      setLastPlacedOrder(newOrder);
-      clearCart();
-      setIsSubmitting(false);
-      setIsCheckoutOpen(false);
-      showToast(`Đặt hàng thành công! Mã đơn hàng: ${newOrder.orderCode}`, 'success');
-    }, 600);
+    // Save to MongoDB asynchronously
+    apiService.createOrder(newOrder).catch((err) => {
+      console.warn('Cannot persist order to MongoDB backend:', err);
+    });
+
+    addOrder(newOrder);
+    setLastPlacedOrder(newOrder);
+    clearCart();
+    setIsSubmitting(false);
+    setIsCheckoutOpen(false);
+    showToast(`Đặt hàng thành công! Mã đơn hàng: ${newOrder.orderCode}`, 'success');
   };
 
   return (

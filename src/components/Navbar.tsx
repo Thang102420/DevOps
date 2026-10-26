@@ -9,10 +9,14 @@ import {
   LogOut, 
   PackageCheck,
   ChevronDown,
-  LayoutDashboard
+  LayoutDashboard,
+  Heart,
+  Database,
+  RefreshCw
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useProducts } from '../context/ProductContext';
 
 interface NavbarProps {
   activeTab: 'products' | 'about' | 'contact' | 'admin';
@@ -27,10 +31,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   searchQuery,
   setSearchQuery,
 }) => {
-  const { totalItems, setIsCartOpen } = useCart();
+  const { totalItems, setIsCartOpen, wishlistIds, setIsWishlistOpen } = useCart();
   const { currentUser, isAuthenticated, logout, openAuthModal, openHistoryModal } = useAuth();
+  const { dbStatus, checkDbStatus } = useProducts();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isRefreshingDb, setIsRefreshingDb] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,24 +55,57 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleRefreshDb = async () => {
+    setIsRefreshingDb(true);
+    await checkDbStatus();
+    setTimeout(() => setIsRefreshingDb(false), 500);
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all">
-      {/* Top announcement bar */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-600 to-rose-600 text-white text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-        <span>Bộ sưu tập mới 2026: Nhập mã <strong className="bg-white/20 px-1.5 py-0.5 rounded font-mono font-bold text-amber-200">VIETTHANG10</strong> giảm 10%!</span>
-        <span className="hidden md:inline">| Miễn phí giao hàng đơn từ 500k | Đổi size 30 ngày</span>
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm transition-all">
+      {/* Top announcement bar with MongoDB status */}
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white text-xs py-1.5 px-4 font-medium flex items-center justify-between gap-2 border-b border-slate-800">
+        <div className="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
+          <div className="flex items-center gap-2 text-[11px] sm:text-xs">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span className="hidden sm:inline">Bộ sưu tập thời trang 2026: Nhập mã</span>
+            <span className="bg-rose-500/30 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded font-mono font-bold">
+              VIETTHANG10
+            </span>
+            <span>giảm 10% | Freeship từ 500k</span>
+          </div>
+
+          {/* Database Live Indicator */}
+          <div className="flex items-center gap-2">
+            <div 
+              onClick={handleRefreshDb}
+              title={`MongoDB Status: ${dbStatus.connected ? 'Kết nối trực tiếp MongoDB' : 'Chế độ CSDL Nội bộ (Sẵn sàng 36 sản phẩm)'} - Click để làm mới`}
+              className={`cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-all ${
+                dbStatus.connected
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40 hover:bg-emerald-900/80'
+                  : 'bg-blue-950/80 text-blue-300 border-blue-500/40 hover:bg-blue-900/80'
+              }`}
+            >
+              <Database className="w-3 h-3 text-emerald-400" />
+              <span>
+                {dbStatus.connected ? 'MongoDB Live' : 'Database Ready'}
+              </span>
+              <span className={`w-1.5 h-1.5 rounded-full ${dbStatus.connected ? 'bg-emerald-400 animate-ping' : 'bg-blue-400'}`} />
+              <RefreshCw className={`w-2.5 h-2.5 ml-0.5 text-slate-400 ${isRefreshingDb ? 'animate-spin' : ''}`} />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 py-2 gap-3 sm:gap-6">
+        <div className="flex items-center justify-between h-20 py-2 gap-3 sm:gap-6">
           
           {/* Brand Logo */}
           <div 
             onClick={() => handleNavClick('products')}
             className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
               <span className="font-black text-xl tracking-tighter">VT</span>
             </div>
             <div>
@@ -114,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
               }`}
             >
-              Liên hệ
+              Liên hệ & Showroom
             </button>
           </nav>
 
@@ -130,8 +169,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setActiveTab('products');
                   }
                 }}
-                placeholder="Tìm áo thun, sơ mi, blazer, đầm dự tiệc..."
-                className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                placeholder="Tìm sơ mi, polo, blazer, đầm dự tiệc..."
+                className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-inner"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               {searchQuery && (
@@ -145,16 +184,33 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Cart & User buttons */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Action buttons: Wishlist, Cart & User */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            
+            {/* Wishlist Button */}
+            <button
+              onClick={() => setIsWishlistOpen(true)}
+              className="relative p-2.5 rounded-xl text-slate-700 hover:text-rose-600 hover:bg-rose-50/80 transition-all group"
+              aria-label="Danh sách yêu thích"
+              title="Mục yêu thích"
+            >
+              <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              {wishlistIds.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center shadow-sm">
+                  {wishlistIds.length}
+                </span>
+              )}
+            </button>
+
+            {/* Cart Drawer Trigger */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all group flex items-center gap-2"
+              className="relative p-2.5 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all group flex items-center gap-1.5"
               aria-label="Xem giỏ hàng"
             >
-              <ShoppingBag className="w-6 h-6 text-slate-700 group-hover:text-blue-600 transition-colors" />
+              <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-red-600 text-white text-xs font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center shadow-md animate-bounce">
                   {totalItems > 99 ? '99+' : totalItems}
                 </span>
               )}
@@ -182,7 +238,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         {currentUser.name.charAt(0).toUpperCase()}
                       </div>
                     )}
-                    <span className="text-xs font-semibold text-slate-800 max-w-[80px] sm:max-w-[120px] truncate">
+                    <span className="text-xs font-semibold text-slate-800 max-w-[80px] sm:max-w-[110px] truncate">
                       {currentUser.name}
                     </span>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
@@ -206,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-blue-600 bg-blue-50/60 hover:bg-blue-100/60 rounded-xl transition-colors"
                           >
                             <LayoutDashboard className="w-4 h-4 text-blue-600" />
-                            <span>Trang Quản trị (Admin)</span>
+                            <span>Trang Quản trị & MongoDB</span>
                           </button>
                         )}
                         <button
@@ -239,7 +295,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <button
                   onClick={() => openAuthModal('login')}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-sm shadow-blue-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold shadow-sm shadow-blue-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <UserIcon className="w-4 h-4" />
                   <span>Đăng nhập</span>
@@ -269,7 +325,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setActiveTab('products');
                 }
               }}
-              placeholder="Tìm áo, quần, váy đầm..."
+              placeholder="Tìm sơ mi, polo, blazer, váy đầm..."
               className="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -287,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-2 pb-4 space-y-1 animate-fade-in">
+        <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-2 pb-4 space-y-1 animate-fade-in shadow-xl">
           <button
             onClick={() => handleNavClick('products')}
             className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
@@ -310,7 +366,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               activeTab === 'contact' ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Liên hệ
+            Liên hệ & Showroom
           </button>
           {currentUser?.role === 'admin' && (
             <button
@@ -321,7 +377,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <span className="flex items-center gap-2">
                 <LayoutDashboard className="w-4 h-4 text-blue-600" />
-                <span>Trang Quản trị (Admin)</span>
+                <span>Trang Quản trị & MongoDB</span>
               </span>
               <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-600 text-white">
                 Admin

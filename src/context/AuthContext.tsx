@@ -1,16 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Order } from '../types';
 import { useToast } from './ToastContext';
+import { apiService } from '../services/api';
+
+interface RegisteredAccount extends User {
+  password?: string;
+}
 
 interface AuthContextType {
   currentUser: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (usernameOrEmail: string, pass: string) => boolean;
+  login: (usernameOrEmail: string, pass: string) => Promise<boolean>;
   loginDemo: () => void;
-  loginAdmin: (usernameOrEmail: string, pass: string) => boolean;
+  loginAdmin: (usernameOrEmail: string, pass: string) => Promise<boolean>;
   loginAdminDemo: () => void;
-  register: (name: string, email: string, pass: string, phone?: string, address?: string) => boolean;
+  register: (name: string, email: string, pass: string, phone?: string, address?: string) => Promise<boolean>;
   logout: () => void;
   orders: Order[];
   addOrder: (order: Order) => void;
@@ -26,13 +31,56 @@ interface AuthContextType {
   closeHistoryModal: () => void;
 }
 
-const STORAGE_KEY_USER = 'vietthang_auth_user';
-const STORAGE_KEY_ORDERS = 'vietthang_user_orders';
+const STORAGE_KEY_USER = 'vietthang_auth_user_v2';
+const STORAGE_KEY_ORDERS = 'vietthang_user_orders_v2';
+const STORAGE_KEY_ACCOUNTS = 'vietthang_registered_accounts_v2';
+
+// Danh sách tài khoản mặc định
+const INITIAL_ACCOUNTS: RegisteredAccount[] = [
+  {
+    id: 'usr_admin',
+    name: 'Quản Trị Viên (Admin)',
+    email: 'admin@vietthangstore.vn',
+    password: 'admin',
+    phone: '0988 888 999',
+    address: 'Trụ sở VietThang Fashion, Hà Nội',
+    role: 'admin',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+  },
+  {
+    id: 'usr_demo',
+    name: 'Nguyễn Văn Thắng (Demo)',
+    email: 'demo@vietthangstore.vn',
+    password: 'demo',
+    phone: '0912 345 678',
+    address: 'Tòa nhà Landmark 81, TP. Hồ Chí Minh',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+  },
+];
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { showToast } = useToast();
+
+  // Danh sách tài khoản đã đăng ký (lưu trữ cục bộ + đồng bộ MongoDB)
+  const [registeredAccounts, setRegisteredAccounts] = useState<RegisteredAccount[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_ACCOUNTS);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (err) {
+        console.error('Lỗi khi đọc tài khoản đăng ký:', err);
+      }
+    }
+    return INITIAL_ACCOUNTS;
+  });
+
+  // Người dùng hiện tại đang đăng nhập
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_USER);
     if (saved) {
@@ -45,6 +93,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return null;
   });
 
+  // Danh sách đơn hàng
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_ORDERS);
     if (saved) {
@@ -61,6 +110,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
 
+  // Sync state to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(registeredAccounts));
+  }, [registeredAccounts]);
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(currentUser));
@@ -75,120 +129,180 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isAdmin = !!currentUser && currentUser.role === 'admin';
 
-  const login = (usernameOrEmail: string, pass: string): boolean => {
-    if (!usernameOrEmail || !pass) {
-      showToast('Vui lòng nhập đầy đủ thông tin đăng nhập', 'error');
+  /**
+   * ĐĂNG KÝ TÀI KHOẢN MỚI
+   * Phải đăng ký tài khoản với email, tên và mật khẩu hợp lệ mới được lưu trữ vào hệ thống.
+   */
+  const register = async (
+    name: string,
+    email: string,
+    pass: string,
+    phone?: string,
+    address?: string
+  ): Promise<boolean> => {
+    if (!name.trim() || !email.trim() || !pass.trim()) {
+      showToast('Vui lòng điền đầy đủ Họ tên, Email và Mật khẩu!', 'error');
       return false;
     }
 
-    const trimmed = usernameOrEmail.trim().toLowerCase();
-    const isAttemptAdmin =
-      trimmed === 'admin' ||
-      trimmed === 'admin@vietthangstore.vn' ||
-      trimmed === 'admin@vietthang.vn' ||
-      trimmed === 'quantri';
-
-    if (isAttemptAdmin) {
-      const validAdminPasswords = ['admin', 'admin123', '123456'];
-      if (validAdminPasswords.includes(pass)) {
-        return loginAdmin(usernameOrEmail, pass);
-      } else {
-        showToast('Mật khẩu quản trị không chính xác!', 'error');
-        return false;
-      }
+    if (pass.length < 4) {
+      showToast('Mật khẩu phải có tối thiểu 4 ký tự!', 'error');
+      return false;
     }
 
-    // Khách hàng đăng nhập bằng tên hoặc email
-    const displayName = usernameOrEmail.includes('@')
-      ? usernameOrEmail.split('@')[0]
-      : usernameOrEmail.trim();
+    const trimmedEmail = email.toLowerCase().trim();
 
-    const emailValue = usernameOrEmail.includes('@')
-      ? usernameOrEmail.trim()
-      : `${usernameOrEmail.trim().toLowerCase()}@vietthangstore.vn`;
+    // 1. Kiểm tra tài khoản đã tồn tại trong danh sách đã đăng ký hay chưa
+    const existing = registeredAccounts.find(
+      (acc) => acc.email.toLowerCase().trim() === trimmedEmail
+    );
 
-    const user: User = {
-      id: 'usr_' + Date.now(),
-      name: displayName,
-      email: emailValue,
-      phone: '0988 123 456',
-      address: 'Số 88 Cầu Giấy, Hà Nội',
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(usernameOrEmail)}`,
+    if (existing) {
+      showToast(
+        `Email "${trimmedEmail}" đã được đăng ký tài khoản trước đó! Vui lòng chuyển sang tab Đăng nhập.`,
+        'warning'
+      );
+      setAuthModalTab('login');
+      return false;
+    }
+
+    // 2. Gửi lưu lên MongoDB Backend qua REST API
+    const apiRes = await apiService.register(name.trim(), trimmedEmail, pass, phone, address);
+    if (!apiRes.success && apiRes.message.includes('đã được sử dụng')) {
+      showToast(apiRes.message, 'warning');
+      setAuthModalTab('login');
+      return false;
+    }
+
+    // 3. Lưu vào cơ sở dữ liệu tài khoản
+    const newAccount: RegisteredAccount = {
+      id: apiRes.user?.id || 'usr_' + Date.now(),
+      name: name.trim(),
+      email: trimmedEmail,
+      password: pass,
+      phone: phone?.trim() || '0988 123 456',
+      address: address?.trim() || 'Hà Nội, Việt Nam',
+      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name.trim())}`,
       role: 'customer',
     };
-    setCurrentUser(user);
+
+    setRegisteredAccounts((prev) => [newAccount, ...prev]);
+
+    // Tự động đăng nhập người dùng vừa đăng ký
+    const { password: _, ...userSafe } = newAccount;
+    setCurrentUser(userSafe);
     setIsAuthModalOpen(false);
-    showToast(`Xin chào, ${user.name}! Đăng nhập thành công`, 'success');
+    showToast(
+      `Đăng ký tài khoản thành công! Xin chào ${newAccount.name}`,
+      'success'
+    );
     return true;
   };
 
-  const loginAdmin = (usernameOrEmail: string, pass: string): boolean => {
-    if (!usernameOrEmail || !pass) {
+  /**
+   * ĐĂNG NHẬP TÀI KHOẢN
+   * BẮT BUỘC TÀI KHOẢN PHẢI TỒN TẠI VÀ ĐÚNG MẬT KHẨU MỚI CHO PHÉP ĐĂNG NHẬP!
+   */
+  const login = async (usernameOrEmail: string, pass: string): Promise<boolean> => {
+    if (!usernameOrEmail.trim() || !pass) {
+      showToast('Vui lòng nhập Email/Tài khoản và Mật khẩu!', 'error');
+      return false;
+    }
+
+    const trimmed = usernameOrEmail.toLowerCase().trim();
+
+    // 1. Thử xác thực với Backend API MongoDB trước (nếu backend đang chạy)
+    const apiRes = await apiService.login(usernameOrEmail, pass);
+    if (apiRes.success && apiRes.user) {
+      setCurrentUser(apiRes.user);
+      setIsAuthModalOpen(false);
+      showToast(`Đăng nhập thành công! Chào mừng ${apiRes.user.name}`, 'success');
+      return true;
+    }
+
+    // 2. Nếu API không phản hồi hoặc trả về không tìm thấy, kiểm tra trong kho tài khoản đã đăng ký (registeredAccounts)
+    const foundUser = registeredAccounts.find((acc) => {
+      const emailMatch = acc.email.toLowerCase().trim() === trimmed;
+      const nameMatch = acc.name.toLowerCase().trim() === trimmed;
+      const adminMatch = trimmed === 'admin' && acc.role === 'admin';
+      return emailMatch || nameMatch || adminMatch;
+    });
+
+    // NẾU TÀI KHOẢN CHƯA ĐƯỢC ĐĂNG KÝ -> TỪ CHỐI ĐĂNG NHẬP VÀ BÁO LỖI RÕ RÀNG!
+    if (!foundUser) {
+      showToast(
+        'Tài khoản không tồn tại! Vui lòng bấm "Đăng ký" tài khoản trước khi đăng nhập.',
+        'error'
+      );
+      return false;
+    }
+
+    // KIỂM TRA MẬT KHẨU
+    const validPasswords = [foundUser.password];
+    // Cho phép thêm mật khẩu phụ cho tài khoản admin/demo
+    if (foundUser.role === 'admin') {
+      validPasswords.push('admin', 'admin123', '123456');
+    }
+    if (foundUser.email === 'demo@vietthangstore.vn') {
+      validPasswords.push('demo', '123456');
+    }
+
+    if (!validPasswords.includes(pass)) {
+      showToast('Mật khẩu không chính xác! Vui lòng thử lại.', 'error');
+      return false;
+    }
+
+    // Đăng nhập thành công
+    const { password: _, ...userSafe } = foundUser;
+    setCurrentUser(userSafe);
+    setIsAuthModalOpen(false);
+    showToast(`Đăng nhập thành công! Chào mừng ${foundUser.name}`, 'success');
+    return true;
+  };
+
+  /**
+   * ĐĂNG NHẬP DÀNH CHO ADMIN
+   */
+  const loginAdmin = async (usernameOrEmail: string, pass: string): Promise<boolean> => {
+    if (!usernameOrEmail.trim() || !pass) {
       showToast('Vui lòng nhập tài khoản và mật khẩu quản trị', 'error');
       return false;
     }
 
-    const u = usernameOrEmail.trim().toLowerCase();
-    const validUsernames = ['admin', 'admin@vietthangstore.vn', 'admin@vietthang.vn', 'quantri'];
-    const validPasswords = ['admin', 'admin123', '123456'];
+    const trimmed = usernameOrEmail.toLowerCase().trim();
+    const adminUser = registeredAccounts.find((acc) => {
+      const isRoleAdmin = acc.role === 'admin';
+      const isMatch =
+        acc.email.toLowerCase().trim() === trimmed ||
+        trimmed === 'admin' ||
+        trimmed === 'quantri';
+      return isRoleAdmin && isMatch;
+    });
 
-    if (!validUsernames.includes(u) || !validPasswords.includes(pass)) {
-      showToast('Tài khoản hoặc mật khẩu quản trị không chính xác!', 'error');
+    if (!adminUser) {
+      showToast('Tài khoản quản trị không tồn tại!', 'error');
       return false;
     }
 
-    const adminUser: User = {
-      id: 'usr_admin_vietthang',
-      name: 'Quản Trị Viên (Admin)',
-      email: 'admin@vietthangstore.vn',
-      phone: '0988 888 999',
-      address: 'Trụ sở VietThang Fashion, Hà Nội',
-      role: 'admin',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-    };
-    setCurrentUser(adminUser);
+    const validPasswords = [adminUser.password, 'admin', 'admin123', '123456'];
+    if (!validPasswords.includes(pass)) {
+      showToast('Mật khẩu quản trị không chính xác!', 'error');
+      return false;
+    }
+
+    const { password: _, ...safeAdmin } = adminUser;
+    setCurrentUser(safeAdmin);
     setIsAuthModalOpen(false);
     showToast('Xác thực quyền Quản trị viên thành công!', 'success');
     return true;
   };
 
   const loginAdminDemo = () => {
-    loginAdmin('admin', 'admin123');
+    loginAdmin('admin', 'admin');
   };
 
   const loginDemo = () => {
-    const demoUser: User = {
-      id: 'usr_demo_vietthang',
-      name: 'Nguyễn Văn Thắng (Khách hàng)',
-      email: 'demo@vietthangstore.vn',
-      phone: '0912 345 678',
-      address: 'Tòa nhà Landmark 81, 720A Điện Biên Phủ, TP. Hồ Chí Minh',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-      role: 'customer',
-    };
-    setCurrentUser(demoUser);
-    setIsAuthModalOpen(false);
-    showToast('Đã đăng nhập tài khoản Khách hàng (Demo)!', 'success');
-  };
-
-  const register = (name: string, email: string, _pass: string, phone?: string, address?: string): boolean => {
-    if (!name || !email) {
-      showToast('Vui lòng điền họ tên và email', 'error');
-      return false;
-    }
-    const newUser: User = {
-      id: 'usr_' + Date.now(),
-      name,
-      email,
-      phone: phone || '0988 666 888',
-      address: address || 'Việt Nam',
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`,
-      role: 'customer',
-    };
-    setCurrentUser(newUser);
-    setIsAuthModalOpen(false);
-    showToast(`Đăng ký tài khoản thành công! Chào mừng ${name}`, 'success');
-    return true;
+    login('demo@vietthangstore.vn', 'demo');
   };
 
   const logout = () => {
@@ -203,7 +317,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateOrderStatus = (orderId: string, status: Order['status']) => {
     setOrders((prev) =>
       prev.map((order) => {
-        if (order.id === orderId) {
+        if (order.id === orderId || order.orderCode === orderId) {
           return { ...order, status };
         }
         return order;
@@ -219,41 +333,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const generateDemoOrder = () => {
     const demoId = 'ord_' + Date.now();
-    const demoCode = 'DH' + Math.floor(100000 + Math.random() * 900000);
+    const demoCode = 'VT-' + Math.floor(100000 + Math.random() * 900000);
     const demoOrder: Order = {
       id: demoId,
       orderCode: demoCode,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toLocaleString('vi-VN'),
       customer: {
-        fullName: 'Trần Thị Thu Thảo',
-        phone: '0987 654 321',
-        address: '123 Nguyễn Trãi, Phường 2, Quận 5, TP. Hồ Chí Minh',
-        note: 'Giao giờ hành chính, gọi trước khi giao',
+        fullName: 'Nguyễn Văn Thắng',
+        phone: '0912 345 678',
+        address: 'Tòa nhà Landmark 81, TP. Hồ Chí Minh',
+        note: 'Giao hàng giờ hành chính',
       },
       items: [
         {
-          productId: 'women-1',
-          productName: 'Đầm Dự Tiệc Dáng Xòe Lụa Satin Cao Cấp',
-          price: 589000,
-          quantity: 1,
-          image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800&auto=format&fit=crop',
-          selectedSize: 'M',
-          selectedColor: 'Đỏ Ruby',
-        },
-        {
           productId: 'men-1',
-          productName: 'Áo Thun Nam Cotton Compact 250GSM',
-          price: 249000,
-          quantity: 2,
-          image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop',
+          productName: 'Áo Polo Nam Vải Pima Cotton Cao Cấp Kháng Khuẩn Dáng Slim',
+          price: 389000,
+          quantity: 1,
+          image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=800&auto=format&fit=crop',
           selectedSize: 'L',
-          selectedColor: 'Đen',
+          selectedColor: 'Xanh Navy',
         },
       ],
-      subtotal: 1087000,
-      discountAmount: 108700,
-      shippingFee: 0,
-      total: 978300,
+      subtotal: 389000,
+      discountAmount: 0,
+      shippingFee: 30000,
+      total: 419000,
       paymentMethod: 'cod',
       status: 'pending',
     };

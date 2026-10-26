@@ -12,6 +12,7 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CartDrawer } from './components/CartDrawer';
+import { WishlistModal } from './components/WishlistModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { AuthModal } from './components/AuthModal';
@@ -104,6 +105,7 @@ const AppContent: React.FC = () => {
       {/* Global Modals & Drawers */}
       <ProductDetailModal />
       <CartDrawer />
+      <WishlistModal />
       <CheckoutModal />
       <OrderSuccessModal />
       <AuthModal onAdminLogin={() => setActiveTab('admin')} />
@@ -128,4 +130,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

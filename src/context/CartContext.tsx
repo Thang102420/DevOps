@@ -11,6 +11,11 @@ interface CartContextType {
   clearCart: () => void;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
+  wishlistIds: string[];
+  toggleWishlist: (productId: string) => void;
+  isWishlisted: (productId: string) => boolean;
+  isWishlistOpen: boolean;
+  setIsWishlistOpen: (open: boolean) => void;
   appliedCoupon: string | null;
   applyCoupon: (code: string) => boolean;
   removeCoupon: () => void;
@@ -27,8 +32,9 @@ interface CartContextType {
   setSelectedProductForDetail: (product: Product | null) => void;
 }
 
-const STORAGE_KEY_CART = 'vietthang_fashion_cart';
+const STORAGE_KEY_CART = 'vietthang_fashion_cart_v2';
 const STORAGE_KEY_COUPON = 'vietthang_applied_coupon';
+const STORAGE_KEY_WISHLIST = 'vietthang_wishlist_ids';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -47,11 +53,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return [];
   });
 
+  const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_WISHLIST);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(() => {
     return localStorage.getItem(STORAGE_KEY_COUPON) || null;
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [lastPlacedOrder, setLastPlacedOrder] = useState<Order | null>(null);
   const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
@@ -61,12 +80,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cartItems]);
 
   useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_WISHLIST, JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
+
+  useEffect(() => {
     if (appliedCoupon) {
       localStorage.setItem(STORAGE_KEY_COUPON, appliedCoupon);
     } else {
       localStorage.removeItem(STORAGE_KEY_COUPON);
     }
   }, [appliedCoupon]);
+
+  const toggleWishlist = (productId: string) => {
+    setWishlistIds((prev) => {
+      const exists = prev.includes(productId);
+      if (exists) {
+        showToast('Đã xóa khỏi danh sách yêu thích', 'info');
+        return prev.filter((id) => id !== productId);
+      } else {
+        showToast('Đã lưu vào danh sách yêu thích ❤️', 'success');
+        return [...prev, productId];
+      }
+    });
+  };
+
+  const isWishlisted = (productId: string) => {
+    return wishlistIds.includes(productId);
+  };
 
   const addToCart = (product: Product, quantity = 1, selectedSize?: string, selectedColor?: string) => {
     const chosenSize = selectedSize || product.sizes[0] || 'M';
@@ -144,6 +184,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (upperCode === 'FASHION50' && subtotal >= 600000) {
       return 50000;
     }
+    if (upperCode === 'WELCOME50' && subtotal >= 400000) {
+      return 50000;
+    }
     return 0;
   }, [appliedCoupon, subtotal]);
 
@@ -199,6 +242,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearCart,
         isCartOpen,
         setIsCartOpen,
+        wishlistIds,
+        toggleWishlist,
+        isWishlisted,
+        isWishlistOpen,
+        setIsWishlistOpen,
         appliedCoupon,
         applyCoupon,
         removeCoupon,

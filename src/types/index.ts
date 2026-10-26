@@ -4,6 +4,7 @@ export type ProductCategory =
   | 'women'
   | 'pants'
   | 'sport'
+  | 'outerwear'
   | 'accessories';
 
 export interface Product {
@@ -17,9 +18,11 @@ export interface Product {
   rating: number; // e.g. 4.8
   reviewsCount: number;
   image: string;
+  images?: string[];
   inStock: boolean;
   stockCount: number;
   isFeatured?: boolean;
+  isNewArrival?: boolean;
   description: string;
   highlights: string[];
   sizes: string[];
@@ -63,6 +66,7 @@ export interface Order {
     fullName: string;
     phone: string;
     address: string;
+    email?: string;
     note?: string;
   };
   items: OrderItem[];
@@ -92,9 +96,11 @@ export interface ProductFormData {
   rating: number;
   reviewsCount: number;
   image: string;
+  images?: string[];
   inStock: boolean;
   stockCount: number;
   isFeatured: boolean;
+  isNewArrival?: boolean;
   description: string;
   highlights: string[];
   sizes: string[];
@@ -103,3 +109,9 @@ export interface ProductFormData {
   specs: Record<string, string>;
 }
 
+export interface DatabaseStatus {
+  connected: boolean;
+  database: 'connected' | 'disconnected';
+  productsCount: number;
+  lastChecked: string;
+}
