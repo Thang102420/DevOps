@@ -3,8 +3,20 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Order } from '../types';
-import { X, CreditCard, Truck, ShieldCheck, Building, CheckCircle2 } from 'lucide-react';
+import { 
+  X, 
+  CreditCard, 
+  Truck, 
+  ShieldCheck, 
+  Building, 
+  CheckCircle2, 
+  Lock, 
+  UserCheck, 
+  UserPlus, 
+  BookmarkCheck
+} from 'lucide-react';
 import { apiService } from '../services/api';
+import { AddressSelector } from './AddressSelector';
 
 export const CheckoutModal: React.FC = () => {
   const {
@@ -19,7 +31,7 @@ export const CheckoutModal: React.FC = () => {
     setLastPlacedOrder,
   } = useCart();
 
-  const { currentUser, addOrder } = useAuth();
+  const { currentUser, addOrder, openAuthModal } = useAuth();
   const { showToast } = useToast();
 
   const [fullName, setFullName] = useState('');
@@ -28,7 +40,9 @@ export const CheckoutModal: React.FC = () => {
   const [note, setNote] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'vietqr'>('cod');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [saveProfile, setSaveProfile] = useState(true);
 
+  // Điền tự động thông tin từ tài khoản đã đăng nhập
   useEffect(() => {
     if (currentUser) {
       setFullName(currentUser.name || '');
@@ -38,6 +52,77 @@ export const CheckoutModal: React.FC = () => {
   }, [currentUser, isCheckoutOpen]);
 
   if (!isCheckoutOpen) return null;
+
+  // NẾU NGƯỜI DÙNG CHƯA ĐĂNG NHẬP -> HIỂN THỊ YÊU CẦU ĐĂNG NHẬP
+  if (!currentUser) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-fade-in">
+        <div 
+          className="relative bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-scale-up"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setIsCheckoutOpen(false)}
+            className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Icon Badge */}
+          <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-3xl mx-auto flex items-center justify-center shadow-inner">
+            <Lock className="w-8 h-8" />
+          </div>
+
+          <div>
+            <span className="inline-block bg-amber-100 text-amber-800 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-2">
+              Bắt buộc đăng nhập
+            </span>
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
+              Vui Lòng Đăng Nhập Để Mua Hàng
+            </h3>
+            <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+              Để bảo vệ quyền lợi thành viên, theo dõi tiến trình đơn hàng và nhận bảo hành / đổi size 30 ngày, quý khách vui lòng đăng nhập hoặc đăng ký tài khoản trước khi đặt hàng.
+            </p>
+          </div>
+
+          <div className="space-y-2.5 pt-2">
+            <button
+              type="button"
+              onClick={() => {
+                setIsCheckoutOpen(false);
+                openAuthModal('login');
+              }}
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
+            >
+              <UserCheck className="w-4 h-4" />
+              <span>Đăng nhập tài khoản ngay</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsCheckoutOpen(false);
+                openAuthModal('register');
+              }}
+              className="w-full py-3 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs transition-colors flex items-center justify-center gap-2"
+            >
+              <UserPlus className="w-4 h-4 text-blue-600" />
+              <span>Chưa có tài khoản? Đăng ký tại đây</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsCheckoutOpen(false)}
+              className="text-xs text-slate-400 hover:text-slate-600 pt-1 block mx-auto font-medium"
+            >
+              Quay lại xem tiếp sản phẩm
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const generatedOrderCode = 'VT-' + Math.floor(100000 + Math.random() * 900000);
 
@@ -64,6 +149,7 @@ export const CheckoutModal: React.FC = () => {
         fullName: fullName.trim(),
         phone: phone.trim(),
         address: address.trim(),
+        email: currentUser.email,
         note: note.trim(),
       },
       items: cartItems.map((item) => ({
@@ -83,9 +169,9 @@ export const CheckoutModal: React.FC = () => {
       status: 'pending',
     };
 
-    // Save to MongoDB asynchronously
+    // Lưu vào cơ sở dữ liệu MongoDB
     apiService.createOrder(newOrder).catch((err) => {
-      console.warn('Cannot persist order to MongoDB backend:', err);
+      console.warn('Lỗi khi lưu đơn hàng lên MongoDB:', err);
     });
 
     addOrder(newOrder);
@@ -99,13 +185,19 @@ export const CheckoutModal: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/70 backdrop-blur-sm animate-fade-in">
       <div 
-        className="relative bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-slate-100"
+        className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-slate-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Xác Nhận Đặt Hàng Thời Trang</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">Xác Nhận Đặt Hàng Thời Trang</h2>
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <UserCheck className="w-3 h-3 text-emerald-600" />
+                {currentUser.name}
+              </span>
+            </div>
             <p className="text-xs text-slate-500">VietThang Fashion - Cam kết chất vải cao cấp, đổi size 30 ngày</p>
           </div>
           <button
@@ -117,10 +209,10 @@ export const CheckoutModal: React.FC = () => {
         </div>
 
         {/* Modal Form Content */}
-        <div className="overflow-y-auto p-6 flex-1">
+        <div className="overflow-y-auto p-5 sm:p-7 flex-1">
           <form onSubmit={handleSubmitOrder} className="space-y-6">
             
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-7">
               
               {/* Left Column: Customer Details */}
               <div className="md:col-span-7 space-y-4">
@@ -129,7 +221,8 @@ export const CheckoutModal: React.FC = () => {
                   <span>1. Thông tin giao đồ</span>
                 </h3>
 
-                <div className="space-y-3">
+                <div className="space-y-3.5">
+                  {/* Họ tên */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
                       Họ và tên người nhận <span className="text-rose-500">*</span>
@@ -144,50 +237,76 @@ export const CheckoutModal: React.FC = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Số điện thoại liên hệ <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Ví dụ: 0988 123 456"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                  {/* Số điện thoại & Email */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Số điện thoại <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Ví dụ: 0988 123 456"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Email tài khoản
+                      </label>
+                      <input
+                        type="email"
+                        disabled
+                        value={currentUser.email}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-500 text-sm cursor-not-allowed"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Địa chỉ giao hàng chi tiết <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
+                  {/* BỘ CHỌN VÀ GỢI Ý ĐỊA CHỈ THÔNG MINH NHƯ CÁC WEB ONLINE */}
+                  <div className="pt-1">
+                    <AddressSelector
                       value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/TP"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      onChange={setAddress}
+                      required={true}
                     />
                   </div>
 
+                  {/* Ghi chú thêm */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Ghi chú thêm (chiều cao, cân nặng để shop check size)
+                      Ghi chú thêm (chiều cao, cân nặng để shop check size hoặc dặn shipper)
                     </label>
                     <textarea
                       rows={2}
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      placeholder="Ví dụ: Cao 1m72 nặng 65kg lấy size L..."
+                      placeholder="Ví dụ: Cao 1m72 nặng 65kg lấy size L, giao giờ hành chính..."
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     />
                   </div>
+
+                  {/* Checkbox lưu thông tin vào tài khoản */}
+                  <div className="flex items-center gap-2 pt-1 text-xs text-slate-600">
+                    <input
+                      type="checkbox"
+                      id="saveProfile"
+                      checked={saveProfile}
+                      onChange={(e) => setSaveProfile(e.target.checked)}
+                      className="rounded text-blue-600 focus:ring-blue-500"
+                    />
+                    <label htmlFor="saveProfile" className="cursor-pointer flex items-center gap-1">
+                      <BookmarkCheck className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Lưu thông tin và địa chỉ này làm mặc định cho các lần mua sau</span>
+                    </label>
+                  </div>
                 </div>
 
-                {/* Payment method section */}
-                <div className="pt-2">
+                {/* Phương thức thanh toán */}
+                <div className="pt-3">
                   <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 mb-3">
                     <CreditCard className="w-4 h-4 text-blue-600" />
                     <span>2. Phương thức thanh toán</span>
@@ -207,7 +326,7 @@ export const CheckoutModal: React.FC = () => {
                         {paymentMethod === 'cod' && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
                       </div>
                       <p className="text-[11px] text-slate-500">
-                        Được kiểm tra chất vải, thử đồ trước khi thanh toán tiền mặt
+                        Được kiểm tra chất vải, mặc thử đồ trước khi thanh toán tiền mặt cho shipper
                       </p>
                     </div>
 
@@ -224,7 +343,7 @@ export const CheckoutModal: React.FC = () => {
                         {paymentMethod === 'vietqr' && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
                       </div>
                       <p className="text-[11px] text-slate-500">
-                        Quét mã QR qua ứng dụng ngân hàng hoặc ví điện tử
+                        Quét mã QR tự động điền số tiền và nội dung qua ứng dụng Ngân hàng
                       </p>
                     </div>
                   </div>

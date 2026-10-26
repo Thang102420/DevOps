@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { 
   X, 
   Star, 
@@ -19,10 +21,13 @@ export const ProductDetailModal: React.FC = () => {
     selectedProductForDetail, 
     setSelectedProductForDetail, 
     addToCart, 
-    setIsCartOpen,
+    setIsCheckoutOpen,
     toggleWishlist,
     isWishlisted
   } = useCart();
+
+  const { currentUser, openAuthModal } = useAuth();
+  const { showToast } = useToast();
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -59,7 +64,12 @@ export const ProductDetailModal: React.FC = () => {
   const handleBuyNow = () => {
     addToCart(product, quantity, selectedSize, selectedColor);
     setSelectedProductForDetail(null);
-    setIsCartOpen(true);
+    if (!currentUser) {
+      showToast('Vui lòng đăng nhập tài khoản để tiến hành đặt mua hàng!', 'warning');
+      openAuthModal('login');
+    } else {
+      setIsCheckoutOpen(true);
+    }
   };
 
   // Sample Customer Reviews

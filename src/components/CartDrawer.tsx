@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { X, Trash2, Plus, Minus, Tag, ShoppingBag, ArrowRight, CheckCircle2, Truck } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import { X, Trash2, Plus, Minus, Tag, ShoppingBag, ArrowRight, CheckCircle2, Truck, Lock } from 'lucide-react';
 import { VOUCHERS } from '../data/products';
 
 export const CartDrawer: React.FC = () => {
@@ -20,6 +22,9 @@ export const CartDrawer: React.FC = () => {
     setIsCheckoutOpen,
   } = useCart();
 
+  const { currentUser, openAuthModal } = useAuth();
+  const { showToast } = useToast();
+
   const [couponInput, setCouponInput] = useState('');
 
   if (!isCartOpen) return null;
@@ -34,6 +39,12 @@ export const CartDrawer: React.FC = () => {
   };
 
   const handleProceedToCheckout = () => {
+    if (!currentUser) {
+      showToast('Vui lòng đăng nhập tài khoản để tiến hành đặt hàng!', 'warning');
+      setIsCartOpen(false);
+      openAuthModal('login');
+      return;
+    }
     setIsCartOpen(false);
     setIsCheckoutOpen(true);
   };
@@ -271,13 +282,42 @@ export const CartDrawer: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Login notice if not authenticated */}
+                {!currentUser && (
+                  <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-2.5 flex items-center justify-between text-xs text-amber-800">
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <Lock className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>Cần đăng nhập tài khoản để đặt hàng</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCartOpen(false);
+                        openAuthModal('login');
+                      }}
+                      className="text-amber-900 font-bold underline text-[11px] hover:text-amber-700"
+                    >
+                      Đăng nhập
+                    </button>
+                  </div>
+                )}
+
                 {/* Checkout CTA */}
                 <button
                   onClick={handleProceedToCheckout}
                   className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  <span>Tiến hành đặt hàng</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {currentUser ? (
+                    <>
+                      <span>Tiến hành đặt hàng</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4" />
+                      <span>Đăng nhập để đặt hàng</span>
+                    </>
+                  )}
                 </button>
 
               </div>
