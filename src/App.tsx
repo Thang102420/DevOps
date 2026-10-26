@@ -60,7 +60,7 @@ const AppContent: React.FC = () => {
     }
 
     return (
-      <div className="min-h-screen bg-slate-100 text-slate-900">
+      <div className="min-h-screen bg-beige-50 text-beige-900">
         <AdminDashboard onExit={() => setActiveTab('products')} />
         <ProductDetailModal />
         <ToastContainer />
@@ -69,7 +69,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex flex-col bg-beige-50 text-beige-900">
       {/* Navigation Header */}
       <Navbar
         activeTab={activeTab}
