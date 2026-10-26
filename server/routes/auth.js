@@ -153,8 +153,11 @@ router.put('/users/:id', async (req, res) => {
     let targetUser = null;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       targetUser = await User.findById(id);
-    } else {
-      targetUser = await User.findOne({ $or: [{ email: id.toLowerCase().trim() }, { _id: id }] });
+    }
+    if (!targetUser) {
+      targetUser = await User.findOne({
+        $or: [{ email: id.toLowerCase().trim() }, { name: id.trim() }],
+      });
     }
 
     if (!targetUser) {
@@ -222,8 +225,11 @@ router.delete('/users/:id', async (req, res) => {
     let deleted = null;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       deleted = await User.findByIdAndDelete(id);
-    } else {
-      deleted = await User.findOneAndDelete({ $or: [{ email: id.toLowerCase().trim() }, { _id: id }] });
+    }
+    if (!deleted) {
+      deleted = await User.findOneAndDelete({
+        $or: [{ email: id.toLowerCase().trim() }, { name: id.trim() }],
+      });
     }
     res.json({ success: true, message: 'Đã xóa tài khoản khỏi database', deletedUser: deleted });
   } catch (error) {

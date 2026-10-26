@@ -136,6 +136,34 @@ export const apiService = {
     }
   },
 
+  // Get all orders from MongoDB
+  async getOrders(): Promise<Order[]> {
+    try {
+      const res = await fetch(`${API_BASE}/orders?limit=100`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          return json.data.map((item: any) => ({
+            id: item._id || item.id,
+            orderCode: item.orderCode,
+            createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('vi-VN') : new Date().toLocaleString('vi-VN'),
+            customer: item.customer,
+            items: item.items,
+            subtotal: item.subtotal,
+            discountAmount: item.discountAmount || 0,
+            shippingFee: item.shippingFee || 0,
+            total: item.total,
+            paymentMethod: item.paymentMethod || 'cod',
+            status: item.status || 'pending',
+          }));
+        }
+      }
+    } catch {
+      // fallback
+    }
+    return [];
+  },
+
   // Create order
   async createOrder(order: Omit<Order, 'id'>): Promise<Order> {
     try {
@@ -161,6 +189,32 @@ export const apiService = {
       orderCode: order.orderCode || `VT-${Math.floor(100000 + Math.random() * 900000)}`,
     };
     return fallbackOrder;
+  },
+
+  // Update order status in MongoDB
+  async updateOrderStatus(idOrCode: string, status: Order['status']): Promise<boolean> {
+    try {
+      const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(idOrCode)}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  },
+
+  // Delete order in MongoDB
+  async deleteOrder(idOrCode: string): Promise<boolean> {
+    try {
+      const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(idOrCode)}`, {
+        method: 'DELETE',
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
   },
 
   // Trigger seed on MongoDB

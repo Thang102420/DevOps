@@ -71,3 +71,20 @@ export const updateOrderStatus = async (req, res) => {
     res.status(400).json({ success: false, message: 'Lỗi khi cập nhật trạng thái', error: error.message });
   }
 };
+
+// Delete order (Admin)
+export const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let order = await Order.findOneAndDelete({ $or: [{ id }, { orderCode: id }] });
+    if (!order && id.match(/^[0-9a-fA-F]{24}$/)) {
+      order = await Order.findByIdAndDelete(id);
+    }
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng để xóa' });
+    }
+    res.json({ success: true, message: 'Đã xóa đơn hàng thành công' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Lỗi khi xóa đơn hàng', error: error.message });
+  }
+};

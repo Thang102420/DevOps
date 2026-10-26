@@ -65,6 +65,482 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
     createdAt: '2026-01-01T00:00:00.000Z',
   },
+  {
+    id: 'usr_c1',
+    name: 'Hoàng Minh Đức',
+    email: 'hoangduc.hn@gmail.com',
+    password: 'password123',
+    phone: '0983 241 889',
+    address: 'Số 28 Tràng Thi, Phường Hàng Trống, Quận Hoàn Kiếm, Hà Nội',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-10T08:30:00.000Z',
+  },
+  {
+    id: 'usr_c2',
+    name: 'Trần Thị Mai Linh',
+    email: 'mailinh.tran89@gmail.com',
+    password: 'password123',
+    phone: '0912 876 543',
+    address: 'Chung cư Masteri Thảo Điền, Tháp T2, Phường Thảo Điền, TP. Thủ Đức, TP. HCM',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-14T10:15:00.000Z',
+  },
+  {
+    id: 'usr_c3',
+    name: 'Lê Quang Huy',
+    email: 'quanghuy.le@outlook.com',
+    password: 'password123',
+    phone: '0977 452 319',
+    address: '142 Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-18T14:20:00.000Z',
+  },
+  {
+    id: 'usr_c4',
+    name: 'Phạm Thu Hương',
+    email: 'thuhuong.pham@gmail.com',
+    password: 'password123',
+    phone: '0904 883 216',
+    address: 'KĐT Ciputra, Phường Xuân Đỉnh, Quận Bắc Từ Liêm, Hà Nội',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-22T09:45:00.000Z',
+  },
+  {
+    id: 'usr_c5',
+    name: 'Vũ Hoàng Long',
+    email: 'longvu.designer@gmail.com',
+    password: 'password123',
+    phone: '0936 128 905',
+    address: '75 Bạch Đằng, Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-02-25T11:00:00.000Z',
+  },
+  {
+    id: 'usr_c6',
+    name: 'Đặng Hải Yến',
+    email: 'haiyen.dang@gmail.com',
+    password: 'password123',
+    phone: '0989 654 321',
+    address: '88 Lê Hồng Phong, Phường Đông Khê, Quận Ngô Quyền, TP. Hải Phòng',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-03-01T16:30:00.000Z',
+  },
+  {
+    id: 'usr_c7',
+    name: 'Bùi Tuấn Anh',
+    email: 'tuananh.bui95@gmail.com',
+    password: 'password123',
+    phone: '0962 334 556',
+    address: '215 Đại Lộ Hòa Bình, Phường An Cư, Quận Ninh Kiều, TP. Cần Thơ',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-03-05T13:10:00.000Z',
+  },
+  {
+    id: 'usr_c8',
+    name: 'Ngô Phương Thảo',
+    email: 'phuongthao.ngo@gmail.com',
+    password: 'password123',
+    phone: '0945 782 190',
+    address: 'Vinhomes Ocean Park, Tòa S2.05, Gia Lâm, Hà Nội',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-03-10T10:00:00.000Z',
+  },
+  {
+    id: 'usr_c9',
+    name: 'Đỗ Gia Bảo',
+    email: 'giabao.do@gmail.com',
+    password: 'password123',
+    phone: '0918 992 341',
+    address: '45 Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Khánh Hòa',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-03-12T15:40:00.000Z',
+  },
+  {
+    id: 'usr_c10',
+    name: 'Nguyễn Khánh Linh',
+    email: 'khanhlinh.ng@gmail.com',
+    password: 'password123',
+    phone: '0908 615 284',
+    address: '12 Lê Lợi, Phường Vĩnh Ninh, TP. Huế, Thừa Thiên Huế',
+    role: 'customer',
+    avatar: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=200&auto=format&fit=crop',
+    createdAt: '2026-03-15T09:15:00.000Z',
+  },
+];
+
+// Danh sách đơn hàng mẫu thực tế
+const INITIAL_ORDERS: Order[] = [
+  {
+    id: 'ord_1',
+    orderCode: 'VT-892145',
+    createdAt: '2026-03-20 09:15:30',
+    customer: {
+      fullName: 'Hoàng Minh Đức',
+      phone: '0983 241 889',
+      address: 'Số 28 Tràng Thi, Phường Hàng Trống, Quận Hoàn Kiếm, Hà Nội',
+      email: 'hoangduc.hn@gmail.com',
+      note: 'Giao giờ hành chính, gọi trước 15 phút',
+    },
+    items: [
+      {
+        productId: 'men-2',
+        productName: 'Áo Sơ Mi Nam Dài Tay Oxford Chống Nhăn Kháng Khuẩn',
+        price: 429000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Trắng',
+      },
+      {
+        productId: 'men-1',
+        productName: 'Áo Polo Nam Vải Pima Cotton Cao Cấp Kháng Khuẩn Dáng Slim',
+        price: 389000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Xanh Navy',
+      },
+    ],
+    subtotal: 818000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 818000,
+    paymentMethod: 'vietqr',
+    status: 'delivered',
+  },
+  {
+    id: 'ord_2',
+    orderCode: 'VT-635102',
+    createdAt: '2026-03-21 14:22:10',
+    customer: {
+      fullName: 'Trần Thị Mai Linh',
+      phone: '0912 876 543',
+      address: 'Chung cư Masteri Thảo Điền, Tháp T2, Phường Thảo Điền, TP. Thủ Đức, TP. HCM',
+      email: 'mailinh.tran89@gmail.com',
+      note: 'Gửi quầy lễ tân tòa T2 giúp mình',
+    },
+    items: [
+      {
+        productId: 'women-4',
+        productName: 'Set Áo Dạ Tweed Tiểu Thư Sang Chảnh Kèm Chân Váy A',
+        price: 799000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Kem Be',
+      },
+      {
+        productId: 'women-3',
+        productName: 'Áo Croptop Nữ Tay Ngắn Dệt Kim Gân Cổ Tròn Năng Động',
+        price: 189000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Trắng Kem',
+      },
+    ],
+    subtotal: 988000,
+    discountAmount: 50000,
+    shippingFee: 0,
+    total: 938000,
+    paymentMethod: 'vietqr',
+    status: 'delivered',
+  },
+  {
+    id: 'ord_3',
+    orderCode: 'VT-471289',
+    createdAt: '2026-03-22 11:05:00',
+    customer: {
+      fullName: 'Lê Quang Huy',
+      phone: '0977 452 319',
+      address: '142 Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh',
+      email: 'quanghuy.le@outlook.com',
+      note: 'Giao trước thứ 6 giúp mình',
+    },
+    items: [
+      {
+        productId: 'men-4',
+        productName: 'Áo Blazer Nam Công Sở 1 Lớp Thoáng Mát Phom Casual Hàn Quốc',
+        price: 689000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'XL',
+        selectedColor: 'Đen',
+      },
+      {
+        productId: 'men-2',
+        productName: 'Áo Sơ Mi Nam Dài Tay Oxford Chống Nhăn Kháng Khuẩn',
+        price: 429000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'XL',
+        selectedColor: 'Xanh Nhạt',
+      },
+    ],
+    subtotal: 1118000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 1118000,
+    paymentMethod: 'cod',
+    status: 'shipping',
+  },
+  {
+    id: 'ord_4',
+    orderCode: 'VT-902341',
+    createdAt: '2026-03-23 16:40:20',
+    customer: {
+      fullName: 'Phạm Thu Hương',
+      phone: '0904 883 216',
+      address: 'KĐT Ciputra, Phường Xuân Đỉnh, Quận Bắc Từ Liêm, Hà Nội',
+      email: 'thuhuong.pham@gmail.com',
+      note: 'Gọi điện trước khi giao',
+    },
+    items: [
+      {
+        productId: 'women-1',
+        productName: 'Đầm Dự Tiệc Cổ Chữ V Dáng Xòe Lụa Mango Cao Cấp',
+        price: 499000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'S',
+        selectedColor: 'Đỏ Rượu',
+      },
+    ],
+    subtotal: 499000,
+    discountAmount: 0,
+    shippingFee: 30000,
+    total: 529000,
+    paymentMethod: 'cod',
+    status: 'confirmed',
+  },
+  {
+    id: 'ord_5',
+    orderCode: 'VT-551982',
+    createdAt: '2026-03-24 10:12:45',
+    customer: {
+      fullName: 'Vũ Hoàng Long',
+      phone: '0936 128 905',
+      address: '75 Bạch Đằng, Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng',
+      email: 'longvu.designer@gmail.com',
+      note: 'Hàng thời trang thiết kế, đóng gói hộp cẩn thận',
+    },
+    items: [
+      {
+        productId: 'men-3',
+        productName: 'Áo Thun Nam Oversize Cổ Tròn Graphic Typography Minimalist',
+        price: 249000,
+        quantity: 2,
+        image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Trắng',
+      },
+      {
+        productId: 'men-5',
+        productName: 'Áo Sơ Mi Nam Đũi Linen Cổ Tàu Dáng Suông Mát Mùa Hè',
+        price: 359000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Xanh Rêu',
+      },
+    ],
+    subtotal: 857000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 857000,
+    paymentMethod: 'vietqr',
+    status: 'delivered',
+  },
+  {
+    id: 'ord_6',
+    orderCode: 'VT-318490',
+    createdAt: '2026-03-25 08:50:15',
+    customer: {
+      fullName: 'Đặng Hải Yến',
+      phone: '0989 654 321',
+      address: '88 Lê Hồng Phong, Phường Đông Khê, Quận Ngô Quyền, TP. Hải Phòng',
+      email: 'haiyen.dang@gmail.com',
+      note: 'Giao giờ tan tầm sau 17h',
+    },
+    items: [
+      {
+        productId: 'women-2',
+        productName: 'Áo Blazer Nữ Tay Dài Phom Rộng 2 Hàng Khuy Chuẩn Hàn',
+        price: 549000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Nâu Be',
+      },
+      {
+        productId: 'women-3',
+        productName: 'Áo Croptop Nữ Tay Ngắn Dệt Kim Gân Cổ Tròn Năng Động',
+        price: 189000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Đen',
+      },
+    ],
+    subtotal: 738000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 738000,
+    paymentMethod: 'cod',
+    status: 'shipping',
+  },
+  {
+    id: 'ord_7',
+    orderCode: 'VT-762145',
+    createdAt: '2026-03-25 15:30:00',
+    customer: {
+      fullName: 'Bùi Tuấn Anh',
+      phone: '0962 334 556',
+      address: '215 Đại Lộ Hòa Bình, Phường An Cư, Quận Ninh Kiều, TP. Cần Thơ',
+      email: 'tuananh.bui95@gmail.com',
+      note: 'Cho kiểm tra hàng trước khi thanh toán',
+    },
+    items: [
+      {
+        productId: 'men-5',
+        productName: 'Áo Sơ Mi Nam Đũi Linen Cổ Tàu Dáng Suông Mát Mùa Hè',
+        price: 359000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Trắng',
+      },
+      {
+        productId: 'men-1',
+        productName: 'Áo Polo Nam Vải Pima Cotton Cao Cấp Kháng Khuẩn Dáng Slim',
+        price: 389000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'L',
+        selectedColor: 'Đen',
+      },
+    ],
+    subtotal: 748000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 748000,
+    paymentMethod: 'cod',
+    status: 'pending',
+  },
+  {
+    id: 'ord_8',
+    orderCode: 'VT-420917',
+    createdAt: '2026-03-26 12:10:00',
+    customer: {
+      fullName: 'Ngô Phương Thảo',
+      phone: '0945 782 190',
+      address: 'Vinhomes Ocean Park, Tòa S2.05, Gia Lâm, Hà Nội',
+      email: 'phuongthao.ngo@gmail.com',
+      note: 'Giao cuối tuần hoặc gửi bảo vệ sảnh',
+    },
+    items: [
+      {
+        productId: 'women-1',
+        productName: 'Đầm Dự Tiệc Cổ Chữ V Dáng Xòe Lụa Mango Cao Cấp',
+        price: 499000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Xanh Rêu',
+      },
+      {
+        productId: 'women-2',
+        productName: 'Áo Blazer Nữ Tay Dài Phom Rộng 2 Hàng Khuy Chuẩn Hàn',
+        price: 549000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'M',
+        selectedColor: 'Đen',
+      },
+    ],
+    subtotal: 1048000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 1048000,
+    paymentMethod: 'vietqr',
+    status: 'confirmed',
+  },
+  {
+    id: 'ord_9',
+    orderCode: 'VT-184562',
+    createdAt: '2026-03-26 14:45:00',
+    customer: {
+      fullName: 'Đỗ Gia Bảo',
+      phone: '0918 992 341',
+      address: '45 Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Khánh Hòa',
+      email: 'giabao.do@gmail.com',
+      note: 'Giao giờ hành chính',
+    },
+    items: [
+      {
+        productId: 'men-6',
+        productName: 'Áo Len Dệt Kim Nam Cổ Tròn Dệt Vân Vặn Thừng Thu Đông',
+        price: 449000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'XL',
+        selectedColor: 'Nâu Cafe',
+      },
+      {
+        productId: 'men-2',
+        productName: 'Áo Sơ Mi Nam Dài Tay Oxford Chống Nhăn Kháng Khuẩn',
+        price: 429000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'XL',
+        selectedColor: 'Xanh Dương',
+      },
+    ],
+    subtotal: 878000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 878000,
+    paymentMethod: 'cod',
+    status: 'pending',
+  },
+  {
+    id: 'ord_10',
+    orderCode: 'VT-953218',
+    createdAt: '2026-03-26 16:20:00',
+    customer: {
+      fullName: 'Nguyễn Khánh Linh',
+      phone: '0908 615 284',
+      address: '12 Lê Lợi, Phường Vĩnh Ninh, TP. Huế, Thừa Thiên Huế',
+      email: 'khanhlinh.ng@gmail.com',
+      note: 'Giao buổi sáng trước 11h',
+    },
+    items: [
+      {
+        productId: 'women-4',
+        productName: 'Set Áo Dạ Tweed Tiểu Thư Sang Chảnh Kèm Chân Váy A',
+        price: 799000,
+        quantity: 1,
+        image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop',
+        selectedSize: 'S',
+        selectedColor: 'Trắng Đen',
+      },
+    ],
+    subtotal: 799000,
+    discountAmount: 0,
+    shippingFee: 0,
+    total: 799000,
+    paymentMethod: 'vietqr',
+    status: 'delivered',
+  },
 ];
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,7 +555,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((acc: RegisteredAccount) => {
+          const map = new Map<string, RegisteredAccount>();
+          INITIAL_ACCOUNTS.forEach((acc) => map.set(acc.email.toLowerCase().trim(), acc));
+          parsed.forEach((acc: RegisteredAccount) => {
+            map.set(acc.email.toLowerCase().trim(), acc);
+          });
+          return Array.from(map.values()).map((acc: RegisteredAccount) => {
             if (acc.role === 'admin' || acc.email === 'admin@vietthangstore.vn') {
               return { ...acc, password: 'admin123' };
             }
@@ -106,17 +587,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return null;
   });
 
-  // Danh sách đơn hàng
+  // Danh sách đơn hàng (lưu trữ cục bộ + đồng bộ MongoDB)
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY_ORDERS);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const map = new Map<string, Order>();
+          INITIAL_ORDERS.forEach((ord) => map.set(ord.orderCode, ord));
+          parsed.forEach((ord: Order) => map.set(ord.orderCode, ord));
+          return Array.from(map.values());
+        }
       } catch {
-        return [];
+        return INITIAL_ORDERS;
       }
     }
-    return [];
+    return INITIAL_ORDERS;
   });
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -183,7 +670,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
+    const syncOrdersFromMongoDB = async () => {
+      try {
+        const mongoOrders = await apiService.getOrders();
+        if (Array.isArray(mongoOrders) && mongoOrders.length > 0) {
+          setOrders((prev) => {
+            const map = new Map<string, Order>();
+            prev.forEach((o) => map.set(o.orderCode, o));
+            mongoOrders.forEach((o) => map.set(o.orderCode, o));
+            return Array.from(map.values());
+          });
+        }
+      } catch (err) {
+        console.warn('Chưa thể đồng bộ đơn hàng từ MongoDB:', err);
+      }
+    };
+
     syncUsersFromMongoDB();
+    syncOrdersFromMongoDB();
   }, []);
 
   const isAdmin = !!currentUser && currentUser.role === 'admin';
@@ -580,11 +1084,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return order;
       })
     );
+    apiService.updateOrderStatus(orderId, status).catch(() => {});
     showToast(`Đã cập nhật trạng thái đơn hàng #${orderId.slice(-6)}`, 'success');
   };
 
   const deleteOrder = (orderId: string) => {
-    setOrders((prev) => prev.filter((order) => order.id !== orderId));
+    setOrders((prev) => prev.filter((order) => order.id !== orderId && order.orderCode !== orderId));
+    apiService.deleteOrder(orderId).catch(() => {});
     showToast(`Đã xóa đơn hàng #${orderId.slice(-6)}`, 'info');
   };
 

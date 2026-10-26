@@ -5,7 +5,7 @@ import Product from './models/Product.js';
 import User from './models/User.js';
 import Voucher from './models/Voucher.js';
 import Order from './models/Order.js';
-import { PRODUCTS, USERS, VOUCHERS } from './data/seedData.js';
+import { PRODUCTS, USERS, VOUCHERS, ORDERS } from './data/seedData.js';
 
 dotenv.config();
 
@@ -31,12 +31,17 @@ const runSeed = async () => {
     console.log(`👤 Đang nạp ${USERS.length} tài khoản người dùng và quản trị...`);
     await User.insertMany(USERS);
 
+    console.log(`📦 Đang nạp ${ORDERS.length} đơn hàng thực tế...`);
+    await Order.insertMany(ORDERS);
+
     console.log(`🎟️ Đang nạp ${VOUCHERS.length} mã giảm giá voucher...`);
     await Voucher.insertMany(VOUCHERS);
 
     console.log('\n=============================================================');
     console.log(`🎉 NẠP DỮ LIỆU MONGODB THÀNH CÔNG!`);
     console.log(`- Tổng sản phẩm: ${PRODUCTS.length} mẫu thiết kế`);
+    console.log(`- Tài khoản người dùng: ${USERS.length} tài khoản`);
+    console.log(`- Đơn hàng khởi tạo: ${ORDERS.length} đơn hàng`);
     console.log(`- Tài khoản Admin: admin@vietthangstore.vn / admin123`);
     console.log(`- Tài khoản Demo: demo@vietthangstore.vn / demo`);
     console.log(`- Vouchers: VIETTHANG10, FREESHIP, FASHION50, WELCOME50`);
