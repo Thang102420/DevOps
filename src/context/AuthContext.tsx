@@ -69,7 +69,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c1',
     name: 'Hoàng Minh Đức',
     email: 'hoangduc.hn@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0983 241 889',
     address: 'Số 28 Tràng Thi, Phường Hàng Trống, Quận Hoàn Kiếm, Hà Nội',
     role: 'customer',
@@ -80,7 +80,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c2',
     name: 'Trần Thị Mai Linh',
     email: 'mailinh.tran89@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0912 876 543',
     address: 'Chung cư Masteri Thảo Điền, Tháp T2, Phường Thảo Điền, TP. Thủ Đức, TP. HCM',
     role: 'customer',
@@ -91,7 +91,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c3',
     name: 'Lê Quang Huy',
     email: 'quanghuy.le@outlook.com',
-    password: 'password123',
+    password: '123456',
     phone: '0977 452 319',
     address: '142 Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh',
     role: 'customer',
@@ -102,7 +102,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c4',
     name: 'Phạm Thu Hương',
     email: 'thuhuong.pham@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0904 883 216',
     address: 'KĐT Ciputra, Phường Xuân Đỉnh, Quận Bắc Từ Liêm, Hà Nội',
     role: 'customer',
@@ -113,7 +113,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c5',
     name: 'Vũ Hoàng Long',
     email: 'longvu.designer@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0936 128 905',
     address: '75 Bạch Đằng, Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng',
     role: 'customer',
@@ -124,7 +124,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c6',
     name: 'Đặng Hải Yến',
     email: 'haiyen.dang@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0989 654 321',
     address: '88 Lê Hồng Phong, Phường Đông Khê, Quận Ngô Quyền, TP. Hải Phòng',
     role: 'customer',
@@ -135,7 +135,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c7',
     name: 'Bùi Tuấn Anh',
     email: 'tuananh.bui95@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0962 334 556',
     address: '215 Đại Lộ Hòa Bình, Phường An Cư, Quận Ninh Kiều, TP. Cần Thơ',
     role: 'customer',
@@ -146,7 +146,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c8',
     name: 'Ngô Phương Thảo',
     email: 'phuongthao.ngo@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0945 782 190',
     address: 'Vinhomes Ocean Park, Tòa S2.05, Gia Lâm, Hà Nội',
     role: 'customer',
@@ -157,7 +157,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c9',
     name: 'Đỗ Gia Bảo',
     email: 'giabao.do@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0918 992 341',
     address: '45 Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Khánh Hòa',
     role: 'customer',
@@ -168,7 +168,7 @@ const INITIAL_ACCOUNTS: RegisteredAccount[] = [
     id: 'usr_c10',
     name: 'Nguyễn Khánh Linh',
     email: 'khanhlinh.ng@gmail.com',
-    password: 'password123',
+    password: '123456',
     phone: '0908 615 284',
     address: '12 Lê Lợi, Phường Vĩnh Ninh, TP. Huế, Thừa Thiên Huế',
     role: 'customer',
@@ -563,6 +563,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return Array.from(map.values()).map((acc: RegisteredAccount) => {
             if (acc.role === 'admin' || acc.email === 'admin@vietthangstore.vn') {
               return { ...acc, password: 'admin123' };
+            }
+            if (acc.password === 'password123') {
+              return { ...acc, password: '123456' };
             }
             return acc;
           });
